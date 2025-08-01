@@ -1,0 +1,96 @@
+.practice-quiz-container {
+    max-width: 60%;
+    margin-inline: auto;
+    text-align: center;
+    padding: 4rem 1.5rem;
+
+    h1 {
+        font-size: var(--fz-2xl);
+        color: #ab2024;
+        margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+        font-size: var(--fz-sm);
+        margin-bottom: 1rem;
+        color: #3e3e3e;
+        font-weight: 590;
+    }
+
+    .label {
+        font-size: var(--fz-sm);
+        font-weight: 590;
+        margin-bottom: 0.75rem;
+        color: #3e3e3e;
+    }
+
+    .grade-selector-container {
+        max-width: clamp(100px, 80vw, 800px);
+        margin-inline: auto;
+    }
+
+    .quiz-form {
+        margin-inline: auto;
+        margin-top: 3rem;
+        max-width: 70%;
+
+        .form-caption {
+            font-size: var(--fz-sm);
+            color: #3e3e3e;
+            margin-bottom: 1rem;
+            text-align: left;
+            font-weight: 590;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 1.5rem;
+
+            label {
+                display: block;
+                margin-bottom: 0.35rem;
+                font-weight: 500;
+                font-size: 0.9rem;
+                color: #3e3e3e;
+            }
+
+            input {
+                width: 100%;
+                padding: 0.75rem;
+                border: 1px solid #d9d9d9;
+                border-radius: 8px;
+                font-size: 1rem;
+                background-color: #f2f2f2;
+                &::placeholder {
+                    color: #9e9e9e;
+                }
+            }
+        }
+
+        .start-btn {
+            color: #fff;
+            font-weight: 600;
+            padding: 0.8rem 2rem;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            border-radius: 12px;
+            border: 2px solid #630003;
+            background: var(--Primary, #ab2024);
+            box-shadow: 0 4px 49px 0 rgba(0, 0, 0, 0.16);
+            transition: all 300ms ease;
+
+            &:hover {
+                background-color: #951c1f;
+                transform: translateY(5px);
+            }
+        }
+    }
+
+    @media screen and (max-width: 599px) {
+        & {
+            max-width: 100%;
+            padding-inline: 1rem;
+        }
+    }
+}

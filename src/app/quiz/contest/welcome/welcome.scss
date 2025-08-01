@@ -1,0 +1,81 @@
+.welcome-container {
+    padding: 2rem 0;
+    padding-inline: clamp(1rem, 3.8vw, 4rem);
+
+    .banner {
+        margin-top: 3rem;
+        margin-inline: auto;
+        text-align: center;
+        min-height: 30svh;
+        max-width: 40%;
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ab2024;
+        }
+    }
+
+    .info-section {
+        margin-bottom: 2.5rem;
+
+        h3 {
+            color: #ab2024;
+            font-size: var(--fz-md);
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: var(--fz-sm);
+            font-weight: 700;
+            margin: 1.2rem 0;
+            color: #3e3e3e;
+        }
+    }
+
+    .faq-section {
+        margin-bottom: 2.5rem;
+
+        h3 {
+            color: #b3001b;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+            color: #3e3e3e;
+            font-size: var(--fz-sm);
+
+            .faq-question {
+                font-weight: 700;
+                margin-bottom: 0.5rem;
+            }
+
+            .faq-answer {
+                font-weight: 510;
+            }
+        }
+    }
+
+    .contact-section {
+        h3 {
+            color: #ab2024;
+            font-size: var(--fz-md);
+            margin-bottom: 0.5rem;
+        }
+
+        a {
+            color: #ab2024;
+            text-decoration: underline;
+        }
+    }
+
+    @media screen and (max-width: 599px) {
+        & {
+            .banner {
+                max-width: 85%;
+            }
+        }
+    }
+}

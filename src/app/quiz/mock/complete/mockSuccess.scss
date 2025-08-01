@@ -1,0 +1,44 @@
+.mock-success-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: end;
+    margin-bottom: 4rem;
+    min-height: 50svh;
+
+    .score-status {
+        p {
+            font-size: var(--fz-xl);
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+        }
+    }
+
+    h1 {
+        font-size: var(--fz-2xl);
+        color: #ab2024;
+        max-width: 40%;
+        text-align: center;
+    }
+
+    .sub-text {
+        font-size: var(--fz-sm);
+        font-weight: 590;
+        margin: 1.5em 0;
+        color: #3e3e3e;
+    }
+
+    a {
+        padding: 0.7rem 2rem;
+        color: #fff;
+        border-radius: 12px;
+        border: 2px solid #630003;
+        background: var(--Primary, #ab2024);
+        box-shadow: 0 4px 49px 0 rgba(0, 0, 0, 0.16);
+    }
+}
+
+.no-score {
+    height: 80svh;
+}

@@ -1,0 +1,287 @@
+.home {
+    .potential,
+    .features,
+    .practice-cta,
+    .invitation,
+    .register,
+    .acknowledgement {
+        padding-inline: clamp(1rem, 3.5vw, 3rem) !important;
+    }
+
+    .hero {
+        // background: url('/images/hero-bg.svg') no-repeat center top / cover;
+        padding: 4rem 1.5rem 2rem;
+        text-align: center;
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+
+            h1 {
+                font-size: var(--fz-2xl);
+                font-weight: bold;
+                color: #ab2024;
+                margin-bottom: 1rem;
+            }
+
+            p {
+                margin-inline: auto;
+                max-width: 48%;
+                font-size: var(--fz-sm);
+                color: #3e3e3e;
+                margin-bottom: 2rem;
+                font-weight: 600;
+                line-height: 129%;
+            }
+
+            .cta-btn {
+                display: inline-block;
+                background: #ab2024;
+                border: 2px solid #630003;
+                color: white;
+                padding: 0.8rem 2.5rem;
+                font-size: 1rem;
+                border: none;
+                border-radius: 12px;
+                cursor: pointer;
+                margin-bottom: 2.5rem;
+            }
+        }
+    }
+
+    .potential {
+        padding: 2rem 0;
+
+        .potential-wrapper {
+            display: flex;
+            gap: 2rem;
+            max-width: 85%;
+            margin: 0 auto;
+
+            img {
+                max-width: 30%;
+                width: 100%;
+                height: auto;
+                border-radius: 10px;
+            }
+
+            .text {
+                // width: 50%;
+                h2 {
+                    color: #ab2024;
+                    font-size: 2.5rem;
+                    margin-bottom: 1rem;
+                }
+
+                p {
+                    color: #3e3e3e;
+                    font-size: var(--fz-md);
+                }
+            }
+        }
+    }
+
+    .features {
+        background: #f9f9f9;
+        padding: 3rem 0;
+        text-align: center;
+
+        h3 {
+            color: #b91c1c;
+            font-size: var(--fz-xl);
+        }
+
+        p {
+            margin-top: 0.5rem;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            color: #3e3e3e;
+        }
+
+        .feature-grid {
+            display: grid;
+            gap: 2rem;
+            max-width: 85%;
+            margin: 0 auto;
+
+            @media (min-width: 768px) {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .feature-card {
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(171, 32, 36, 0.1);
+            background: rgba(171, 32, 36, 0.05);
+            text-align: left;
+
+            h4 {
+                color: #ab2024;
+                font-size: 1.2rem;
+                margin-bottom: 0.5rem;
+            }
+
+            p {
+                font-size: 0.95rem;
+                color: #3e3e3e;
+            }
+        }
+    }
+
+    .practice-cta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4rem 0;
+
+        p {
+            color: #ab2024;
+            font-size: var(--fz-xl);
+            font-weight: 600;
+            width: 30%;
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .cta-btn {
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 12px;
+            border: 2px solid #630003;
+            background: var(--Primary, #ab2024);
+            box-shadow: 0 4px 49px 0 rgba(0, 0, 0, 0.16);
+            margin-right: 3rem;
+        }
+    }
+
+    .invitation {
+        text-align: center;
+        padding: 3rem 1.5rem;
+        background: #fff7f7;
+
+        h3 {
+            color: #ab2024;
+            font-size: var(--fz-xl);
+            margin-bottom: 0.5rem;
+        }
+
+        > p {
+            max-width: 90%;
+            margin: 0 auto 2rem;
+            color: #3e3e3e;
+        }
+
+        .grade-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+            justify-content: center;
+
+            .grade-card {
+                padding: 1.2rem;
+                text-align: left;
+                border-radius: 12px;
+                border: 1px solid rgba(171, 32, 36, 0.1);
+                background: rgba(171, 32, 36, 0.05);
+
+                h4 {
+                    color: #ab2024;
+                    margin-bottom: 0.5rem;
+                }
+
+                p {
+                    font-size: 0.9rem;
+                    color: #3e3e3e;
+                }
+            }
+        }
+    }
+
+    .register {
+        text-align: center;
+        padding: 3rem 1rem;
+
+        h3 {
+            font-size: var(--fz-xl);
+            color: #ab2024;
+            margin-bottom: 1rem;
+        }
+
+        .video-placeholder {
+            display: flex;
+            justify-content: center;
+
+            .video-box {
+                width: 90%;
+                max-width: 640px;
+                height: 360px;
+                background-color: #000;
+            }
+        }
+    }
+
+    .acknowledgement {
+        text-align: center;
+        padding: 3rem 1rem;
+
+        h3 {
+            font-size: var(--fz-xl);
+            color: #ab2024;
+            margin-bottom: 2rem;
+        }
+
+        .sponsors {
+            img {
+                width: 100%;
+                height: 40px;
+                object-fit: cover;
+            }
+        }
+    }
+}
+
+// mobile media queries
+@media (max-width: 599px) {
+    .hero {
+        .hero-content {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            p {
+                max-width: 100%;
+                font-size: 0.9rem;
+            }
+
+            .cta-btn {
+                padding: 0.6rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, minmax(133px, 1fr)) !important;
+                gap: 2rem !important;
+            }
+        }
+    }
+
+    .potential {
+        .potential-wrapper {
+            flex-direction: column;
+
+            img {
+                max-width: 100% !important;
+            }
+        }
+    }
+
+    .practice-cta {
+        p {
+            margin-left: 3rem;
+        }
+    }
+}

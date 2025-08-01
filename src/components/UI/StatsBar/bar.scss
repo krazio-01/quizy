@@ -1,0 +1,49 @@
+.stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 2.5rem;
+    background-color: #000;
+    border-radius: 90px;
+    border: 0 solid #e5e7eb;
+
+    .stat-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        padding: 3px 7px;
+        min-height: 40px;
+        text-align: center;
+        border-radius: 20px;
+        background: rgba(149, 149, 149, 0.2);
+
+        strong {
+            color: #fff;
+            display: block;
+            font-size: var(--fz-md);
+        }
+
+        span {
+            color: #ff994c;
+            font-size: var(--fz-xs);
+            margin-bottom: 8px;
+        }
+
+        &.active {
+            background: #ab2024;
+        }
+    }
+
+    @media screen and (max-width: 599px) {
+        & {
+            padding: 2rem;
+            flex-direction: column;
+
+            .stat-card {
+                width: 100%;
+            }
+        }
+    }
+}

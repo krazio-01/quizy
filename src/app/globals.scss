@@ -1,0 +1,27 @@
+:root {
+    --primary-clr: #000000;
+    --secondary-clr: #ffffff;
+    --accent-clr: #85191c;
+
+    --fz-xs: 0.75rem;
+    --fz-sm: 0.875rem;
+    --fz-md: 1rem;
+    --fz-lg: 1.25rem;
+    --fz-xl: 2rem;
+    --fz-2xl: 3rem;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}

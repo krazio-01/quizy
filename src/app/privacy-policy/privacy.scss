@@ -1,0 +1,11 @@
+.terms-container {
+    margin-inline: auto;
+    padding: 2rem clamp(1rem, 4vw, 3rem);
+
+    .acknowledgement {
+        font-size: 0.95rem;
+        color: #ab2024;
+        margin-top: 1rem;
+        font-weight: 500;
+    }
+}
