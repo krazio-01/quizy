@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 import axios from 'axios';
-import DefaultAvatar from '../../../../public/images/default1.webp';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
@@ -43,7 +42,6 @@ const Page = () => {
             additionalToast();
             return true;
         } catch (error: any) {
-            console.error('Registration error:', error);
             toast.error(error.response?.data?.message || 'Registration failed');
             return false;
         } finally {
@@ -64,7 +62,6 @@ const Page = () => {
             toast.success('Your account is verified!');
             return true;
         } catch (error: any) {
-            console.error('OTP verification error:', error);
             toast.error(error.response?.data?.message || 'Invalid OTP');
             return false;
         } finally {
@@ -91,7 +88,6 @@ const Page = () => {
             await axios.post('/api/auth/updateUser', { ...formData.personalDetails, ...schoolDetails });
             toast.success('Profile updated successfully!');
         } catch (error: any) {
-            console.error('User update error:', error);
             toast.error(error.response?.data?.message || 'User update failed');
         } finally {
             setLoading(false);

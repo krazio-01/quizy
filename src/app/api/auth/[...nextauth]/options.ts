@@ -9,20 +9,17 @@ declare module 'next-auth' {
     interface Session {
         user: {
             _id: string;
-            isAdmin: boolean;
         } & DefaultSession['user'];
     }
 
     interface User extends DefaultUser {
         _id: string;
-        isAdmin: boolean;
     }
 }
 
 declare module 'next-auth/jwt' {
     interface JWT {
         _id?: string;
-        isAdmin?: boolean;
     }
 }
 
@@ -41,12 +38,13 @@ export const authOptions: AuthOptions = {
                 // connect to the database
                 await connectToDB();
 
-                const user = await UserModel.findOne({
+                const userDoc = await UserModel.findOne({
                     email: credentials?.identifier,
                 });
 
-                if (!user) throw new Error('This account is not registered');
+                if (!userDoc) throw new Error('This account is not registered');
 
+                const user = userDoc.toObject();
                 if (!user.isVerified) throw new Error('Please verify your email');
 
                 if (!user.password) {
@@ -60,7 +58,12 @@ export const authOptions: AuthOptions = {
                     if (!checkPassword) throw new Error('Invalid credentials');
                 }
 
-                return user;
+                return {
+                    id: user._id.toString(),
+                    _id: user._id.toString(),
+                    email: user.email,
+                    name: `${user.firstName} ${user.lastName}`,
+                };
             },
         }),
     ],
@@ -73,10 +76,7 @@ export const authOptions: AuthOptions = {
             return false;
         },
         async jwt({ token, user }: { token: JWT; user?: User }) {
-            if (user) {
-                token._id = user._id?.toString();
-                token.isAdmin = user.isAdmin;
-            }
+            if (user) token._id = user._id?.toString();
             return token;
         },
         async session({ session, token }: { session: Session; token: JWT }) {
@@ -86,8 +86,7 @@ export const authOptions: AuthOptions = {
                 const sessionUser = await UserModel.findOne({
                     email: session.user.email,
                 });
-                session.user._id = sessionUser._id;
-                session.user.isAdmin = sessionUser.isAdmin;
+                if (sessionUser) (session.user as Session['user'])._id = sessionUser._id.toString();
             }
             return session;
         },

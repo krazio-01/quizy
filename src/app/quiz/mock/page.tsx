@@ -25,8 +25,6 @@ const Quiz = () => {
         return () => window.removeEventListener('beforeunload', handleBeforeUnload);
     }, [selectedGrade, router]);
 
-    if (!selectedGrade?.trim()) return <div className="returning-state" />;
-
     const gradeKey = selectedGrade.replace('Grade ', '').trim();
     const gradeData = gradeWiseQuestions.find((g) => g.grade === gradeKey);
     const totalQuestions = gradeData?.questions.length || 0;
@@ -37,6 +35,8 @@ const Quiz = () => {
     const [answerStatuses, setAnswerStatuses] = useState<(null | 'correct' | 'incorrect')[]>(
         Array(totalQuestions).fill(null)
     );
+
+    if (!selectedGrade?.trim()) return <div className="returning-state" />;
 
     const currentQuestion = gradeData?.questions[currentIndex];
     const isCorrectAnswer = selectedOption === currentQuestion?.correctAnswerIndex;
@@ -80,12 +80,12 @@ const Quiz = () => {
             <div className="feedback-text">
                 {isCorrectAnswer ? (
                     <>
-                        <p>That's right! You nailed it!</p>
+                        <p>That&apos;s right! You nailed it!</p>
                         <p>You applied the conditional statements and eliminated unlikely scenarios.</p>
                     </>
                 ) : (
                     <>
-                        <p>Oops! That's not quite right, give it another shot!</p>
+                        <p>Oops! That&apos;s not quite right, give it another shot!</p>
                         <p>Try applying the conditional statements and eliminate unlikely scenarios.</p>
                     </>
                 )}

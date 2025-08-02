@@ -70,8 +70,8 @@ export const termsSections = [
                 subtitle: '6.1 Privacy Policy',
                 content: (
                     <>
-                        User information is collected and used in accordance with our'Privacy Policy{' '}
-                        <Link href="/privacy-policy">here</Link>.
+                        User information is collected and used in accordance with our&nbsp;
+                        <Link href="/privacy-policy">Privacy Policy</Link>.
                     </>
                 ),
             },

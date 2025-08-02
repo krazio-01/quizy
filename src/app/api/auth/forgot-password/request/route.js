@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import connectToDB from "@/utils/dbConnect";
-import User from "@/models/userModel";
+import User from "@/models/UserModel";
 import { v4 as uuidv4 } from "uuid";
 import sendEmail from "@/utils/sendMail";
 import path from "path";

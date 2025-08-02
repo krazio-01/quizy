@@ -17,7 +17,7 @@ const Page = () => {
             </p>
 
             <p>
-                Contact competition@ei.study for further policy clarification or questions. We're excited for an
+                Contact competition@ei.study for further policy clarification or questions. We&apos;re excited for an
                 enjoyable competition experience for all!
             </p>
         </div>

@@ -2,17 +2,16 @@
 import { useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import AuthForm from "@/components/forms/AuthForm";
 import axios from "axios";
 import { MdLockReset } from "react-icons/md";
 import { FaLock } from "react-icons/fa";
-import "../../auth.css";
+import "../../auth.scss";
 
 const PageInner = () => {
     const [loading, setLoading] = useState(false);
 
-    const newPasswordRef = useRef(null);
-    const confirmNewPasswordRef = useRef(null);
+    const newPasswordRef = useRef<HTMLInputElement>(null);
+    const confirmNewPasswordRef = useRef<HTMLInputElement>(null);
 
     const formFields = [
         {
@@ -35,10 +34,11 @@ const PageInner = () => {
 
     const handleResetPassword = async () => {
         if (
-            newPasswordRef.current.value !== confirmNewPasswordRef.current.value
+            newPasswordRef?.current?.value !== confirmNewPasswordRef?.current?.value
         ) {
-            throw "Passwords do not match";
+            throw new Error("Passwords do not match");
         }
+
 
         try {
             setLoading(true);
@@ -46,11 +46,11 @@ const PageInner = () => {
                 "/api/auth/forgot-password/change",
                 {
                     token,
-                    newPassword: newPasswordRef.current.value,
+                    newPassword: newPasswordRef?.current?.value,
                 }
             );
             return data.message;
-        } catch (error) {
+        } catch (error: any) {
             throw error.response.data.message;
         } finally {
             setLoading(false);
@@ -72,16 +72,6 @@ const PageInner = () => {
                         Enter a new password below to reset your password
                     </p>
                 </div>
-
-                <AuthForm
-                    formFields={formFields}
-                    refs={refs}
-                    loading={loading}
-                    onSubmit={handleResetPassword}
-                    loadingText="Updating password..."
-                    redirectUrl="/login"
-                    submitButtonText="Reset Password"
-                />
             </div>
         </div>
     );

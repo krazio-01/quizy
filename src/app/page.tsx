@@ -45,9 +45,9 @@ const HomePage = () => {
                 <div className="potential-wrapper">
                     <Image width={250} height={200} src="/images/home/section.jpg" alt="Child doing math" />
                     <div className="text">
-                        <h2>Unlock Your Child's True Potential</h2>
+                        <h2>Unlock Your Child&apos;s True Potential</h2>
                         <p>
-                            Don't miss this exceptional opportunity to see your child shine as a future logic master!
+                            Don&apos;t miss this exceptional opportunity to see your child shine as a future logic master!
                             Harness their today for the League of Logic competition, an international platform by Ei
                             ASSET CT that fosters intellectual growth, sharpens logical reasoning, and builds confidence
                             through friendly global competition. Beyond the thrill of solving challenges, your child
@@ -60,7 +60,7 @@ const HomePage = () => {
             </section>
 
             <section className="features">
-                <h3>What we're here for</h3>
+                <h3>What we&apos;re here for</h3>
                 <p>To spark curiosity, build logic, and empower young minds to thrive.</p>
                 <div className="feature-grid">
                     <FeatureCard
@@ -73,7 +73,7 @@ const HomePage = () => {
                     />
                     <FeatureCard
                         title="Inspire Creativity"
-                        description="Unleash your child's creative and innovative solutions to fascinating challenges in ways that spill into all aspects of life!"
+                        description="Unleash your child&apos;s creative and innovative solutions to fascinating challenges in ways that spill into all aspects of life!"
                     />
                 </div>
             </section>
@@ -84,26 +84,26 @@ const HomePage = () => {
             </section>
 
             <section className="invitation">
-                <h3>You're Invited to Compete!</h3>
+                <h3>You&apos;re Invited to Compete!</h3>
                 <p>
-                    We've designed the competition with age-appropriate challenges that grow with your child's skills. Each level builds
+                    We&apos;ve designed the competition with age-appropriate challenges that grow with your child&apos;s skills. Each level builds
                     critical thinking, logical reasoning, and problem-solving abilities in a fun, engaging way.
                 </p>
                 <div className="grade-cards">
                     <div className="grade-card">
-                        <h4>Grades 3 & 4</h4>
+                        <h4>Grades 3 &amp; 4</h4>
                         <p>Jump into fun, game-like challenges that spark logical thinking and playful problem-solving.</p>
                     </div>
                     <div className="grade-card">
-                        <h4>Grades 5 & 6</h4>
+                        <h4>Grades 5 &amp; 6</h4>
                         <p>Tackle more in-depth challenges that require sharp logic, critical thinking, and creativity.</p>
                     </div>
                     <div className="grade-card">
-                        <h4>Grades 7 & 8</h4>
+                        <h4>Grades 7 &amp; 8</h4>
                         <p>Explore open-ended, complex tasks that strengthen logical fluency and advanced problem-solving.</p>
                     </div>
                     <div className="grade-card">
-                        <h4>Grades 9 & 10</h4>
+                        <h4>Grades 9 &amp; 10</h4>
                         <p>Take on multidisciplinary challenges designed to elevate analytical thinking and foster innovation.</p>
                     </div>
                 </div>

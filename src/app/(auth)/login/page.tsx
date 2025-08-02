@@ -59,7 +59,7 @@ const LoginPage = () => {
                     </button>
 
                     <p className="signup-message">
-                        Don't have an account? <Link href="/register">{'[Sign up now]'}</Link>
+                        Don&apos;t have an account? <Link href="/register">{'[Sign up now]'}</Link>
                     </p>
                 </div>
             </div>

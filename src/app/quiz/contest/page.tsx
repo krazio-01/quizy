@@ -21,7 +21,7 @@ const Page = () => {
     return (
         <div className="preference-container">
             <div className="header">
-                <h1>You're almost In!</h1>
+                <h1>You&apos;re almost In!</h1>
                 <p>Take your first step toward brilliance!</p>
             </div>
 

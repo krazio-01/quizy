@@ -69,7 +69,7 @@ const Page = () => {
 
             <form onSubmit={handleSubmit} className="quiz-form">
                 <p className="form-caption">
-                    Let's get started! Just tell us your name and email so we can tailor the experience for you.
+                    Let&apos;s get started! Just tell us your name and email so we can tailor the experience for you.
                 </p>
 
                 <div className="form-group">

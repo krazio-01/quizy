@@ -80,7 +80,9 @@ const Step1 = ({ onNext, onBack, loading }: Step2Props) => {
                 <DatePicker
                     placeholderText="Choose your date of birth"
                     selected={formData.dob}
-                    onChange={(date) => setFormData({ ...formData, dob: date })}
+                    onChange={(date: Date | null) => {
+                        if (date) setFormData({ ...formData, dob: date });
+                    }}
                     id="dob"
                     name="dob"
                     dateFormat="yyyy-MM-dd"

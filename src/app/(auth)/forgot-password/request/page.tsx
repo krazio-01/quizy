@@ -1,15 +1,14 @@
 "use client";
 import { useRef, useState } from "react";
 import axios from "axios";
-import AuthForm from "@/components/forms/AuthForm";
 import { MdLockReset } from "react-icons/md";
 import { MdEmail } from "react-icons/md";
-import "../../auth.css";
+import "../../auth.scss";
 
 const Page = () => {
     const [loading, setLoading] = useState(false);
 
-    const emailRef = useRef(null);
+    const emailRef = useRef<HTMLInputElement>(null);
     const refs = [emailRef];
 
     const formFields = [
@@ -22,11 +21,11 @@ const Page = () => {
             const { data } = await axios.post(
                 "/api/auth/forgot-password/request",
                 {
-                    email: emailRef.current.value,
+                    email: emailRef?.current?.value,
                 }
             );
             return data.message;
-        } catch (error) {
+        } catch (error: any) {
             throw error.response.data.message;
         } finally {
             setLoading(false);
@@ -49,16 +48,6 @@ const Page = () => {
                         instructions to reset your password.
                     </p>
                 </div>
-
-                <AuthForm
-                    formFields={formFields}
-                    refs={refs}
-                    loading={loading}
-                    onSubmit={handleChangeRequest}
-                    loadingText="Sending email..."
-                    redirectUrl="/forgot-password/request"
-                    submitButtonText="Continue"
-                />
             </div>
         </div>
     );
