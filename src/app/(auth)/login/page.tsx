@@ -1,5 +1,6 @@
 'use client';
 import { useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { toast } from 'sonner';
@@ -9,6 +10,8 @@ const LoginPage = () => {
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const [loading, setLoading] = useState(false);
+
+    const router = useRouter();
 
     const handleLogin = async () => {
         setLoading(true);
@@ -22,6 +25,7 @@ const LoginPage = () => {
             toast.error(result.error);
         } else if (result?.url) {
             toast.success('Login successful');
+            router.push('/');
         }
 
         setLoading(false);

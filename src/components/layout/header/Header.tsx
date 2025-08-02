@@ -3,16 +3,18 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { FiMenu, FiX } from 'react-icons/fi';
+import { useSession, signOut } from 'next-auth/react';
 import './header.scss';
-
-const HEADER_LINKS = [
-    { name: 'Practice Quiz', link: '/quiz/mock/register' },
-    { name: 'Register', link: '/register' },
-    { name: 'Login', link: '/login' },
-];
 
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
+    const { data: session } = useSession();
+
+    const isLoggedIn = !!session?.user;
+
+    const handleLogout = async () => {
+        await signOut({ callbackUrl: '/' });
+    };
 
     return (
         <nav className="navbar-container">
@@ -24,13 +26,39 @@ const Header = () => {
 
             <div className={`links-container ${menuOpen ? 'open' : ''}`}>
                 <ul>
-                    {HEADER_LINKS.map((link, index) => (
-                        <li className="link" key={index}>
-                            <Link href={link.link} onClick={() => setMenuOpen(false)}>
-                                {link.name}
+                    <li className="link">
+                        <Link href="/quiz/mock/register" onClick={() => setMenuOpen(false)}>
+                            Practice Quiz
+                        </Link>
+                    </li>
+
+                    {!isLoggedIn ? (
+                        <>
+                            <li className="link">
+                                <Link href="/register" onClick={() => setMenuOpen(false)}>
+                                    Register
+                                </Link>
+                            </li>
+                            <li className="link">
+                                <Link href="/login" onClick={() => setMenuOpen(false)}>
+                                    Login
+                                </Link>
+                            </li>
+                        </>
+                    ) : (
+                        <>
+                            <li className="link">
+                                <div className="logout-btn">
+                                    <button onClick={handleLogout}>Logout</button>
+                                </div>
+                            </li>
+
+                            <Link href="/" onClick={() => setMenuOpen(false)}>
+                                {session.user.name}
                             </Link>
-                        </li>
-                    ))}
+
+                        </>
+                    )}
                 </ul>
             </div>
 

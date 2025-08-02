@@ -3,6 +3,7 @@ import "./globals.scss";
 import Header from "@/components/layout/header/Header";
 import { Toaster } from "sonner";
 import Footer from "@/components/layout/footer/Footer";
+import NextAuthProvider from "@/providers/SessionProvider";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -17,16 +18,18 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body>
-                <Header />
-                {children}
-                <Toaster
-                    position="top-center"
-                    visibleToasts={2}
-                    expand={true}
-                    richColors
-                    duration={2000}
-                />
-                <Footer />
+                <NextAuthProvider>
+                    <Header />
+                    {children}
+                    <Toaster
+                        position="top-center"
+                        visibleToasts={2}
+                        expand={true}
+                        richColors
+                        duration={2000}
+                    />
+                    <Footer />
+                </NextAuthProvider>
             </body>
         </html>
     );
