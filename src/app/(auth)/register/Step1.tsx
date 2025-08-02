@@ -87,6 +87,9 @@ const Step1 = ({ onNext, onBack, loading }: Step2Props) => {
                     name="dob"
                     dateFormat="yyyy-MM-dd"
                     required
+                    showYearDropdown
+                    scrollableYearDropdown
+                    yearDropdownItemNumber={100}
                 />
             </div>
 
