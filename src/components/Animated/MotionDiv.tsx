@@ -8,4 +8,6 @@ const MotionDiv = React.forwardRef<HTMLDivElement, Props>((props, ref) => (
     <motion.div ref={ref} {...props}>{props.children}</motion.div>
 ));
 
+MotionDiv.displayName = "MotionDiv";
+
 export default MotionDiv;
