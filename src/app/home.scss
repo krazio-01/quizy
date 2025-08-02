@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 .home {
     .hero,
     .potential,
@@ -54,7 +56,7 @@
 
                 &:hover {
                     transform: translateY(5px);
-                    background: lighten(#ab2024, 10%);
+                    background: color.adjust(#ab2024, $lightness: 10%);
                 }
             }
         }
@@ -169,7 +171,7 @@
 
             &:hover {
                 transform: translateY(5px);
-                background: lighten(#ab2024, 10%);
+                background: color.adjust(#ab2024, $lightness: 10%);
             }
         }
     }

@@ -21,20 +21,29 @@ const StatsBar = ({
 }: StatsBarProps) => {
     return (
         <div className="stats" style={{ gap }}>
-            {statsArray.map((stat) => (
-                <div
-                    key={stat.value}
-                    className={`stat-card ${selectedValue === stat.value ? 'active' : ''}`}
-                    onClick={() => onSelect?.(stat.value)}
-                    style={{
-                        cursor: onSelect ? 'pointer' : 'default',
-                        minWidth: cardWidth,
-                    }}
-                >
-                    <strong>{stat.value}</strong>
-                    {stat.label && <span>{stat.label}</span>}
-                </div>
-            ))}
+            {statsArray.map((stat) => {
+                const isClickable = typeof onSelect === 'function';
+
+                const card = (
+                    <div
+                        key={stat.value}
+                        className={`stat-card ${selectedValue === stat.value ? 'active' : ''}`}
+                        style={{
+                            cursor: isClickable ? 'pointer' : 'default',
+                            minWidth: cardWidth,
+                        }}
+                    >
+                        <strong>{stat.value}</strong>
+                        {stat.label && <span>{stat.label}</span>}
+                    </div>
+                );
+
+                return isClickable
+                    ? React.cloneElement(card, {
+                        onClick: () => onSelect(stat.value),
+                    })
+                    : card;
+            })}
         </div>
     );
 };

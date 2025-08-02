@@ -1,4 +1,6 @@
 /* singin and signup css */
+@use 'sass:color';
+
 .auth-container {
     max-width: 70%;
     margin: 0 auto;
@@ -341,7 +343,7 @@
 
                 &:hover {
                     transform: translateY(5px);
-                    background: lighten(#ab2024, 10%);
+                    background: color.adjust(#ab2024, $lightness: 10%);
                 }
 
                 &:hover:not(:disabled) {
