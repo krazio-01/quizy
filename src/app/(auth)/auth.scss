@@ -151,15 +151,16 @@
                 padding: 12px 48px;
                 font-size: 16px;
                 outline: none;
-                transition: background-color 0.2s ease;
                 border-radius: 12px;
                 border: 2px solid #630003;
                 background: var(--Primary, #ab2024);
                 box-shadow: 0 4px 49px 0 rgba(0, 0, 0, 0.16);
                 cursor: pointer;
+                transition: all 300ms ease;
 
                 &:hover:enabled {
                     background-color: #8f0d24;
+                    transform: translateY(5px);
                 }
 
                 &:disabled {
@@ -336,7 +337,12 @@
                 border: none;
                 border-radius: 8px;
                 cursor: pointer;
-                transition: background 0.2s;
+                transition: all 300ms ease;
+
+                &:hover {
+                    transform: translateY(5px);
+                    background: lighten(#ab2024, 10%);
+                }
 
                 &:hover:not(:disabled) {
                     background-color: #a31b1b;
