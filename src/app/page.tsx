@@ -47,13 +47,13 @@ const HomePage = () => {
                         <br />
                         Think Logically.
                     </h1>
-                    <MotionDiv initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
+                    <MotionDiv initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }}>
                         <p>
                             Join the League of Logic by Ei ASSET - a global challenge igniting logic, curiosity, and
                             critical thinking!
                         </p>
                     </MotionDiv>
-                    <MotionDiv initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
+                    <MotionDiv initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }}>
                         <Link href="/register" className="cta-btn">
                             Register
                         </Link>
