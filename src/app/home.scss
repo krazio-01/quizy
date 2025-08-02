@@ -1,4 +1,5 @@
 .home {
+    .hero,
     .potential,
     .features,
     .practice-cta,
@@ -10,15 +11,14 @@
 
     .hero {
         // background: url('/images/hero-bg.svg') no-repeat center top / cover;
-        padding: 4rem 1.5rem 2rem;
+        padding: 4rem 0;
         text-align: center;
 
         .hero-content {
-            max-width: 800px;
             margin: 0 auto;
 
             h1 {
-                font-size: var(--fz-2xl);
+                font-size: clamp(var(--fz-xl), 10vw, var(--fz-2xl));
                 font-weight: bold;
                 color: #ab2024;
                 margin-bottom: 1rem;
@@ -66,10 +66,9 @@
             }
 
             .text {
-                // width: 50%;
                 h2 {
                     color: #ab2024;
-                    font-size: 2.5rem;
+                    font-size: clamp(var(--fz-lg), 8vw, var(--fz-xl));
                     margin-bottom: 1rem;
                 }
 
@@ -88,7 +87,7 @@
 
         h3 {
             color: #b91c1c;
-            font-size: var(--fz-xl);
+            font-size: clamp(var(--fz-lg), 8vw, var(--fz-xl));
         }
 
         p {
@@ -165,7 +164,7 @@
 
         h3 {
             color: #ab2024;
-            font-size: var(--fz-xl);
+            font-size: clamp(var(--fz-lg), 8vw, var(--fz-xl));
             margin-bottom: 0.5rem;
         }
 
@@ -206,7 +205,7 @@
         padding: 3rem 1rem;
 
         h3 {
-            font-size: var(--fz-xl);
+            font-size: clamp(var(--fz-lg), 8vw, var(--fz-xl));
             color: #ab2024;
             margin-bottom: 1rem;
         }
@@ -229,7 +228,7 @@
         padding: 3rem 1rem;
 
         h3 {
-            font-size: var(--fz-xl);
+            font-size: clamp(var(--fz-lg), 8vw, var(--fz-xl));
             color: #ab2024;
             margin-bottom: 2rem;
         }
@@ -248,18 +247,8 @@
 @media (max-width: 599px) {
     .hero {
         .hero-content {
-            h1 {
-                font-size: 1.8rem;
-            }
-
             p {
-                max-width: 100%;
-                font-size: 0.9rem;
-            }
-
-            .cta-btn {
-                padding: 0.6rem 1.5rem;
-                font-size: 0.9rem;
+                max-width: 100% !important;
             }
 
             .stats {
@@ -280,8 +269,14 @@
     }
 
     .practice-cta {
+        flex-direction: column;
         p {
-            margin-left: 3rem;
+            text-align: center !important;
+            width: 100% !important;
+        }
+
+        .cta-btn {
+            margin-right: 0 !important;
         }
     }
 }

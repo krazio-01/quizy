@@ -6,7 +6,6 @@
     .footer-top {
         display: flex;
         justify-content: space-between;
-        flex-wrap: wrap;
         gap: 3rem;
 
         .logo {
@@ -21,7 +20,7 @@
 
             p {
                 margin: 0;
-                font-size: 0.95rem;
+                font-size: var(--fz-sm);
                 cursor: pointer;
                 transition: opacity 0.3s ease;
 
@@ -41,5 +40,15 @@
         gap: 1rem;
         border-top: 1px solid rgba(255, 255, 255, 0.2);
         padding-top: 1.5rem;
+    }
+
+    @media screen and (max-width: 599px) {
+        & {
+            padding: 2rem 3rem 1rem;
+
+            .footer-top {
+                flex-direction: column;
+            }
+        }
     }
 }
