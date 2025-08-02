@@ -26,7 +26,7 @@ export default function RootLayout({
                         visibleToasts={2}
                         expand={true}
                         richColors
-                        duration={2000}
+                        duration={4000}
                     />
                     <Footer />
                 </NextAuthProvider>

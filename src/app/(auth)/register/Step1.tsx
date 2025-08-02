@@ -2,17 +2,19 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { toast } from 'sonner';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import '../auth.scss';
 
 interface Step2Props {
     onNext: (data: any) => void;
     onBack: () => void;
     loading: boolean;
+    fieldErrors: { [key: string]: boolean };
+    clearFieldError: (fieldName: string) => void;
 }
 
-const Step1 = ({ onNext, onBack, loading }: Step2Props) => {
+const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2Props) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [formData, setFormData] = useState<{
         firstName: string;
@@ -31,7 +33,6 @@ const Step1 = ({ onNext, onBack, loading }: Step2Props) => {
         confirmPassword: '',
         phone: '',
     });
-
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -60,6 +61,7 @@ const Step1 = ({ onNext, onBack, loading }: Step2Props) => {
                     value={formData.firstName}
                     onChange={handleChange}
                     required
+                    className={fieldErrors.firstName ? 'error' : ''}
                 />
             </div>
 
@@ -72,6 +74,7 @@ const Step1 = ({ onNext, onBack, loading }: Step2Props) => {
                     value={formData.lastName}
                     onChange={handleChange}
                     required
+                    className={fieldErrors.lastName ? 'error' : ''}
                 />
             </div>
 
@@ -90,6 +93,7 @@ const Step1 = ({ onNext, onBack, loading }: Step2Props) => {
                     showYearDropdown
                     scrollableYearDropdown
                     yearDropdownItemNumber={100}
+                    className={fieldErrors.dob ? 'error' : ''}
                 />
             </div>
 
@@ -99,7 +103,15 @@ const Step1 = ({ onNext, onBack, loading }: Step2Props) => {
                     Please enter correct email address as this will be used for all future communications regarding the
                     test.
                 </span>
-                <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className={fieldErrors.email ? 'error' : ''}
+                />
             </div>
 
             <div className="form-group">
@@ -111,6 +123,7 @@ const Step1 = ({ onNext, onBack, loading }: Step2Props) => {
                     value={formData.password}
                     onChange={handleChange}
                     required
+                    className={fieldErrors.password ? 'error' : ''}
                 />
             </div>
 
@@ -123,6 +136,7 @@ const Step1 = ({ onNext, onBack, loading }: Step2Props) => {
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     required
+                    className={fieldErrors.confirmPassword ? 'error' : ''}
                 />
             </div>
 
@@ -135,6 +149,7 @@ const Step1 = ({ onNext, onBack, loading }: Step2Props) => {
                     value={formData.phone}
                     onChange={handleChange}
                     required
+                    className={fieldErrors.phone ? 'error' : ''}
                 />
             </div>
 
@@ -146,7 +161,10 @@ const Step1 = ({ onNext, onBack, loading }: Step2Props) => {
                     onChange={(e) => setTermsAccepted(e.target.checked)}
                 />
                 <label htmlFor="terms">
-                    I acknowledge and accept <Link className='tAndc' href="terms-and-conditions">all terms and conditions</Link>
+                    I acknowledge and accept{' '}
+                    <Link className="tAndc" href="terms-and-conditions">
+                        all terms and conditions
+                    </Link>
                 </label>
             </p>
 

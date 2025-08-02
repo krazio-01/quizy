@@ -29,20 +29,47 @@ const Page = () => {
         },
         otp: '',
     });
+    const [fieldErrors, setFieldErrors] = useState<{ [key: string]: boolean }>({});
 
     const nextStep = () => setStep((prev) => prev + 1);
     const prevStep = () => setStep((prev) => prev - 1);
 
+    const clearFieldError = (fieldName: string) => {
+        setFieldErrors((prev) => ({ ...prev, [fieldName]: false }));
+    };
+
     const handleRegistration = async (personalData: any) => {
         try {
             setLoading(true);
+            setFieldErrors({});
 
             await axios.post('/api/auth/signup', personalData);
 
             additionalToast();
             return true;
         } catch (error: any) {
-            toast.error(error.response?.data?.message || 'Registration failed');
+            const message = error.response?.data?.message || '';
+            const fields = error.response?.data?.fields || [];
+            const newErrors: { [key: string]: boolean } = {};
+
+            fields.forEach((field: string) => newErrors[field] = true);
+            
+            if (!fields.length) {
+                if (message.includes('Passwords do not match')) {
+                    newErrors['password'] = true;
+                    newErrors['confirmPassword'] = true;
+                }
+                if (message.includes('Invalid email format'))
+                    newErrors['email'] = true;
+                if (message.includes('Password must be at least'))
+                    newErrors['password'] = true;
+                if (message.includes('already registered'))
+                    newErrors['email'] = true;
+            }
+            console.log('md-newErrors: ', newErrors);
+
+            setFieldErrors(newErrors);
+            toast.error(message || 'Registration failed');
             return false;
         } finally {
             setLoading(false);
@@ -121,6 +148,8 @@ const Page = () => {
                     }}
                     onBack={prevStep}
                     loading={loading}
+                    fieldErrors={fieldErrors}
+                    clearFieldError={clearFieldError}
                 />
             )}
 

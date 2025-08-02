@@ -13,9 +13,22 @@ export async function POST(request: NextRequest) {
     try {
         const { firstName, lastName, dob, email, password, confirmPassword, phone } = await request.json();
 
+        const missingFields = [];
+
+        if (!firstName) missingFields.push('firstName');
+        if (!lastName) missingFields.push('lastName');
+        if (!dob) missingFields.push('dob');
+        if (!email) missingFields.push('email');
+        if (!password) missingFields.push('password');
+        if (!confirmPassword) missingFields.push('confirmPassword');
+        if (!phone) missingFields.push('phone');
+
         // validations
-        if (!firstName || !lastName || !dob || !phone) {
-            return NextResponse.json({ message: 'Please fill all fields' }, { status: 400 });
+        if (missingFields.length > 0) {
+            return NextResponse.json(
+                { message: 'Please fill all required fields', fields: missingFields },
+                { status: 400 }
+            );
         }
 
         if (password !== confirmPassword) {
