@@ -1,7 +1,8 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { toast } from 'sonner';
+import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../auth.scss';
@@ -33,6 +34,24 @@ const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2P
         confirmPassword: '',
         phone: '',
     });
+
+    useEffect(() => {
+        const fetchCountryCode = async () => {
+            try {
+                const { data } = await axios.get('https://ipapi.co/json/');
+                if (data?.country_calling_code) {
+                    setFormData(prev => ({
+                        ...prev,
+                        phone: `${data.country_calling_code} `
+                    }));
+                }
+            } catch (error) {
+                console.error('Error fetching country code:', error);
+            }
+        };
+
+        fetchCountryCode();
+    }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;

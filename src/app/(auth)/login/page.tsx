@@ -22,14 +22,15 @@ const LoginPage = () => {
         });
 
         if (result?.error) {
+            if (result.error === "Please Complete Your Profile To Log In.")
+                router.push('/register?step=3');
             toast.error(result.error);
         } else if (result?.url) {
             toast.success('Login successful');
             router.push('/');
-        }
-
-        setLoading(false);
-    };
+            setLoading(false);
+        };
+    }
 
     return (
         <div className="auth-container">

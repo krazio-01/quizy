@@ -14,7 +14,6 @@ export async function POST(request: NextRequest) {
         const { firstName, lastName, dob, email, password, confirmPassword, phone } = await request.json();
 
         const missingFields = [];
-
         if (!firstName) missingFields.push('firstName');
         if (!lastName) missingFields.push('lastName');
         if (!dob) missingFields.push('dob');
@@ -31,14 +30,23 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        if (password !== confirmPassword) {
+        const parsedDob = new Date(dob);
+        const now = new Date();
+
+        if (parsedDob >= now)
+            return NextResponse.json({ message: 'Date of birth must be in the past' }, { status: 400 });
+
+        const ageInMs = now.getTime() - parsedDob.getTime();
+        const ageInYears = ageInMs / (1000 * 60 * 60 * 24 * 365.25);
+
+        if (ageInYears < 10 || ageInYears > 100)
+            return NextResponse.json({ message: 'Age must be between 10 and 100 years' }, { status: 400 });
+
+        if (password !== confirmPassword)
             return NextResponse.json({ message: 'Passwords do not match' }, { status: 400 });
-        }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            return NextResponse.json({ message: 'Invalid email format' }, { status: 400 });
-        }
+        if (!emailRegex.test(email)) return NextResponse.json({ message: 'Invalid email format' }, { status: 400 });
 
         const passwordRegex = /^(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         if (!passwordRegex.test(password)) {
@@ -50,11 +58,8 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Check if user already exists
         const userExists = await User.findOne({ email });
-        if (userExists) {
-            return NextResponse.json({ message: 'This account already registered' }, { status: 400 });
-        }
+        if (userExists) return NextResponse.json({ message: 'This account already registered' }, { status: 400 });
 
         // Hash password
         const salt = await bcrypt.genSalt(10);

@@ -38,25 +38,22 @@ export const authOptions: AuthOptions = {
                 // connect to the database
                 await connectToDB();
 
-                const userDoc = await UserModel.findOne({
-                    email: credentials?.identifier,
-                });
+                const userDoc = await UserModel.findOne({ email: credentials?.identifier });
 
                 if (!userDoc) throw new Error('This account is not registered');
 
                 const user = userDoc.toObject();
+
                 if (!user.isVerified) throw new Error('Please verify your email');
 
-                if (!user.password) {
-                    const salt = await bcrypt.genSalt(10);
-                    const hashedPassword = await bcrypt.hash(credentials.password, salt);
-                    user.password = hashedPassword;
+                // Check password
+                const passwordMatches = await bcrypt.compare(credentials.password, user.password);
+                if (!passwordMatches) throw new Error('Invalid credentials');
 
-                    await user.save();
-                } else {
-                    const checkPassword = await bcrypt.compare(credentials.password, user.password);
-                    if (!checkPassword) throw new Error('Invalid credentials');
-                }
+                // Check if school details are missing
+                const incompleteFields = ['school', 'city', 'country', 'grade'].filter((field) => !user[field]);
+
+                if (incompleteFields.length > 0) throw new Error('Please Complete Your Profile To Log In.');
 
                 return {
                     id: user._id.toString(),

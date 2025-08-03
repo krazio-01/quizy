@@ -1,5 +1,6 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import axios from 'axios';
 import Step1 from './Step1';
@@ -31,6 +32,13 @@ const Page = () => {
     });
     const [fieldErrors, setFieldErrors] = useState<{ [key: string]: boolean }>({});
 
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const stepParam = searchParams.get('step');
+        setStep(stepParam === '3' ? 3 : 1);
+    }, [searchParams]);
+
     const nextStep = () => setStep((prev) => prev + 1);
     const prevStep = () => setStep((prev) => prev - 1);
 
@@ -53,7 +61,7 @@ const Page = () => {
             const newErrors: { [key: string]: boolean } = {};
 
             fields.forEach((field: string) => newErrors[field] = true);
-            
+
             if (!fields.length) {
                 if (message.includes('Passwords do not match')) {
                     newErrors['password'] = true;
