@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import useAppStore from '@/store/store';
 import { toast } from 'sonner';
 import axios from 'axios';
 import Step1 from './Step1';
@@ -9,9 +9,11 @@ import Step3 from './Step3';
 import '../auth.scss';
 
 const Page = () => {
+    const step = useAppStore((state) => state.step);
+    const setStep = useAppStore((state) => state.setStep);
+
     const [loading, setLoading] = useState(false);
     const [resendOtpLoading, setResendOtpLoading] = useState(false);
-    const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         schoolDetails: {
             country: '',
@@ -32,15 +34,14 @@ const Page = () => {
     });
     const [fieldErrors, setFieldErrors] = useState<{ [key: string]: boolean }>({});
 
-    const searchParams = useSearchParams();
-
     useEffect(() => {
-        const stepParam = searchParams.get('step');
-        setStep(stepParam === '3' ? 3 : 1);
-    }, [searchParams]);
+        const params = new URLSearchParams(window.location.search);
+        const stepParam = params.get('step');
+        if (stepParam === '3') setStep(3);
+    }, []);
 
-    const nextStep = () => setStep((prev) => prev + 1);
-    const prevStep = () => setStep((prev) => prev - 1);
+    const nextStep = () => setStep(step + 1);
+    const prevStep = () => setStep(step - 1);
 
     const clearFieldError = (fieldName: string) => {
         setFieldErrors((prev) => ({ ...prev, [fieldName]: false }));

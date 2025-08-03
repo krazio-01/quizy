@@ -6,6 +6,9 @@ interface AppStates {
 
     scoreString: string;
     setScoreString: (score: string) => void;
+
+    step: number;
+    setStep: (step: number) => void;
 }
 
 const useAppStore = create<AppStates>((set) => ({
@@ -14,6 +17,9 @@ const useAppStore = create<AppStates>((set) => ({
 
     scoreString: '0/0',
     setScoreString: (score) => set({ scoreString: score }),
+
+    step: 1,
+    setStep: (step: number) => set({ step }),
 }));
 
 export default useAppStore;

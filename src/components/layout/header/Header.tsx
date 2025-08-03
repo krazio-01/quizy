@@ -4,9 +4,12 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { FiMenu, FiX } from 'react-icons/fi';
 import { useSession, signOut } from 'next-auth/react';
+import useAppStore from '@/store/store';
 import './header.scss';
 
 const Header = () => {
+    const setStep = useAppStore((state) => state.setStep);
+
     const [menuOpen, setMenuOpen] = useState(false);
     const { data: session } = useSession();
 
@@ -35,7 +38,13 @@ const Header = () => {
                     {!isLoggedIn ? (
                         <>
                             <li className="link">
-                                <Link href="/register" onClick={() => setMenuOpen(false)}>
+                                <Link
+                                    href="/register"
+                                    onClick={() => {
+                                        setStep(1);
+                                        setMenuOpen(false);
+                                    }}
+                                >
                                     Register
                                 </Link>
                             </li>
@@ -56,7 +65,6 @@ const Header = () => {
                             <Link href="/" onClick={() => setMenuOpen(false)}>
                                 {session.user.name}
                             </Link>
-
                         </>
                     )}
                 </ul>
