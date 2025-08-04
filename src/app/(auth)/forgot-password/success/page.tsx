@@ -7,7 +7,7 @@ const Page = () => {
         <div className="forgot-password-container">
             <div className="forgot-password-card">
                 <h2 style={{ color: '#ab2024' }}>Forgot Your Password?</h2>
-                <p className="subtitle">Don't worry we'll help you.</p>
+                <p className="subtitle">Don&apos;t worry we&apos;ll help you.</p>
 
                 <p className="info-text">
                     A reset link has been sent to your email. Go back to login to continue.

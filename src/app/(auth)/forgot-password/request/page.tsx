@@ -37,7 +37,7 @@ const Page = () => {
         <div className="forgot-password-container">
             <div className="forgot-password-card">
                 <h2>Forgot Your Password?</h2>
-                <p className="subtitle">Don't worry we'll help you.</p>
+                <p className="subtitle">Don&apos;t worry we&apos;ll help you.</p>
 
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="email">Enter your email address</label>
@@ -56,7 +56,7 @@ const Page = () => {
                     </button>
                 </form>
 
-                <p className="footer-text">We'll send a link to reset your password after you enter your email.</p>
+                <p className="footer-text">We&apos;ll send a link to reset your password after you enter your email.</p>
             </div>
         </div>
     );
