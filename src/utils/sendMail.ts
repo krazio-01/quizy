@@ -22,8 +22,7 @@ const sendEmail = async (userEmail, subject, text, html) => {
 
         await transporter.sendMail(mail_configs);
         return transporter;
-    }
-    catch (error) {
+    } catch (error) {
         console.error('Error sending email:', error);
         throw error;
     }

@@ -1,22 +1,29 @@
 'use client';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { toast } from 'sonner';
 import '../auth.scss';
 
-const Step2 = ({
-    onBack,
-    onVerify,
-    onResendOtp,
-    loading,
-    resendOtpLoading
-}: {
+export interface Step2Props {
     onBack: () => void;
     onVerify: (otp: string) => void;
     onResendOtp: () => void;
     loading: boolean;
     resendOtpLoading: boolean;
-}) => {
+    otpToastId: string | number | undefined;
+}
+
+const Step2 = ({ onBack, onVerify, onResendOtp, loading, resendOtpLoading, otpToastId }: Step2Props) => {
     const [otpValues, setOtpValues] = useState(Array(6).fill(''));
     const otpRefs = useRef<Array<HTMLInputElement | null>>([]);
+
+    useEffect(() => {
+        return () => {
+            if (otpToastId !== undefined) {
+                toast.dismiss(otpToastId);
+                otpToastId = undefined;
+            }
+        };
+    }, []);
 
     const handleChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -59,7 +66,9 @@ const Step2 = ({
                 {otpValues.map((value, i) => (
                     <input
                         key={i}
-                        ref={(el) => { otpRefs.current[i] = el; }}
+                        ref={(el) => {
+                            otpRefs.current[i] = el;
+                        }}
                         type="text"
                         maxLength={1}
                         className="otp-input"

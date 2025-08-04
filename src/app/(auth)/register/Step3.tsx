@@ -9,7 +9,9 @@ interface School {
     type?: string;
 }
 
-const Step1 = ({ onNext, loading }: { onNext: (data: any) => void, loading: boolean }) => {
+const gradeOptions = [...Array.from({ length: 10 }, (_, i) => `Grade ${i + 3}`), 'Undergraduate', 'Graduate'];
+
+const Step3 = ({ onNext, loading }: { onNext: (data: any) => void; loading: boolean }) => {
     const countries = ccs.getCountries();
     const [country, setCountry] = useState('');
     const [cities, setCities] = useState<string[]>([]);
@@ -69,7 +71,7 @@ const Step1 = ({ onNext, loading }: { onNext: (data: any) => void, loading: bool
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: `data=${encodeURIComponent(overpassQuery)}`
+                body: `data=${encodeURIComponent(overpassQuery)}`,
             });
 
             if (!response.ok) {
@@ -83,8 +85,8 @@ const Step1 = ({ onNext, loading }: { onNext: (data: any) => void, loading: bool
                     id: element.id?.toString() || `school-${index}`,
                     name: element.tags.name,
                     address: element.tags['addr:full'] || element.tags['addr:street'] || '',
-                    type: element.tags.amenity
-                }))
+                    type: element.tags.amenity,
+                }));
 
             setSchools(fetchedSchools);
             setSchool('');
@@ -97,7 +99,7 @@ const Step1 = ({ onNext, loading }: { onNext: (data: any) => void, loading: bool
                 { id: 'international-school', name: 'International School', type: 'school' },
                 { id: 'local-university', name: 'Local University', type: 'university' },
                 { id: 'community-college', name: 'Community College', type: 'college' },
-                { id: 'other', name: 'Other (Please specify)', type: 'other' }
+                { id: 'other', name: 'Other (Please specify)', type: 'other' },
             ]);
         } finally {
             setLoadingSchools(false);
@@ -112,17 +114,11 @@ const Step1 = ({ onNext, loading }: { onNext: (data: any) => void, loading: bool
         }
     };
 
-
     return (
         <form className="step-form">
             <div className="form-group">
                 <label htmlFor="country">Country</label>
-                <select
-                    id="country"
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
-                    required
-                >
+                <select id="country" value={country} onChange={(e) => setCountry(e.target.value)} required>
                     <option value="">Choose your country</option>
                     {countries.map((c) => (
                         <option key={c.shortName} value={c.shortName}>
@@ -163,8 +159,8 @@ const Step1 = ({ onNext, loading }: { onNext: (data: any) => void, loading: bool
                         {loadingSchools
                             ? 'Loading schools...'
                             : schools.length === 0
-                                ? 'No schools available'
-                                : 'Choose your School'}
+                            ? 'No schools available'
+                            : 'Choose your School'}
                     </option>
                     {schools.map((s) => (
                         <option key={s.id} value={s.name}>
@@ -172,37 +168,23 @@ const Step1 = ({ onNext, loading }: { onNext: (data: any) => void, loading: bool
                         </option>
                     ))}
                 </select>
-                {schoolError && (
-                    <div className="error-message">{schoolError}</div>
-                )}
+                {schoolError && <div className="error-message">{schoolError}</div>}
             </div>
 
             <div className="form-group">
                 <label htmlFor="grade">Grade</label>
-                <select
-                    id="grade"
-                    value={grade}
-                    onChange={(e) => setGrade(e.target.value)}
-                    required
-                >
+                <select id="grade" value={grade} onChange={(e) => setGrade(e.target.value)} required>
                     <option value="">Choose your Grade</option>
-                    <option value="9">Grade 9</option>
-                    <option value="10">Grade 10</option>
-                    <option value="11">Grade 11</option>
-                    <option value="12">Grade 12</option>
-                    <option value="undergraduate">Undergraduate</option>
-                    <option value="graduate">Graduate</option>
-                    <option value="postgraduate">Postgraduate</option>
+                    {gradeOptions.map((label) => (
+                        <option key={label} value={label.replace(' ', '').toLowerCase()}>
+                            {label}
+                        </option>
+                    ))}
                 </select>
             </div>
 
             <div className="form-buttons">
-                <button
-                    type="button"
-                    className="next-btn"
-                    onClick={handleSubmit}
-                    disabled={!isValid || loadingSchools}
-                >
+                <button type="button" className="next-btn" onClick={handleSubmit} disabled={!isValid || loadingSchools}>
                     {loading ? 'Submitting...' : 'Continue to Payment!'}
                 </button>
             </div>
@@ -210,4 +192,4 @@ const Step1 = ({ onNext, loading }: { onNext: (data: any) => void, loading: bool
     );
 };
 
-export default Step1;
+export default Step3;

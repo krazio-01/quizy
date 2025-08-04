@@ -1,6 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '../../../../utils/dbConnect';
 import MockQuizModel from '../../../../models/MockQuizModel';
+import UserModel from '../../../../models/UserModel';
+import { calculateAge } from '@/utils/helperFn';
+
+const gradeAgeLimits: Record<string, [number, number]> = {
+    'Grade 3-4': [8, 10],
+    'Grade 5-6': [10, 12],
+    'Grade 7-8': [12, 14],
+    'Grade 9-10': [14, 16],
+};
 
 export async function POST(req: NextRequest) {
     try {
@@ -10,6 +19,20 @@ export async function POST(req: NextRequest) {
 
         if (!name || !email || !grade)
             return NextResponse.json({ message: 'Please Fill All Fields First' }, { status: 400 });
+
+        const user = await UserModel.findOne({ email });
+
+        if (user && user.dob && gradeAgeLimits[grade]) {
+            const userAge = calculateAge(user.dob);
+            const [minAge, maxAge] = gradeAgeLimits[grade];
+
+            if (userAge < minAge || userAge > maxAge) {
+                return NextResponse.json(
+                    { message: `You are not eligible for ${grade} based on your age.` },
+                    { status: 403 }
+                );
+            }
+        }
 
         const now = new Date();
 
@@ -38,11 +61,8 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ message: 'Quiz Started!', data: newRecord }, { status: 201 });
     } catch (err: any) {
-        if (err.code === 11000) {
+        if (err.code === 11000)
             return NextResponse.json({ message: 'Duplicate entry for this grade and email' }, { status: 409 });
-        }
-
-        console.error('Start quiz error:', err);
         return NextResponse.json({ message: 'Server error' }, { status: 500 });
     }
 }

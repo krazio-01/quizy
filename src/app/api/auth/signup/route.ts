@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server';
 import User from '@/models/UserModel';
-import connectToDB from '@/utils/dbConnect.js';
+import connectToDB from '@/utils/dbConnect';
 import sendEmail from '@/utils/sendMail';
 import bcrypt from 'bcrypt';
 import fs from 'fs';

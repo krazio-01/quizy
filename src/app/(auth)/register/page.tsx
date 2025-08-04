@@ -34,6 +34,8 @@ const Page = () => {
     });
     const [fieldErrors, setFieldErrors] = useState<{ [key: string]: boolean }>({});
 
+    let otpToastId: string | number | undefined;
+
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const stepParam = params.get('step');
@@ -54,7 +56,11 @@ const Page = () => {
 
             await axios.post('/api/auth/signup', personalData);
 
-            additionalToast();
+            otpToastId = toast('An Otp has been sent to your email.', {
+                duration: Infinity,
+                closeButton: true,
+            });
+            localStorage.setItem('userEmail', personalData.email);
             return true;
         } catch (error: any) {
             const message = error.response?.data?.message || '';
@@ -120,21 +126,15 @@ const Page = () => {
     const handleUserUpdate = async (schoolDetails: any) => {
         try {
             setLoading(true);
-
-            await axios.post('/api/auth/updateUser', { ...formData.personalDetails, ...schoolDetails });
+            const email = localStorage.getItem("userEmail");
+            await axios.post('/api/auth/updateUser', { email, ...schoolDetails });
             toast.success('Profile updated successfully!');
+            localStorage.removeItem("userEmail");
         } catch (error: any) {
             toast.error(error.response?.data?.message || 'User update failed');
         } finally {
             setLoading(false);
         }
-    };
-
-    const additionalToast = () => {
-        toast('An Otp has been sent to your email.', {
-            duration: Infinity,
-            closeButton: true,
-        });
     };
 
     return (
@@ -173,6 +173,7 @@ const Page = () => {
                     onResendOtp={handleResend}
                     loading={loading}
                     resendOtpLoading={resendOtpLoading}
+                    otpToastId={otpToastId}
                 />
             )}
 

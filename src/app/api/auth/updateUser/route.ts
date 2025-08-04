@@ -1,6 +1,22 @@
 import { NextResponse, NextRequest } from 'next/server';
 import connectToDB from '@/utils/dbConnect';
 import User from '@/models/UserModel';
+import { calculateAge } from '@/utils/helperFn';
+
+const gradeAgeLimits: Record<string, [number, number]> = {
+    grade3: [8, 10],
+    grade4: [8, 10],
+    grade5: [10, 12],
+    grade6: [10, 12],
+    grade7: [12, 14],
+    grade8: [12, 14],
+    grade9: [14, 16],
+    grade10: [14, 16],
+    grade11: [16, 18],
+    grade12: [16, 18],
+    undergraduate: [18, 22],
+    graduate: [22, 26],
+};
 
 export async function POST(request: NextRequest) {
     await connectToDB();
@@ -9,11 +25,18 @@ export async function POST(request: NextRequest) {
         const { email, country, city, school, grade } = await request.json();
 
         const user = await User.findOne({ email });
-        if (!user) {
-            return NextResponse.json({ message: 'User not found' }, { status: 404 });
+        if (!user) return NextResponse.json({ message: 'User not found' }, { status: 404 });
+
+        // Age validation
+        if (user.dob && gradeAgeLimits[grade]) {
+            const userAge = calculateAge(new Date(user.dob));
+            const [minAge, maxAge] = gradeAgeLimits[grade];
+
+            if (userAge < minAge || userAge > maxAge)
+                return NextResponse.json({ message: `Age ${userAge} not eligible for ${grade}.` }, { status: 403 });
         }
 
-        // Update fields
+        // Update fields 
         user.country = country;
         user.city = city;
         user.school = school;

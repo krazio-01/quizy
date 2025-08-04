@@ -1,10 +1,10 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 let isConnected = false;
 
 const connectToDB = async () => {
     if (isConnected) {
-        console.log("Already connected to the database");
+        console.log('Already connected to the database');
         return;
     }
 
@@ -14,9 +14,9 @@ const connectToDB = async () => {
 
         isConnected = db.connections[0].readyState === 1;
 
-        console.log("Database connected successfully");
+        console.log('Database connected successfully');
     } catch (error) {
-        console.error("Database connection failed:", error);
+        console.error('Database connection failed:', error);
         process.exit(1);
     }
 };
