@@ -35,6 +35,12 @@ const Header = () => {
                         </Link>
                     </li>
 
+                    <li className="link">
+                        <Link href="/contact" onClick={() => setMenuOpen(false)}>
+                            Contact
+                        </Link>
+                    </li>
+
                     {!isLoggedIn ? (
                         <>
                             <li className="link">
