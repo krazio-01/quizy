@@ -9,21 +9,25 @@ export interface Step2Props {
     onResendOtp: () => void;
     loading: boolean;
     resendOtpLoading: boolean;
-    otpToastId: string | number | undefined;
+    otpSent: boolean;
 }
 
-const Step2 = ({ onBack, onVerify, onResendOtp, loading, resendOtpLoading, otpToastId }: Step2Props) => {
+const Step2 = ({ onBack, onVerify, onResendOtp, loading, resendOtpLoading, otpSent }: Step2Props) => {
     const [otpValues, setOtpValues] = useState(Array(6).fill(''));
     const otpRefs = useRef<Array<HTMLInputElement | null>>([]);
 
     useEffect(() => {
+        if (!otpSent) return;
+
+        const toastId = toast('An OTP has been sent to your email.', {
+            duration: Infinity,
+            closeButton: true,
+        });
+
         return () => {
-            if (otpToastId !== undefined) {
-                toast.dismiss(otpToastId);
-                otpToastId = undefined;
-            }
+            toast.dismiss(toastId);
         };
-    }, []);
+    }, [otpSent]);
 
     const handleChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;

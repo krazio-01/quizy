@@ -13,6 +13,7 @@ const Page = () => {
     const setStep = useAppStore((state) => state.setStep);
 
     const [loading, setLoading] = useState(false);
+    const [otpSent, setOtpSent] = useState(false);
     const [resendOtpLoading, setResendOtpLoading] = useState(false);
     const [formData, setFormData] = useState({
         schoolDetails: {
@@ -55,11 +56,7 @@ const Page = () => {
             setFieldErrors({});
 
             await axios.post('/api/auth/signup', personalData);
-
-            otpToastId = toast('An Otp has been sent to your email.', {
-                duration: Infinity,
-                closeButton: true,
-            });
+            setOtpSent(true);
             localStorage.setItem('userEmail', personalData.email);
             return true;
         } catch (error: any) {
@@ -173,7 +170,7 @@ const Page = () => {
                     onResendOtp={handleResend}
                     loading={loading}
                     resendOtpLoading={resendOtpLoading}
-                    otpToastId={otpToastId}
+                    otpSent={otpSent}
                 />
             )}
 
