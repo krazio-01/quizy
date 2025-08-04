@@ -35,8 +35,6 @@ const Page = () => {
     });
     const [fieldErrors, setFieldErrors] = useState<{ [key: string]: boolean }>({});
 
-    let otpToastId: string | number | undefined;
-
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const stepParam = params.get('step');
