@@ -56,7 +56,7 @@ const LoginPage = () => {
                     </div>
 
                     <p className="forgot-password">
-                        <Link href="/forgot-password">Forgot your password? Reset it here</Link>
+                        <Link href="/forgot-password/request">Forgot your password? Reset it here</Link>
                     </p>
 
                     <button className="login-button" onClick={handleLogin} disabled={loading}>

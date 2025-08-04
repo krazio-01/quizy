@@ -1,53 +1,62 @@
-"use client";
-import { useRef, useState } from "react";
-import axios from "axios";
-import { MdLockReset } from "react-icons/md";
-import { MdEmail } from "react-icons/md";
-import "../../auth.scss";
+'use client';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { toast } from 'sonner';
+import '../../auth.scss';
 
 const Page = () => {
+    const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const emailRef = useRef<HTMLInputElement>(null);
-    const refs = [emailRef];
+    const router = useRouter();
 
-    const formFields = [
-        { name: "email", label: "Email", type: "email", icon: <MdEmail /> },
-    ];
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
 
-    const handleChangeRequest = async () => {
+        if (!email) {
+            toast.error('Please enter your email.');
+            return;
+        }
+
         try {
             setLoading(true);
-            const { data } = await axios.post(
-                "/api/auth/forgot-password/request",
-                {
-                    email: emailRef?.current?.value,
-                }
-            );
-            return data.message;
+            const { data } = await axios.post('/api/auth/forgot-password/request', { email });
+            toast.success(data.message);
+            setEmail('');
+            router.replace('/forgot-password/success');
         } catch (error: any) {
-            throw error.response.data.message;
+            console.log('md-erorr: ', error);
+            toast.error(error.response?.data?.message);
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="auth-container">
-            <div className="form-container login">
-                <div className="auth-form-header">
-                    <MdLockReset />
-                    <h2>Reset your password</h2>
-                    <p
-                        style={{
-                            fontSize: "var(--fz-sm)",
-                            textAlign: "center",
-                        }}
-                    >
-                        Enter your email address and we will send you
-                        instructions to reset your password.
-                    </p>
-                </div>
+        <div className="forgot-password-container">
+            <div className="forgot-password-card">
+                <h2>Forgot Your Password?</h2>
+                <p className="subtitle">Don't worry we'll help you.</p>
+
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor="email">Enter your email address</label>
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="User@email.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        disabled={loading}
+                    />
+
+                    <button type="submit" disabled={loading}>
+                        {loading ? 'Sending...' : 'Send'}
+                    </button>
+                </form>
+
+                <p className="footer-text">We'll send a link to reset your password after you enter your email.</p>
             </div>
         </div>
     );

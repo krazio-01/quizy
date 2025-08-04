@@ -18,6 +18,9 @@ export interface IUser {
     otpExpiry: Date;
     isVerified: boolean;
 
+    forgotPasswordToken?: string;
+    forgotPasswordTokenExpiry?: number;
+
     createdAt: Date;
     updatedAt: Date;
 }
@@ -44,6 +47,9 @@ const UserSchema: Schema<IUserDocument> = new Schema<IUserDocument>(
         otp: String,
         otpExpiry: Date,
         isVerified: { type: Boolean, default: false },
+
+        forgotPasswordToken: { type: String },
+        forgotPasswordTokenExpiry: { type: Number },
     },
     { timestamps: true }
 );
