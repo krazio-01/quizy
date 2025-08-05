@@ -42,6 +42,11 @@
                         background-color: #ab2024;
                     }
                 }
+
+                &.active a {
+                    color: #fff;
+                    background-color: #ab2024;
+                }
             }
         }
     }

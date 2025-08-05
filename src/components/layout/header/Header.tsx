@@ -4,14 +4,17 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { FiMenu, FiX } from 'react-icons/fi';
 import { useSession, signOut } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
 import useAppStore from '@/store/store';
 import './header.scss';
 
 const Header = () => {
     const setStep = useAppStore((state) => state.setStep);
-
     const [menuOpen, setMenuOpen] = useState(false);
+
     const { data: session } = useSession();
+    
+    const pathname = usePathname();
 
     const isLoggedIn = !!session?.user;
 
@@ -29,13 +32,13 @@ const Header = () => {
 
             <div className={`links-container ${menuOpen ? 'open' : ''}`}>
                 <ul>
-                    <li className="link">
+                    <li className={`link ${pathname.includes('/quiz/mock') ? 'active' : ''}`}>
                         <Link href="/quiz/mock/register" onClick={() => setMenuOpen(false)}>
                             Practice Quiz
                         </Link>
                     </li>
 
-                    <li className="link">
+                    <li className={`link ${pathname === '/contact' ? 'active' : ''}`}>
                         <Link href="/contact" onClick={() => setMenuOpen(false)}>
                             Contact
                         </Link>
@@ -43,7 +46,7 @@ const Header = () => {
 
                     {!isLoggedIn ? (
                         <>
-                            <li className="link">
+                            <li className={`link ${pathname === '/register' ? 'active' : ''}`}>
                                 <Link
                                     href="/register"
                                     onClick={() => {
@@ -54,7 +57,7 @@ const Header = () => {
                                     Register
                                 </Link>
                             </li>
-                            <li className="link">
+                            <li className={`link ${pathname === '/login' ? 'active' : ''}`}>
                                 <Link href="/login" onClick={() => setMenuOpen(false)}>
                                     Login
                                 </Link>
@@ -68,9 +71,11 @@ const Header = () => {
                                 </div>
                             </li>
 
-                            <Link href="/" onClick={() => setMenuOpen(false)}>
-                                {session.user.name}
-                            </Link>
+                            <li className="link username">
+                                <Link href="/" onClick={() => setMenuOpen(false)}>
+                                    {session.user.name}
+                                </Link>
+                            </li>
                         </>
                     )}
                 </ul>
