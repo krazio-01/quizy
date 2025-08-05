@@ -41,7 +41,7 @@ const Page = () => {
                 </div>
                 <ul>
                     <li>Select your answer by clicking one of the options.</li>
-                    <li>Click the "Check" button to see if you&apos;re correct.</li>
+                    <li>Click the &apos;Check&apos; button to see if you&apos;re correct.</li>
                     <li>After checking your answer, you&apos;ll get instant feedback:</li>
                 </ul>
 
