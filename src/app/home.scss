@@ -12,10 +12,12 @@
     }
 
     .hero {
+        position: relative;
         background: url('/images/bg.png') no-repeat center top / cover;
         padding: 4rem 0;
         text-align: center;
-
+        overflow: hidden;
+        
         .hero-content {
             margin: 0 auto;
 

@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import StatsBar from '@/components/UI/StatsBar/StatsBar';
 import MotionDiv from '@/components/Animated/MotionDiv';
+import RotatingCircle from '@/components/UI/RotatingCircles/RotatingCircles';
 import './home.scss';
 
 const FeatureCard = ({ title, description }: { title: string; description: string }) => (
@@ -41,6 +42,23 @@ const HomePage = () => {
     return (
         <main className="home">
             <section className="hero">
+                <RotatingCircle
+                    size={250}
+                    centerDotSize={30}
+                    orbitDotSize={25}
+                    orbitRadius={15}
+                    orbitDuration={3}
+                    position={{ top: '-10%', left: '-5%' }}
+                />
+                <RotatingCircle
+                    size={250}
+                    centerDotSize={30}
+                    orbitDotSize={25}
+                    orbitRadius={15}
+                    orbitDuration={3}
+                    position={{ top: '20%', right: '-8%' }}
+                />
+
                 <div className="hero-content">
                     <h1>
                         Compete Globally

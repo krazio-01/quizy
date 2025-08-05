@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import useAppStore from '@/store/store';
 import './registerQuiz.scss';
+import RotatingCircle from '@/components/UI/RotatingCircles/RotatingCircles';
 
 const grades = [
     { value: 'Grade 3-4', label: '' },
@@ -54,6 +55,22 @@ const Page = () => {
     return (
         <div className="practice-quiz-container">
             <div>
+                <RotatingCircle
+                    size={250}
+                    centerDotSize={30}
+                    orbitDotSize={25}
+                    orbitRadius={15}
+                    orbitDuration={3}
+                    position={{ top: '-10%', left: '-5%' }}
+                />
+                <RotatingCircle
+                    size={250}
+                    centerDotSize={30}
+                    orbitDotSize={25}
+                    orbitRadius={15}
+                    orbitDuration={3}
+                    position={{ top: '20%', right: '-8%' }}
+                />
                 <h1>Practice Quiz</h1>
                 <p className="subtitle">Ready to test your skills?</p>
                 <p className="label">Select Your Grade</p>
