@@ -1,77 +1,64 @@
-"use client";
-import { useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
-import axios from "axios";
-import { MdLockReset } from "react-icons/md";
-import { FaLock } from "react-icons/fa";
-import "../../auth.scss";
+'use client';
+import React, { Suspense, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { toast } from 'sonner';
+import axios from 'axios';
+import '../../auth.scss';
 
-const PageInner = () => {
+const ResetPasswordPage = () => {
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const newPasswordRef = useRef<HTMLInputElement>(null);
-    const confirmNewPasswordRef = useRef<HTMLInputElement>(null);
-
-    const formFields = [
-        {
-            name: "password",
-            label: "New Password",
-            type: "password",
-            icon: <FaLock />,
-        },
-        {
-            name: "confirm-password",
-            label: "Password",
-            type: "password",
-            icon: <FaLock />,
-        },
-    ];
-    const refs = [newPasswordRef, confirmNewPasswordRef];
-
+    const router = useRouter();
     const searchParams = useSearchParams();
     const token = searchParams.get("token");
 
-    const handleResetPassword = async () => {
-        if (
-            newPasswordRef?.current?.value !== confirmNewPasswordRef?.current?.value
-        ) {
-            throw new Error("Passwords do not match");
-        }
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
 
+        if (newPassword !== confirmPassword) return toast.error('Passwords do not match!');
 
         try {
             setLoading(true);
-            const { data } = await axios.post(
-                "/api/auth/forgot-password/change",
-                {
-                    token,
-                    newPassword: newPasswordRef?.current?.value,
-                }
-            );
-            return data.message;
+            const { data } = await axios.post('/api/auth/forgot-password/change', { token, newPassword });
+            toast.success(data.message);
+            setNewPassword('');
+            setConfirmPassword('');
+            router.replace('/login');
         } catch (error: any) {
-            throw error.response.data.message;
+            toast.error(error.response?.data?.message);
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="auth-container">
-            <div className="form-container login">
-                <div className="auth-form-header">
-                    <MdLockReset />
-                    <h2>Reset your password</h2>
-                    <p
-                        style={{
-                            fontSize: "var(--fz-sm)",
-                            textAlign: "center",
-                        }}
-                    >
-                        Enter a new password below to reset your password
-                    </p>
-                </div>
+        <div className="reset-password-container">
+            <div className="reset-card">
+                <h1>Forgot Your Password?</h1>
+                <p>Don&apos;t worry we&apos;ll help you.</p>
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor="newPassword">New Password*</label>
+                    <input
+                        type="password"
+                        id="newPassword"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        required
+                    />
+                    <label htmlFor="confirmPassword">Confirm New Password*</label>
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
+                    />
+                    <button type="submit" disabled={loading}>
+                        {loading ? 'Reseting...' : 'Reset'}
+                    </button>
+                </form>
             </div>
         </div>
     );
@@ -80,7 +67,7 @@ const PageInner = () => {
 export default function Page() {
     return (
         <Suspense fallback={<div>Loading...</div>}>
-            <PageInner />
+            <ResetPasswordPage />
         </Suspense>
     );
 }

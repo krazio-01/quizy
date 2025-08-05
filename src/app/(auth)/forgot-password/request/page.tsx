@@ -26,7 +26,6 @@ const Page = () => {
             setEmail('');
             router.replace('/forgot-password/success');
         } catch (error: any) {
-            console.log('md-erorr: ', error);
             toast.error(error.response?.data?.message);
         } finally {
             setLoading(false);

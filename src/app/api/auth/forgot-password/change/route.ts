@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
-import connectToDB from "@/utils/dbConnect";
-import bcrypt from "bcrypt";
-import User from "@/models/UserModel";
+import { NextRequest, NextResponse } from 'next/server';
+import connectToDB from '@/utils/dbConnect';
+import bcrypt from 'bcrypt';
+import User from '@/models/UserModel';
 
-export async function POST(request) {
+export async function POST(request: NextRequest) {
     await connectToDB();
 
     try {
@@ -14,11 +14,7 @@ export async function POST(request) {
             forgotPasswordTokenExpiry: { $gt: Date.now() },
         });
 
-        if (!user)
-            return NextResponse.json(
-                { message: "Invalid Link" },
-                { status: 400 }
-            );
+        if (!user) return NextResponse.json({ message: 'Invalid Link' }, { status: 400 });
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(newPassword, salt);
@@ -29,10 +25,7 @@ export async function POST(request) {
 
         await user.save();
 
-        return NextResponse.json(
-            { message: "Password reset scucessfully" },
-            { status: 200 }
-        );
+        return NextResponse.json({ message: 'Password reset scucessfully' }, { status: 200 });
     } catch (error) {
         return NextResponse.json({ message: error.message }, { status: 500 });
     }

@@ -28,8 +28,8 @@ const LoginPage = () => {
         } else if (result?.url) {
             toast.success('Login successful');
             router.push('/');
-            setLoading(false);
         };
+        setLoading(false);
     }
 
     return (
