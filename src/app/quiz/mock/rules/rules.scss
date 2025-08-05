@@ -1,0 +1,112 @@
+.quiz-instructions-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80svh;
+    padding: 1rem;
+
+    .quiz-card {
+        padding: 2rem;
+        max-width: 80%;
+        color: #3e3e3e;
+        border-radius: 22px;
+        border: 1px solid #aaa;
+        box-shadow: 0 4px 49px 0 rgba(0, 0, 0, 0.11);
+
+        .spacer {
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            color: #ab2024;
+            margin-bottom: 1rem;
+        }
+
+        > span {
+            text-align: left;
+            margin-top: 1.5rem;
+        }
+
+        p {
+            text-align: left;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+
+            &.no-spacing {
+                margin-bottom: 0;
+            }
+        }
+
+        ul {
+            text-align: left;
+            margin-left: 1.2rem;
+            li {
+                margin-bottom: 1rem;
+                font-size: 0.95rem;
+            }
+        }
+
+        .feedback-examples {
+            text-align: left;
+            margin-bottom: 1rem;
+
+            p {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .indicator {
+                width: 15px;
+                height: 15px;
+                border-radius: 50%;
+                display: inline-block;
+
+                &.correct {
+                    background-color: #67d642;
+                }
+
+                &.incorrect {
+                    background-color: #ff4248;
+                }
+
+                &.current {
+                    background-color: #ffea72;
+                }
+            }
+        }
+
+        .start-btn {
+            display: block;
+            padding: 0.5rem 1.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 3rem;
+            margin-inline: auto;
+            border-radius: 12px;
+            width: fit-content;
+            color: #fff;
+            border: 2px solid #630003;
+            background: var(--Primary, #ab2024);
+            box-shadow: 0 4px 49px 0 rgba(0, 0, 0, 0.16);
+            transition: background-color 0.3s ease;
+
+            &:hover {
+                background-color: #991b1b;
+            }
+        }
+    }
+
+    @media screen and (max-width: 599px) {
+        & {
+            .quiz-card {
+                max-width: 100% !important;
+            }
+        }
+    }
+}
+
+.returning-state {
+    height: 80svh;
+}

@@ -42,7 +42,7 @@ const Page = () => {
             const { data } = await axios.post('/api/quiz/mockTest', payload);
             setSelectedGrade(selectedGrade)
             toast.success(data.message || 'Quiz started successfully');
-            router.push('/quiz/mock');
+            router.push('/quiz/mock/rules');
         } catch (error: any) {
             const message = error.response?.data?.message || 'Something went wrong';
             toast.error(message);
@@ -53,54 +53,56 @@ const Page = () => {
 
     return (
         <div className="practice-quiz-container">
-            <h1>Practice Quiz</h1>
-            <p className="subtitle">Ready to test your skills?</p>
-            <p className="label">Select Your Grade</p>
+            <div>
+                <h1>Practice Quiz</h1>
+                <p className="subtitle">Ready to test your skills?</p>
+                <p className="label">Select Your Grade</p>
 
-            <div className="grade-selector-container">
-                <StatsBar
-                    statsArray={grades}
-                    selectedValue={selectedGrade}
-                    onSelect={setGrade}
-                    gap="clamp(1rem, 3vw, 3rem)"
-                    cardWidth="85px"
-                />
+                <div className="grade-selector-container">
+                    <StatsBar
+                        statsArray={grades}
+                        selectedValue={selectedGrade}
+                        onSelect={setGrade}
+                        gap="clamp(1rem, 3vw, 3rem)"
+                        cardWidth="85px"
+                    />
+                </div>
+
+                <form onSubmit={handleSubmit} className="quiz-form">
+                    <p className="form-caption">
+                        Let&apos;s get started! Just tell us your name and email so we can tailor the experience for you.
+                    </p>
+
+                    <div className="form-group">
+                        <label htmlFor="name">Name*</label>
+                        <input
+                            id="name"
+                            name="name"
+                            value={form.name}
+                            onChange={handleChange}
+                            placeholder="Dave North"
+                            required
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="email">Email*</label>
+                        <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            value={form.email}
+                            onChange={handleChange}
+                            placeholder="User@email.com"
+                            required
+                        />
+                    </div>
+
+                    <button type="submit" className="start-btn" disabled={loading} onClick={handleSubmit}>
+                        {loading ? 'Starting...' : 'Start Quiz'}
+                    </button>
+                </form>
             </div>
-
-            <form onSubmit={handleSubmit} className="quiz-form">
-                <p className="form-caption">
-                    Let&apos;s get started! Just tell us your name and email so we can tailor the experience for you.
-                </p>
-
-                <div className="form-group">
-                    <label htmlFor="name">Name*</label>
-                    <input
-                        id="name"
-                        name="name"
-                        value={form.name}
-                        onChange={handleChange}
-                        placeholder="Dave North"
-                        required
-                    />
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="email">Email*</label>
-                    <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={form.email}
-                        onChange={handleChange}
-                        placeholder="User@email.com"
-                        required
-                    />
-                </div>
-
-                <button type="submit" className="start-btn" disabled={loading} onClick={handleSubmit}>
-                    {loading ? 'Starting...' : 'Start Quiz'}
-                </button>
-            </form>
         </div>
     );
 };

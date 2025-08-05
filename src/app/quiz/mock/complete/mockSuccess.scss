@@ -5,6 +5,7 @@
     justify-content: end;
     margin-bottom: 4rem;
     min-height: 50svh;
+    background: url('/images/bg.png') no-repeat center top / cover;
 
     .score-status {
         p {
@@ -40,5 +41,9 @@
 }
 
 .no-score {
+    height: 80svh;
+}
+
+.returning-state {
     height: 80svh;
 }

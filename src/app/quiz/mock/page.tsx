@@ -12,7 +12,7 @@ const Quiz = () => {
 
     useEffect(() => {
         if (!selectedGrade?.trim()) {
-            router.push('/');
+            router.replace('/');
             return;
         }
 

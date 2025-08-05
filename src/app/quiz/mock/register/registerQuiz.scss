@@ -1,8 +1,12 @@
 .practice-quiz-container {
-    max-width: 60%;
-    margin-inline: auto;
-    text-align: center;
-    padding: 4rem 1.5rem;
+    background: url('/images/bg.png') no-repeat center top / cover;
+
+    > div {
+        text-align: center;
+        max-width: 60%;
+        margin-inline: auto;
+        padding: 4rem 1.5rem;
+    }
 
     h1 {
         font-size: var(--fz-2xl);
@@ -89,8 +93,10 @@
 
     @media screen and (max-width: 599px) {
         & {
-            max-width: 100%;
-            padding-inline: 1rem;
+            > div {
+                max-width: 100%;
+                padding-inline: 1rem;
+            }
 
             .quiz-form {
                 max-width: 90% !important;
