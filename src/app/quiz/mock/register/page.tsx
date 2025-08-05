@@ -71,18 +71,20 @@ const Page = () => {
                     orbitDuration={3}
                     position={{ top: '20%', right: '-8%' }}
                 />
-                <h1>Practice Quiz</h1>
-                <p className="subtitle">Ready to test your skills?</p>
-                <p className="label">Select Your Grade</p>
+                <div className='hero-content-wrapper'>
+                    <h1>Practice Quiz</h1>
+                    <p className="subtitle">Ready to test your skills?</p>
+                    <p className="label">Select Your Grade</p>
 
-                <div className="grade-selector-container">
-                    <StatsBar
-                        statsArray={grades}
-                        selectedValue={selectedGrade}
-                        onSelect={setGrade}
-                        gap="clamp(1rem, 3vw, 3rem)"
-                        cardWidth="85px"
-                    />
+                    <div className="grade-selector-container">
+                        <StatsBar
+                            statsArray={grades}
+                            selectedValue={selectedGrade}
+                            onSelect={setGrade}
+                            gap="clamp(1rem, 3vw, 3rem)"
+                            cardWidth="85px"
+                        />
+                    </div>
                 </div>
 
                 <form onSubmit={handleSubmit} className="quiz-form">
