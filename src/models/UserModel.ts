@@ -12,6 +12,7 @@ export interface IUser {
     country: string;
     city: string;
     school: string;
+    board: string;
     grade: string;
 
     otp: string;
@@ -42,6 +43,7 @@ const UserSchema: Schema<IUserDocument> = new Schema<IUserDocument>(
         country: { type: String },
         city: { type: String },
         school: { type: String },
+        board: { type: String },
         grade: { type: String },
 
         otp: String,
@@ -54,7 +56,6 @@ const UserSchema: Schema<IUserDocument> = new Schema<IUserDocument>(
     { timestamps: true }
 );
 
-// export default mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
 const UserModel: Model<IUserDocument> = mongoose.models.User || mongoose.model<IUserDocument>('User', UserSchema);
 
 export default UserModel;

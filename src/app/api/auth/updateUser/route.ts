@@ -14,15 +14,13 @@ const gradeAgeLimits: Record<string, [number, number]> = {
     grade10: [14, 16],
     grade11: [16, 18],
     grade12: [16, 18],
-    undergraduate: [18, 22],
-    graduate: [22, 26],
 };
 
 export async function POST(request: NextRequest) {
     await connectToDB();
 
     try {
-        const { email, country, city, school, grade } = await request.json();
+        const { email, country, city, school, board, grade } = await request.json();
 
         const user = await User.findOne({ email });
         if (!user) return NextResponse.json({ message: 'User not found' }, { status: 404 });
@@ -36,10 +34,11 @@ export async function POST(request: NextRequest) {
                 return NextResponse.json({ message: `Age ${userAge} not eligible for ${grade}.` }, { status: 403 });
         }
 
-        // Update fields 
+        // Update fields
         user.country = country;
         user.city = city;
         user.school = school;
+        user.board = board;
         user.grade = grade;
 
         await user.save();

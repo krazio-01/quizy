@@ -1,6 +1,8 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import { FaChevronDown } from 'react-icons/fa';
 import ccs from 'countrycitystatejson';
+import boardsData from './boards.json';
 
 interface School {
     id: string;
@@ -9,7 +11,7 @@ interface School {
     type?: string;
 }
 
-const gradeOptions = [...Array.from({ length: 10 }, (_, i) => `Grade ${i + 3}`), 'Undergraduate', 'Graduate'];
+const gradeOptions = [...Array.from({ length: 10 }, (_, i) => `Grade ${i + 3}`)];
 
 const Step3 = ({ onNext, loading }: { onNext: (data: any) => void; loading: boolean }) => {
     const countries = ccs.getCountries();
@@ -18,6 +20,10 @@ const Step3 = ({ onNext, loading }: { onNext: (data: any) => void; loading: bool
     const [city, setCity] = useState('');
     const [schools, setSchools] = useState<School[]>([]);
     const [school, setSchool] = useState('');
+    const [customSchool, setCustomSchool] = useState('');
+    const [boards, setBoards] = useState<string[]>([]);
+    const [board, setBoard] = useState('');
+    const [customBoard, setCustomBoard] = useState('');
     const [grade, setGrade] = useState('');
     const [loadingSchools, setLoadingSchools] = useState(false);
     const [schoolError, setSchoolError] = useState('');
@@ -34,20 +40,28 @@ const Step3 = ({ onNext, loading }: { onNext: (data: any) => void; loading: bool
             setCity('');
             setSchools([]);
             setSchool('');
+            setCustomSchool('');
         } else {
             setCities([]);
             setCity('');
             setSchools([]);
             setSchool('');
+            setCustomSchool('');
         }
     }, [country]);
 
     useEffect(() => {
         if (country && city) {
+            const availableBoards = boardsData[country] || boardsData.default;
+            setBoards(availableBoards);
+            setBoard('');
+            setCustomBoard('');
+
             fetchSchools(country, city);
         } else {
             setSchools([]);
             setSchool('');
+            setCustomSchool('');
         }
     }, [country, city]);
 
@@ -74,9 +88,7 @@ const Step3 = ({ onNext, loading }: { onNext: (data: any) => void; loading: bool
                 body: `data=${encodeURIComponent(overpassQuery)}`,
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch schools');
-            }
+            if (!response.ok) throw new Error('Failed to fetch schools');
 
             const data = await response.json();
             const fetchedSchools: School[] = data.elements
@@ -87,9 +99,11 @@ const Step3 = ({ onNext, loading }: { onNext: (data: any) => void; loading: bool
                     address: element.tags['addr:full'] || element.tags['addr:street'] || '',
                     type: element.tags.amenity,
                 }));
+            fetchedSchools.push({ id: 'other', name: 'Other (Please specify)', type: 'other' });
 
             setSchools(fetchedSchools);
             setSchool('');
+            setCustomSchool('');
         } catch (error) {
             console.error('Error fetching schools:', error);
             setSchoolError('Failed to load schools. Please try again.');
@@ -97,8 +111,6 @@ const Step3 = ({ onNext, loading }: { onNext: (data: any) => void; loading: bool
                 { id: 'public-school', name: 'Public School', type: 'school' },
                 { id: 'private-school', name: 'Private School', type: 'school' },
                 { id: 'international-school', name: 'International School', type: 'school' },
-                { id: 'local-university', name: 'Local University', type: 'university' },
-                { id: 'community-college', name: 'Community College', type: 'college' },
                 { id: 'other', name: 'Other (Please specify)', type: 'other' },
             ]);
         } finally {
@@ -106,11 +118,17 @@ const Step3 = ({ onNext, loading }: { onNext: (data: any) => void; loading: bool
         }
     };
 
-    const isValid = country && city && school && grade;
+    const isValid = country && city && (school || customSchool) && (board || customBoard) && grade;
 
     const handleSubmit = () => {
         if (isValid) {
-            onNext({ country, city, school, grade });
+            onNext({
+                country,
+                city,
+                school: school === 'Other (Please specify)' ? customSchool : school,
+                board: board === 'Other' ? customBoard : board,
+                grade,
+            });
         }
     };
 
@@ -118,69 +136,121 @@ const Step3 = ({ onNext, loading }: { onNext: (data: any) => void; loading: bool
         <form className="step-form">
             <div className="form-group">
                 <label htmlFor="country">Country</label>
-                <select id="country" value={country} onChange={(e) => setCountry(e.target.value)} required>
-                    <option value="">Choose your country</option>
-                    {countries.map((c) => (
-                        <option key={c.shortName} value={c.shortName}>
-                            {c.name}
-                        </option>
-                    ))}
-                </select>
+                <div className="select-wrapper">
+                    <select id="country" value={country} onChange={(e) => setCountry(e.target.value)} required>
+                        <option value="">Choose your country</option>
+                        {countries.map((c) => (
+                            <option key={c.shortName} value={c.shortName}>
+                                {c.name}
+                            </option>
+                        ))}
+                    </select>
+                    <FaChevronDown className="dropdown-icon" size={14} />
+                </div>
             </div>
 
             <div className="form-group">
                 <label htmlFor="city">City</label>
-                <select
-                    id="city"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    required
-                    disabled={cities.length === 0}
-                >
-                    <option value="">Choose your city</option>
-                    {cities.map((c) => (
-                        <option key={c} value={c}>
-                            {c}
-                        </option>
-                    ))}
-                </select>
+                <div className="select-wrapper">
+                    <select
+                        id="city"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                        required
+                        disabled={cities.length === 0}
+                    >
+                        <option value="">Choose your city</option>
+                        {cities.map((c) => (
+                            <option key={c} value={c}>
+                                {c}
+                            </option>
+                        ))}
+                    </select>
+                    <FaChevronDown className="dropdown-icon" size={14} />
+                </div>
             </div>
 
             <div className="form-group">
                 <label htmlFor="school">School</label>
-                <select
-                    id="school"
-                    value={school}
-                    onChange={(e) => setSchool(e.target.value)}
-                    required
-                    disabled={loadingSchools || schools.length === 0}
-                >
-                    <option value="">
-                        {loadingSchools
-                            ? 'Loading schools...'
-                            : schools.length === 0
-                            ? 'No schools available'
-                            : 'Choose your School'}
-                    </option>
-                    {schools.map((s) => (
-                        <option key={s.id} value={s.name}>
-                            {s.name} {s.type && `(${s.type})`}
-                        </option>
-                    ))}
-                </select>
+                <div className="select-wrapper">
+                    {school === 'Other (Please specify)' ? (
+                        <input
+                            type="text"
+                            placeholder="Enter your school name"
+                            value={customSchool}
+                            onChange={(e) => setCustomSchool(e.target.value)}
+                            required
+                        />
+                    ) : (
+                        <>
+                            <select
+                                id="school"
+                                value={school}
+                                onChange={(e) => setSchool(e.target.value)}
+                                required
+                                disabled={loadingSchools || schools.length === 0}
+                            >
+                                <option value="">{loadingSchools ? 'Loading schools...' : 'Choose your School'}</option>
+                                {schools.map((s) => (
+                                    <option key={s.id} value={s.name}>
+                                        {s.name} {s.type && `(${s.type})`}
+                                    </option>
+                                ))}
+                            </select>
+                            <FaChevronDown className="dropdown-icon" size={14} />
+                        </>
+                    )}
+                </div>
                 {schoolError && <div className="error-message">{schoolError}</div>}
             </div>
 
             <div className="form-group">
+                <label htmlFor="board">Board</label>
+                <div className="select-wrapper">
+                    {board === 'Other' ? (
+                        <input
+                            type="text"
+                            placeholder="Enter your board name"
+                            value={customBoard}
+                            onChange={(e) => setCustomBoard(e.target.value)}
+                            required
+                        />
+                    ) : (
+                        <>
+                            <select
+                                id="board"
+                                value={board}
+                                onChange={(e) => setBoard(e.target.value)}
+                                required
+                                disabled={boards.length === 0}
+                            >
+                                <option value="">Choose your Board</option>
+                                {boards.map((b, index) => (
+                                    <option key={index} value={b}>
+                                        {b}
+                                    </option>
+                                ))}
+                                <option value="Other">Other</option>
+                            </select>
+                            <FaChevronDown className="dropdown-icon" size={14} />
+                        </>
+                    )}
+                </div>
+            </div>
+
+            <div className="form-group">
                 <label htmlFor="grade">Grade</label>
-                <select id="grade" value={grade} onChange={(e) => setGrade(e.target.value)} required>
-                    <option value="">Choose your Grade</option>
-                    {gradeOptions.map((label) => (
-                        <option key={label} value={label.replace(' ', '').toLowerCase()}>
-                            {label}
-                        </option>
-                    ))}
-                </select>
+                <div className="select-wrapper">
+                    <select id="grade" value={grade} onChange={(e) => setGrade(e.target.value)} required>
+                        <option value="">Choose your Grade</option>
+                        {gradeOptions.map((label) => (
+                            <option key={label} value={label.replace(' ', '').toLowerCase()}>
+                                {label}
+                            </option>
+                        ))}
+                    </select>
+                    <FaChevronDown className="dropdown-icon" size={14} />
+                </div>
             </div>
 
             <div className="form-buttons">
