@@ -1,19 +1,20 @@
 import React from 'react';
 import Link from 'next/link';
-import './register.scss';
+import RotatingCircle from '@/components/UI/RotatingCircles/RotatingCircles';
+import './rewards.scss';
 
 const partnersData = [
     {
         text: 'Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit, Sed Do Eiusmod Tempor Incididunt Ut Labore Et Dolore Magna Aliqua. Ut Enim Ad Minim Veniam, Quis Nostrud Exercitation Ullamco Laboris Nisi Ut Aliquip Ex Ea Commodo Consequat. Duis Aute Irure Dolor In Reprehenderit In Voluptate Velit Esse Cillum Dolore Eu Fugiat Nulla Pariatur. Excepteur Sint Occaecat Cupidatat Non Proident, Sunt In Culpa Qui Officia Deserunt Mollit Anim Id Est Laborum.',
-        imagePosition: 'left'
+        imagePosition: 'left',
     },
     {
         text: 'Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit, Sed Do Eiusmod Tempor Incididunt Ut Labore Et Dolore Magna Aliqua. Ut Enim Ad Minim Veniam, Quis Nostrud Exercitation Ullamco Laboris Nisi Ut Aliquip Ex Ea Commodo Consequat. Duis Aute Irure Dolor In Reprehenderit In Voluptate Velit Esse Cillum Dolore Eu Fugiat Nulla Pariatur. Excepteur Sint Occaecat Cupidatat Non Proident, Sunt In Culpa Qui Officia Deserunt Mollit Anim Id Est Laborum.',
-        imagePosition: 'right'
+        imagePosition: 'right',
     },
     {
         text: 'Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit, Sed Do Eiusmod Tempor Incididunt Ut Labore Et Dolore Magna Aliqua. Ut Enim Ad Minim Veniam, Quis Nostrud Exercitation Ullamco Laboris Nisi Ut Aliquip Ex Ea Commodo Consequat. Duis Aute Irure Dolor In Reprehenderit In Voluptate Velit Esse Cillum Dolore Eu Fugiat Nulla Pariatur. Excepteur Sint Occaecat Cupidatat Non Proident, Sunt In Culpa Qui Officia Deserunt Mollit Anim Id Est Laborum.',
-        imagePosition: 'left'
+        imagePosition: 'left',
     },
 ];
 
@@ -21,7 +22,27 @@ const Page = () => {
     return (
         <div className="rewards-container">
             <div className="banner">
-                <h1>Where Brains<br />Meet Big Rewards!</h1>
+                <RotatingCircle
+                    size={250}
+                    centerDotSize={30}
+                    orbitDotSize={25}
+                    orbitRadius={15}
+                    orbitDuration={3}
+                    position={{ top: '-10%', left: '-8%' }}
+                />
+                <RotatingCircle
+                    size={250}
+                    centerDotSize={30}
+                    orbitDotSize={25}
+                    orbitRadius={15}
+                    orbitDuration={3}
+                    position={{ top: '20%', right: '-8%' }}
+                />
+                <h1>
+                    Where Brains
+                    <br />
+                    Meet Big Rewards!
+                </h1>
             </div>
 
             <section className="top-rewards">
@@ -84,16 +105,13 @@ const Page = () => {
                 <Link href="/register" className="register-button">
                     Register Now
                 </Link>
+
+                <h2 className="section-heading">Our exposure partners</h2>
             </div>
 
             <section className="exposure-partners-container">
-                <h2 className="section-heading">Our exposure partners</h2>
-
                 {partnersData.map((partner, index) => (
-                    <div
-                        key={index}
-                        className={`partner-row ${partner.imagePosition === 'right' ? 'reverse' : ''}`}
-                    >
+                    <div key={index} className={`partner-row ${partner.imagePosition === 'right' ? 'reverse' : ''}`}>
                         <div className="image-placeholder" />
                         <p className="partner-text">{partner.text}</p>
                     </div>

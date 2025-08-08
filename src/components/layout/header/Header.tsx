@@ -13,7 +13,7 @@ const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
 
     const { data: session } = useSession();
-    
+
     const pathname = usePathname();
 
     const isLoggedIn = !!session?.user;
@@ -35,6 +35,12 @@ const Header = () => {
                     <li className={`link ${pathname.includes('/quiz/mock') ? 'active' : ''}`}>
                         <Link href="/quiz/mock/register" onClick={() => setMenuOpen(false)}>
                             Practice Quiz
+                        </Link>
+                    </li>
+
+                    <li className={`link ${pathname === '/quiz/contest/rewards' ? 'active' : ''}`}>
+                        <Link href="/quiz/contest/rewards" onClick={() => setMenuOpen(false)}>
+                            Rewards
                         </Link>
                     </li>
 
