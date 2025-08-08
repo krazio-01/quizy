@@ -120,7 +120,7 @@ const HomePage = () => {
 
             <section className="practice-cta">
                 <p>Try our practice test for free!</p>
-                <button className="cta-btn">Play Now !</button>
+                <Link href="/register" className="cta-btn">Play Now !</Link>
             </section>
 
             <section className="invitation">
