@@ -33,7 +33,7 @@ const Page = () => {
         },
         otp: '',
     });
-    const [fieldErrors, setFieldErrors] = useState<{ [key: string]: boolean }>({});
+    const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -45,7 +45,7 @@ const Page = () => {
     const prevStep = () => setStep(step - 1);
 
     const clearFieldError = (fieldName: string) => {
-        setFieldErrors((prev) => ({ ...prev, [fieldName]: false }));
+        setFieldErrors((prev) => ({ ...prev, [fieldName]: '' }));
     };
 
     const handleRegistration = async (personalData: any) => {
@@ -56,31 +56,29 @@ const Page = () => {
             await axios.post('/api/auth/signup', personalData);
             setOtpSent(true);
             localStorage.setItem('userEmail', personalData.email);
-            return true;
+            nextStep();
         } catch (error: any) {
-            const message = error.response?.data?.message || '';
-            const fields = error.response?.data?.fields || [];
-            const newErrors: { [key: string]: boolean } = {};
+            const { message = '', fields = [] } = error.response?.data || {};
+            const newErrors: { [key: string]: string } = {};
 
-            fields.forEach((field: string) => newErrors[field] = true);
+            fields.forEach((field: string) => {
+                newErrors[field] = 'This field is required';
+            });
 
             if (!fields.length) {
                 if (message.includes('Passwords do not match')) {
-                    newErrors['password'] = true;
-                    newErrors['confirmPassword'] = true;
+                    newErrors['password'] = message;
+                    newErrors['confirmPassword'] = message;
                 }
-                if (message.includes('Invalid email format'))
-                    newErrors['email'] = true;
-                if (message.includes('Password must be at least'))
-                    newErrors['password'] = true;
-                if (message.includes('already registered'))
-                    newErrors['email'] = true;
+                if (message.includes('Invalid email format')) newErrors['email'] = message;
+                if (message.includes('Password must be at least')) newErrors['password'] = message;
+                if (message.includes('already registered')) newErrors['email'] = message;
+                if (message.includes('Date of birth must be in the past')) newErrors['dob'] = message;
+                if (message.includes('Age must be between')) newErrors['dob'] = message;
+                if (message.includes('Invalid phone number')) newErrors['phone'] = message;
             }
-            console.log('md-newErrors: ', newErrors);
 
             setFieldErrors(newErrors);
-            toast.error(message || 'Registration failed');
-            return false;
         } finally {
             setLoading(false);
         }
@@ -97,10 +95,9 @@ const Page = () => {
             });
 
             toast.success('Your account is verified!');
-            return true;
+            nextStep();
         } catch (error: any) {
             toast.error(error.response?.data?.message || 'Invalid OTP');
-            return false;
         } finally {
             setLoading(false);
         }
@@ -121,10 +118,10 @@ const Page = () => {
     const handleUserUpdate = async (schoolDetails: any) => {
         try {
             setLoading(true);
-            const email = localStorage.getItem("userEmail");
+            const email = localStorage.getItem('userEmail');
             await axios.post('/api/auth/updateUser', { email, ...schoolDetails });
             toast.success('Profile updated successfully!');
-            localStorage.removeItem("userEmail");
+            localStorage.removeItem('userEmail');
         } catch (error: any) {
             toast.error(error.response?.data?.message || 'User update failed');
         } finally {
@@ -147,8 +144,7 @@ const Page = () => {
                 <Step1
                     onNext={async (data) => {
                         setFormData((prev) => ({ ...prev, personalDetails: data }));
-                        const success = await handleRegistration(data);
-                        if (success) nextStep();
+                        await handleRegistration(data);
                     }}
                     onBack={prevStep}
                     loading={loading}
@@ -162,8 +158,7 @@ const Page = () => {
                     onBack={prevStep}
                     onVerify={async (otp) => {
                         setFormData((prev) => ({ ...prev, otp }));
-                        const success = await handleOtpVerification(otp);
-                        if (success) nextStep();
+                        await handleOtpVerification(otp);
                     }}
                     onResendOtp={handleResend}
                     loading={loading}

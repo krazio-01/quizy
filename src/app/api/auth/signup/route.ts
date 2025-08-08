@@ -39,8 +39,8 @@ export async function POST(request: NextRequest) {
         const ageInMs = now.getTime() - parsedDob.getTime();
         const ageInYears = ageInMs / (1000 * 60 * 60 * 24 * 365.25);
 
-        if (ageInYears < 10 || ageInYears > 100)
-            return NextResponse.json({ message: 'Age must be between 10 and 100 years' }, { status: 400 });
+        if (ageInYears <= 8 || ageInYears >= 18)
+            return NextResponse.json({ message: 'Age must be between 8 and 18 years' }, { status: 400 });
 
         if (password !== confirmPassword)
             return NextResponse.json({ message: 'Passwords do not match' }, { status: 400 });
@@ -58,6 +58,16 @@ export async function POST(request: NextRequest) {
             );
         }
 
+        const phoneRegex = /^\+\d{1,4}[\s-]?\d{10}$/;
+        if (!phoneRegex.test(phone.trim())) {
+            return NextResponse.json(
+                {
+                    message: 'Invalid phone number. Use format like +91 0123456789',
+                },
+                { status: 400 }
+            );
+        }
+        
         const userExists = await User.findOne({ email });
         if (userExists) return NextResponse.json({ message: 'This account already registered' }, { status: 400 });
 

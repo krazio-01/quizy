@@ -11,7 +11,7 @@ interface Step2Props {
     onNext: (data: any) => void;
     onBack: () => void;
     loading: boolean;
-    fieldErrors: { [key: string]: boolean };
+    fieldErrors: { [key: string]: string };
     clearFieldError: (fieldName: string) => void;
 }
 
@@ -40,9 +40,9 @@ const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2P
             try {
                 const { data } = await axios.get('https://ipapi.co/json/');
                 if (data?.country_calling_code) {
-                    setFormData(prev => ({
+                    setFormData((prev) => ({
                         ...prev,
-                        phone: `${data.country_calling_code} `
+                        phone: `${data.country_calling_code} `,
                     }));
                 }
             } catch (error) {
@@ -82,6 +82,7 @@ const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2P
                     required
                     className={fieldErrors.firstName ? 'error' : ''}
                 />
+                {fieldErrors.firstName && <p className="error-message">{fieldErrors.firstName}</p>}
             </div>
 
             <div className="form-group">
@@ -95,6 +96,7 @@ const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2P
                     required
                     className={fieldErrors.lastName ? 'error' : ''}
                 />
+                {fieldErrors.lastName && <p className="error-message">{fieldErrors.lastName}</p>}
             </div>
 
             <div className="form-group">
@@ -112,8 +114,10 @@ const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2P
                     showYearDropdown
                     scrollableYearDropdown
                     yearDropdownItemNumber={100}
-                    className={fieldErrors.dob ? 'error' : ''}
+                    className={`${fieldErrors.dob ? 'error' : ''} custom-datepicker-input`}
+                    calendarClassName="custom-datepicker-calendar"
                 />
+                {fieldErrors.dob && <p className="error-message">{fieldErrors.dob}</p>}
             </div>
 
             <div className="form-group">
@@ -131,10 +135,13 @@ const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2P
                     required
                     className={fieldErrors.email ? 'error' : ''}
                 />
+                {fieldErrors.email && <p className="error-message">{fieldErrors.email}</p>}
             </div>
 
             <div className="form-group">
                 <label htmlFor="password">Password*</label>
+                <p>Minimum 8 characters required</p>
+                <p>Atleast 1 special character</p>
                 <input
                     type="password"
                     id="password"
@@ -144,6 +151,7 @@ const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2P
                     required
                     className={fieldErrors.password ? 'error' : ''}
                 />
+                {fieldErrors.password && <p className="error-message">{fieldErrors.password}</p>}
             </div>
 
             <div className="form-group">
@@ -157,6 +165,7 @@ const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2P
                     required
                     className={fieldErrors.confirmPassword ? 'error' : ''}
                 />
+                {fieldErrors.confirmPassword && <p className="error-message">{fieldErrors.confirmPassword}</p>}
             </div>
 
             <div className="form-group">
@@ -170,6 +179,7 @@ const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2P
                     required
                     className={fieldErrors.phone ? 'error' : ''}
                 />
+                {fieldErrors.phone && <p className="error-message">{fieldErrors.phone}</p>}
             </div>
 
             <p className="auth-form-footer">
@@ -200,3 +210,14 @@ const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2P
 };
 
 export default Step1;
+
+// const CustomInput = React.forwardRef(({ value, onClick }: any, ref) => (
+//     <button
+//         type="button"
+//         onClick={onClick}
+//         ref={ref}
+//         className="custom-datepicker-button"
+//     >
+//         {value || 'Select date'}
+//     </button>
+// ));
