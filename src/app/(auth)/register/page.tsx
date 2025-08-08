@@ -163,6 +163,7 @@ const Page = () => {
                     onResendOtp={handleResend}
                     loading={loading}
                     resendOtpLoading={resendOtpLoading}
+                    email={formData.personalDetails.email}
                     otpSent={otpSent}
                 />
             )}

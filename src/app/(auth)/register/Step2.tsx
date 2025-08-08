@@ -10,9 +10,25 @@ export interface Step2Props {
     loading: boolean;
     resendOtpLoading: boolean;
     otpSent: boolean;
+    email: string;
 }
 
-const Step2 = ({ onBack, onVerify, onResendOtp, loading, resendOtpLoading, otpSent }: Step2Props) => {
+const maskEmail = (email: string) => {
+    const [name, domain] = email.split('@');
+    if (!name || !domain) return email;
+
+    const [domainName, domainExt] = domain.split('.');
+    if (!domainName || !domainExt) return email;
+
+    const firstTwo = name.slice(0, 2);
+    const lastTwoDomain = domainName.slice(-2);
+
+    const maskedMiddle = '*'.repeat(name.length - 2 + domainName.length - 2);
+
+    return `${firstTwo}${maskedMiddle}${lastTwoDomain}.${domainExt}`;
+};
+
+const Step2 = ({ onBack, onVerify, onResendOtp, loading, resendOtpLoading, otpSent, email }: Step2Props) => {
     const [otpValues, setOtpValues] = useState(Array(6).fill(''));
     const otpRefs = useRef<Array<HTMLInputElement | null>>([]);
 
@@ -64,7 +80,10 @@ const Step2 = ({ onBack, onVerify, onResendOtp, loading, resendOtpLoading, otpSe
     return (
         <div className="step-form otp-form">
             <h3>One time password</h3>
-            <p className="otp-subtext">Check your spam, trash/junk folders if not in inbox.</p>
+            <p className="otp-subtext">
+                Sent on <strong>{maskEmail(email)}</strong>. Check your spam, trash/junk folders if not received in
+                inbox.
+            </p>
 
             <div className="otp-box">
                 {otpValues.map((value, i) => (
