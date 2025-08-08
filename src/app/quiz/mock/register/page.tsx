@@ -4,9 +4,9 @@ import { useRouter } from 'next/navigation';
 import StatsBar from '@/components/UI/StatsBar/StatsBar';
 import { toast } from 'sonner';
 import axios from 'axios';
+import RotatingCircle from '@/components/UI/RotatingCircles/RotatingCircles';
 import useAppStore from '@/store/store';
 import './registerQuiz.scss';
-import RotatingCircle from '@/components/UI/RotatingCircles/RotatingCircles';
 
 const grades = [
     { value: 'Grade 3-4', label: '' },
@@ -42,7 +42,6 @@ const Page = () => {
         try {
             const { data } = await axios.post('/api/quiz/mockTest', payload);
             setSelectedGrade(selectedGrade)
-            toast.success(data.message || 'Quiz started successfully');
             router.push('/quiz/mock/rules');
         } catch (error: any) {
             const message = error.response?.data?.message || 'Something went wrong';

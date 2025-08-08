@@ -81,12 +81,12 @@ const Quiz = () => {
                 {isCorrectAnswer ? (
                     <>
                         <p>That&apos;s right! You nailed it!</p>
-                        <p>You applied the conditional statements and eliminated unlikely scenarios.</p>
+                        <p>{currentQuestion?.explanation}</p>
                     </>
                 ) : (
                     <>
                         <p>Oops! That&apos;s not quite right, give it another shot!</p>
-                        <p>Try applying the conditional statements and eliminate unlikely scenarios.</p>
+                        <p>{currentQuestion?.explanation}</p>
                     </>
                 )}
             </div>
@@ -96,7 +96,7 @@ const Quiz = () => {
     return (
         <div className="quiz-container">
             <h1>Practice Quiz</h1>
-            <h3>Grade {selectedGrade}</h3>
+            <h3>{selectedGrade}</h3>
 
             <div className="question-text">{currentQuestion?.questionText}</div>
 
@@ -104,10 +104,8 @@ const Quiz = () => {
                 {currentQuestion?.options.map((option, index) => {
                     let className = 'option';
                     if (isAnswered) {
-                        if (index === currentQuestion.correctAnswerIndex) className += ' correct';
-                        else if (index === selectedOption) className += ' incorrect';
-                    } else if (index === selectedOption) {
-                        className += ' selected';
+                        if (isCorrectAnswer && index === currentQuestion.correctAnswerIndex) className += ' correct';
+                        else if (index === selectedOption && !isCorrectAnswer) className += ' incorrect';
                     }
 
                     return (

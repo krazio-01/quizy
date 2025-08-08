@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import useAppStore from '@/store/store';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import Link from 'next/link';
 import './rules.scss';
 
@@ -31,8 +32,8 @@ const Page = () => {
         <div className="quiz-instructions-container">
             <div className="quiz-card">
                 <h2>Before You Start the Quiz</h2>
-                <div className='spacer'>
-                    <p className='no-spacing'>
+                <div className="spacer">
+                    <p className="no-spacing">
                         Take your time to carefully read and understand each question. This is a practice quiz, so
                         there&apos;s no time limit—focus on solving the problems logically and accurately.
                     </p>
@@ -69,7 +70,11 @@ const Page = () => {
                     Use each attempt as a learning opportunity. Good luck, and enjoy sharpening your logical thinking!
                 </p>
 
-                <Link className="start-btn" href="/quiz/mock">
+                <Link
+                    className="start-btn"
+                    href="/quiz/mock"
+                    onClick={() => toast.success("Best of Luck!")}
+                >
                     Start Quiz
                 </Link>
             </div>

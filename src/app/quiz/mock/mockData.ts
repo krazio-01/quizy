@@ -130,7 +130,7 @@ export const gradeWiseQuestions: GradeQuestionSet[] = [
             {
                 code: '71121',
                 questionText:
-                    'Four children – Glow, Rush, Snap and Zap – are climbing a ladder. Clues: Glow is higher than Rush; Rush is between Glow and Snap; Zap is higher than Glow. Who is second from the bottom?',
+                    'Four children - Glow, Rush, Snap and Zap - are climbing a ladder. Clues: Glow is higher than Rush; Rush is between Glow and Snap; Zap is higher than Glow. Who is second from the bottom?',
                 options: ['Rush', 'Snap', 'Glow', 'Zap'],
                 correctAnswerIndex: 1,
                 explanation: 'Order from top to bottom: Zap > Glow > Rush > Snap. So, Snap is second from the bottom.',
