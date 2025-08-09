@@ -11,6 +11,7 @@ export interface Step2Props {
     resendOtpLoading: boolean;
     otpSent: boolean;
     email: string;
+    fieldErrors: { [key: string]: string };
 }
 
 const maskEmail = (email: string) => {
@@ -28,7 +29,16 @@ const maskEmail = (email: string) => {
     return `${firstTwo}${maskedMiddle}${lastTwoDomain}.${domainExt}`;
 };
 
-const Step2 = ({ onBack, onVerify, onResendOtp, loading, resendOtpLoading, otpSent, email }: Step2Props) => {
+const Step2 = ({
+    onBack,
+    onVerify,
+    onResendOtp,
+    loading,
+    resendOtpLoading,
+    otpSent,
+    email,
+    fieldErrors
+}: Step2Props) => {
     const [otpValues, setOtpValues] = useState(Array(6).fill(''));
     const otpRefs = useRef<Array<HTMLInputElement | null>>([]);
 
@@ -85,21 +95,24 @@ const Step2 = ({ onBack, onVerify, onResendOtp, loading, resendOtpLoading, otpSe
                 inbox.
             </p>
 
-            <div className="otp-box">
-                {otpValues.map((value, i) => (
-                    <input
-                        key={i}
-                        ref={(el) => {
-                            otpRefs.current[i] = el;
-                        }}
-                        type="text"
-                        maxLength={1}
-                        className="otp-input"
-                        value={value}
-                        onChange={(e) => handleChange(i, e)}
-                        onKeyDown={(e) => handleKeyDown(i, e)}
-                    />
-                ))}
+            <div className='otp-input-wrapper'>
+                <div className="otp-box">
+                    {otpValues.map((value, i) => (
+                        <input
+                            key={i}
+                            ref={(el) => {
+                                otpRefs.current[i] = el;
+                            }}
+                            type="text"
+                            maxLength={1}
+                            className={`otp-input ${fieldErrors.otp ? 'error' : ''}`}
+                            value={value}
+                            onChange={(e) => handleChange(i, e)}
+                            onKeyDown={(e) => handleKeyDown(i, e)}
+                        />
+                    ))}
+                </div>
+                {fieldErrors.otp && <p className="error-message">{fieldErrors.otp}</p>}
             </div>
 
             <button className="next-btn" onClick={handleVerify} disabled={loading}>

@@ -87,6 +87,7 @@ const Page = () => {
     const handleOtpVerification = async (otp: string) => {
         try {
             setLoading(true);
+            setFieldErrors({});
             const { personalDetails } = formData;
 
             await axios.post('/api/auth/verifyOtp', {
@@ -97,7 +98,7 @@ const Page = () => {
             toast.success('Your account is verified!');
             nextStep();
         } catch (error: any) {
-            toast.error(error.response?.data?.message || 'Invalid OTP');
+            setFieldErrors({ otp: error.response?.data?.message || 'Invalid OTP' });
         } finally {
             setLoading(false);
         }
@@ -118,12 +119,23 @@ const Page = () => {
     const handleUserUpdate = async (schoolDetails: any) => {
         try {
             setLoading(true);
+            setFieldErrors({});
             const email = localStorage.getItem('userEmail');
+
             await axios.post('/api/auth/updateUser', { email, ...schoolDetails });
+
             toast.success('Profile updated successfully!');
             localStorage.removeItem('userEmail');
         } catch (error: any) {
-            toast.error(error.response?.data?.message || 'User update failed');
+            const field = error.response?.data?.field;
+            const message = error.response?.data?.message || 'User update failed';
+
+            if (field) {
+                setFieldErrors((prev: any) => ({
+                    ...prev,
+                    [field]: message,
+                }));
+            } else toast.error(message);
         } finally {
             setLoading(false);
         }
@@ -165,6 +177,7 @@ const Page = () => {
                     resendOtpLoading={resendOtpLoading}
                     email={formData.personalDetails.email}
                     otpSent={otpSent}
+                    fieldErrors={fieldErrors}
                 />
             )}
 
@@ -175,6 +188,7 @@ const Page = () => {
                         handleUserUpdate(data);
                     }}
                     loading={loading}
+                    fieldErrors={fieldErrors}
                 />
             )}
         </div>

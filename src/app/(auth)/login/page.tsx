@@ -8,13 +8,16 @@ import '../auth.scss';
 
 const LoginPage = () => {
     const emailRef = useRef<HTMLInputElement>(null);
-    const passwordRef = useRef<HTMLInputElement>(null);
     const [loading, setLoading] = useState(false);
+    const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string; general?: string }>({});
+    const passwordRef = useRef<HTMLInputElement>(null);
 
     const router = useRouter();
 
     const handleLogin = async () => {
         setLoading(true);
+        setFieldErrors({});
+
         const result = await signIn('credentials', {
             redirect: false,
             identifier: emailRef.current?.value,
@@ -22,15 +25,35 @@ const LoginPage = () => {
         });
 
         if (result?.error) {
-            if (result.error === "Please Complete Your Profile To Log In.")
-                router.push('/register?step=3');
-            toast.error(result.error);
+            try {
+                const parsedError = JSON.parse(result.error);
+
+                if (!parsedError.field) {
+                    if (parsedError.message === 'Please Complete Your Profile To Log In.')
+                        router.push('/register?step=3');
+                    toast.error(parsedError.message);
+                    return;
+                }
+
+                setFieldErrors((prev) => {
+                    const updatedErrors = { ...prev };
+                    if (Array.isArray(parsedError.field)) {
+                        parsedError.field.forEach((f: string) => {
+                            updatedErrors[f] = parsedError.message;
+                        });
+                    } else updatedErrors[parsedError.field] = parsedError.message;
+
+                    return updatedErrors;
+                });
+            } catch {
+                toast.error(result.error);
+            }
         } else if (result?.url) {
             toast.success('Login successful');
             router.push('/');
-        };
+        }
         setLoading(false);
-    }
+    };
 
     return (
         <div className="auth-container">
@@ -41,18 +64,28 @@ const LoginPage = () => {
                 <div className="login-form">
                     <div className="input-container">
                         <label htmlFor="email">Email*</label>
-                        <input id="email" type="email" placeholder="User@email.com" ref={emailRef} required />
+                        <input
+                            id="email"
+                            className={`${fieldErrors.email ? 'error' : ''}`}
+                            type="email"
+                            placeholder="User@email.com"
+                            ref={emailRef}
+                            required
+                        />
+                        {fieldErrors.email && <p className="error-message">{fieldErrors.email}</p>}
                     </div>
 
                     <div className="input-container">
                         <label htmlFor="password">Password*</label>
                         <input
                             id="password"
+                            className={`${fieldErrors.password ? 'error' : ''}`}
                             type="password"
                             placeholder="********************"
                             ref={passwordRef}
                             required
                         />
+                        {fieldErrors.password && <p className="error-message">{fieldErrors.password}</p>}
                     </div>
 
                     <p className="forgot-password">

@@ -23,15 +23,24 @@ export async function POST(request: NextRequest) {
         const { email, country, city, school, board, grade } = await request.json();
 
         const user = await User.findOne({ email });
-        if (!user) return NextResponse.json({ message: 'User not found' }, { status: 404 });
+        if (!user) {
+            return NextResponse.json({ field: 'email', message: 'User not found' }, { status: 404 });
+        }
 
         // Age validation
         if (user.dob && gradeAgeLimits[grade]) {
             const userAge = calculateAge(new Date(user.dob));
             const [minAge, maxAge] = gradeAgeLimits[grade];
 
-            if (userAge < minAge || userAge > maxAge)
-                return NextResponse.json({ message: `Age ${userAge} not eligible for ${grade}.` }, { status: 403 });
+            if (userAge < minAge || userAge > maxAge) {
+                return NextResponse.json(
+                    {
+                        field: 'grade',
+                        message: `Age ${userAge} is not eligible for ${grade}.`,
+                    },
+                    { status: 403 }
+                );
+            }
         }
 
         // Update fields
@@ -45,6 +54,12 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json({ message: 'User details updated successfully' }, { status: 200 });
     } catch (error: any) {
-        return NextResponse.json({ message: error.message || 'Server error' }, { status: 500 });
+        return NextResponse.json(
+            {
+                field: null,
+                message: error.message || 'Server error',
+            },
+            { status: 500 }
+        );
     }
 }

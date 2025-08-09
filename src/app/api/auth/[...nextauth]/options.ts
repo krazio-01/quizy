@@ -33,27 +33,58 @@ export const authOptions: AuthOptions = {
                 password: { label: 'Password', type: 'password' },
             },
             async authorize(credentials) {
-                if (!credentials?.identifier || !credentials?.password) throw new Error('Please fill all fields');
+                if (!credentials?.identifier || !credentials?.password) {
+                    throw new Error(
+                        JSON.stringify({
+                            field: !credentials.identifier ? 'email' : 'password',
+                            message: 'Please fill all fields',
+                        })
+                    );
+                }
 
-                // connect to the database
                 await connectToDB();
 
                 const userDoc = await UserModel.findOne({ email: credentials?.identifier });
 
-                if (!userDoc) throw new Error('This account is not registered');
+                if (!userDoc) {
+                    throw new Error(
+                        JSON.stringify({
+                            field: 'email',
+                            message: 'This account is not registered',
+                        })
+                    );
+                }
 
                 const user = userDoc.toObject();
 
-                if (!user.isVerified) throw new Error('Please verify your email');
+                if (!user.isVerified) {
+                    throw new Error(
+                        JSON.stringify({
+                            field: 'email',
+                            message: 'Please verify your email',
+                        })
+                    );
+                }
 
-                // Check password
                 const passwordMatches = await bcrypt.compare(credentials.password, user.password);
-                if (!passwordMatches) throw new Error('Invalid credentials');
+                if (!passwordMatches) {
+                    throw new Error(
+                        JSON.stringify({
+                            field: ['email', 'password'],
+                            message: 'Invalid credentials',
+                        })
+                    );
+                }
 
-                // Check if school details are missing
                 const incompleteFields = ['school', 'city', 'country', 'grade'].filter((field) => !user[field]);
-
-                if (incompleteFields.length > 0) throw new Error('Please Complete Your Profile To Log In.');
+                if (incompleteFields.length > 0) {
+                    throw new Error(
+                        JSON.stringify({
+                            field: null,
+                            message: 'Please Complete Your Profile To Log In.',
+                        })
+                    );
+                }
 
                 return {
                     id: user._id.toString(),

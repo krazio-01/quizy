@@ -13,7 +13,15 @@ interface School {
 
 const gradeOptions = [...Array.from({ length: 10 }, (_, i) => `Grade ${i + 3}`)];
 
-const Step3 = ({ onNext, loading }: { onNext: (data: any) => void; loading: boolean }) => {
+const Step3 = ({
+    onNext,
+    loading,
+    fieldErrors,
+}: {
+    onNext: (data: any) => void;
+    loading: boolean;
+    fieldErrors: { [key: string]: string };
+}) => {
     const countries = ccs.getCountries();
     const [country, setCountry] = useState('');
     const [cities, setCities] = useState<string[]>([]);
@@ -240,7 +248,7 @@ const Step3 = ({ onNext, loading }: { onNext: (data: any) => void; loading: bool
 
             <div className="form-group">
                 <label htmlFor="grade">Grade</label>
-                <div className="select-wrapper">
+                <div className={`select-wrapper ${fieldErrors.grade ? 'error' : ''}`}>
                     <select id="grade" value={grade} onChange={(e) => setGrade(e.target.value)} required>
                         <option value="">Choose your Grade</option>
                         {gradeOptions.map((label) => (
@@ -251,6 +259,7 @@ const Step3 = ({ onNext, loading }: { onNext: (data: any) => void; loading: bool
                     </select>
                     <FaChevronDown className="dropdown-icon" size={14} />
                 </div>
+                {fieldErrors.grade && <div className="error-message">{fieldErrors.grade}</div>}
             </div>
 
             <div className="form-buttons">
