@@ -103,6 +103,9 @@ const Quiz = () => {
             <div className="options">
                 {currentQuestion?.options.map((option, index) => {
                     let className = 'option';
+                    if (!isAnswered && selectedOption === index)
+                        className += ' selected';
+
                     if (isAnswered) {
                         if (isCorrectAnswer && index === currentQuestion.correctAnswerIndex) className += ' correct';
                         else if (index === selectedOption && !isCorrectAnswer) className += ' incorrect';
