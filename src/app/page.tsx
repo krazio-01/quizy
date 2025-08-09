@@ -6,8 +6,8 @@ import MotionDiv from '@/components/Animated/MotionDiv';
 import RotatingCircle from '@/components/UI/RotatingCircles/RotatingCircles';
 import './home.scss';
 
-const FeatureCard = ({ title, description }: { title: string; description: string }) => (
-    <div className="feature-card">
+const Cards = ({ title, description }: { title: string; description: string }) => (
+    <div className="card">
         <h4>{title}</h4>
         <p>{description}</p>
     </div>
@@ -35,6 +35,21 @@ const feature = [
         title: 'Inspire Creativity',
         description:
             "Unleash your child's creative and innovative solutions to fascinating challenges in ways that spill into all aspects of life!",
+    },
+];
+
+const AboutIeCard = [
+    {
+        title: "About Educational Initiatives",
+        description: "Founded in 2001, Ei is a global leader in education innovation, operating across 12 countries. We specialize in research, adaptive learning, diagnostics, and systemic reform impacting over 15 million students and 10,000 schools. Recognized by WISE, UNESCO, Harvard, and The World Bank, our award-winning solutions have improved learning outcomes worldwide.",
+    },
+    {
+        title: "Vision",
+        description: "Creating a world where every child learns with true understanding. At Ei, we believe education should go beyond rote learning. Our mission is to help children everywhere build deep, lasting understanding through innovative assessments, personalized learning, and research-driven solutions empowering them to think, reason, and thrive.",
+    },
+    {
+        title: "Our Mission",
+        description: "Founded in 2001, Educational Initiatives (Ei) is a pioneering PedTech company combining advanced pedagogy with technology to help students learn with understanding. With over 20 years of experience and deep student-data insights, we address learning gaps and drive meaningful change in teaching and learning.",
     },
 ];
 
@@ -112,7 +127,7 @@ const HomePage = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.27 }}
                         >
-                            <FeatureCard title={item.title} description={item.description} />
+                            <Cards title={item.title} description={item.description} />
                         </MotionDiv>
                     ))}
                 </div>
@@ -173,6 +188,23 @@ const HomePage = () => {
                 <h3>How to register?</h3>
                 <div className="video-placeholder">
                     <div className="video-box"></div>
+                </div>
+            </section>
+
+            <section className="about-ie">
+                <h3>About Ei</h3>
+                <div className="about-ie-wrapper">
+                    {AboutIeCard.map((item, index) => (
+                        <MotionDiv
+                            key={item.title}
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, amount: 0.2 }}
+                            transition={{ delay: index * 0.2 }}
+                        >
+                            <Cards title={item.title} description={item.description} />
+                        </MotionDiv>
+                    ))}
                 </div>
             </section>
 

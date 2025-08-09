@@ -126,7 +126,7 @@
             }
         }
 
-        .feature-card {
+        .card {
             display: flex;
             flex-direction: column;
             height: 100%;
@@ -246,6 +246,51 @@
                 max-width: 640px;
                 height: 360px;
                 background-color: #000;
+            }
+        }
+    }
+
+    .about-ie {
+        padding: 3rem 0;
+        text-align: center;
+
+        h3 {
+            color: #b91c1c;
+            font-size: clamp(var(--fz-lg), 8vw, var(--fz-xl));
+            margin-bottom: 3rem;
+        }
+
+        .about-ie-wrapper {
+            display: grid;
+            gap: 2rem;
+            max-width: 95%;
+            margin: 0 auto;
+            align-items: stretch;
+
+            @media (min-width: 768px) {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .card {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                padding: 1.5rem;
+                border-radius: 12px;
+                border: 1px solid rgba(171, 32, 36, 0.1);
+                background: rgba(171, 32, 36, 0.05);
+                text-align: left;
+
+                h4 {
+                    color: #ab2024;
+                    font-size: 1.2rem;
+                    margin-bottom: 0.5rem;
+                }
+
+                p {
+                    font-size: 0.95rem;
+                    color: #3e3e3e;
+                }
             }
         }
     }
