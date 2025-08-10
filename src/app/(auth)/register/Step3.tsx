@@ -134,11 +134,10 @@ const Step3 = ({
                     .map((element: any, index: number) => ({
                         id: element.id?.toString() || `school-${index}`,
                         name: element.tags.name,
-                        address: element.tags['addr:full'] || element.tags['addr:street'] || '',
-                        type: element.tags.amenity,
+                        address: element.tags['addr:full'] || element.tags['addr:street'] || ''
                     }));
 
-                fetchedSchools.push({ id: 'other', name: 'Other (Please specify)', type: 'other' });
+                fetchedSchools.push({ id: 'other', name: 'Other (Please specify)' });
 
                 setSchools(fetchedSchools);
                 setSchool('');
