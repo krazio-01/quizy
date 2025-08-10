@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import ccs from 'countrycitystatejson';
 import boardsData from './boards.json';
+import schoolList from './schoolList_ISO.json';
 
 interface School {
     id: string;
@@ -73,12 +74,43 @@ const Step3 = ({
         }
     }, [country, city]);
 
+    const truncateText = (text: string, maxLength: number) => {
+        return text.length > maxLength ? text.slice(0, maxLength) + '…' : text;
+    };
+
+    const getTruncateLength = () => {
+        if (typeof window !== 'undefined')
+            return window.innerWidth <= 768 ? 32 : 42;
+        return 42;
+    };
+
     const fetchSchools = async (countryCode: string, cityName: string) => {
         setLoadingSchools(true);
         setSchoolError('');
 
         try {
-            const overpassQuery = `
+            const countryEntry = schoolList.find((c) => c.country.toLowerCase() === countryCode.toLowerCase());
+
+            if (countryEntry) {
+                const localSchools = countryEntry.schools
+                    .filter((s) => s.City.toLowerCase() === cityName.toLowerCase())
+                    .map((s, index) => ({
+                        id: `local-${index}`,
+                        name: truncateText(s.school, getTruncateLength()),
+                        fullName: s.school,
+                    }));
+
+                localSchools.push({
+                    id: 'other',
+                    name: 'Other (Please specify)',
+                    fullName: 'Other (Please specify)',
+                });
+
+                setSchools(localSchools);
+                setSchool('');
+                setCustomSchool('');
+            } else {
+                const overpassQuery = `
                 [out:json][timeout:25];
                 (
                   node["amenity"~"^(school|university|college)$"]["addr:city"="${cityName}"];
@@ -88,39 +120,33 @@ const Step3 = ({
                 out center meta;
             `;
 
-            const response = await fetch('https://overpass-api.de/api/interpreter', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `data=${encodeURIComponent(overpassQuery)}`,
-            });
+                const response = await fetch('https://overpass-api.de/api/interpreter', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `data=${encodeURIComponent(overpassQuery)}`,
+                });
 
-            if (!response.ok) throw new Error('Failed to fetch schools');
+                if (!response.ok) throw new Error('Failed to fetch schools');
 
-            const data = await response.json();
-            const fetchedSchools: School[] = data.elements
-                .filter((element: any) => element.tags && element.tags.name)
-                .map((element: any, index: number) => ({
-                    id: element.id?.toString() || `school-${index}`,
-                    name: element.tags.name,
-                    address: element.tags['addr:full'] || element.tags['addr:street'] || '',
-                    type: element.tags.amenity,
-                }));
-            fetchedSchools.push({ id: 'other', name: 'Other (Please specify)', type: 'other' });
+                const data = await response.json();
+                const fetchedSchools: School[] = data.elements
+                    .filter((element: any) => element.tags && element.tags.name)
+                    .map((element: any, index: number) => ({
+                        id: element.id?.toString() || `school-${index}`,
+                        name: element.tags.name,
+                        address: element.tags['addr:full'] || element.tags['addr:street'] || '',
+                        type: element.tags.amenity,
+                    }));
 
-            setSchools(fetchedSchools);
-            setSchool('');
-            setCustomSchool('');
+                fetchedSchools.push({ id: 'other', name: 'Other (Please specify)', type: 'other' });
+
+                setSchools(fetchedSchools);
+                setSchool('');
+                setCustomSchool('');
+            }
         } catch (error) {
             console.error('Error fetching schools:', error);
             setSchoolError('Failed to load schools. Please try again.');
-            setSchools([
-                { id: 'public-school', name: 'Public School', type: 'school' },
-                { id: 'private-school', name: 'Private School', type: 'school' },
-                { id: 'international-school', name: 'International School', type: 'school' },
-                { id: 'other', name: 'Other (Please specify)', type: 'other' },
-            ]);
         } finally {
             setLoadingSchools(false);
         }
