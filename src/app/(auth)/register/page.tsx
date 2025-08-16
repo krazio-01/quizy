@@ -56,6 +56,7 @@ const Page = () => {
             await axios.post('/api/auth/signup', personalData);
             setOtpSent(true);
             localStorage.setItem('userEmail', personalData.email);
+            localStorage.setItem('phone', personalData.phone);
             nextStep();
         } catch (error: any) {
             const { message = '', fields = [] } = error.response?.data || {};
@@ -122,10 +123,12 @@ const Page = () => {
             setFieldErrors({});
             const email = localStorage.getItem('userEmail');
 
-            await axios.post('/api/auth/updateUser', { email, ...schoolDetails });
+            await axios.post('/api/user/updateUser', { email, ...schoolDetails });
+            await handlePayment(schoolDetails);
 
-            toast.success('Profile updated successfully!');
-            localStorage.removeItem('userEmail');
+            // toast.success('Profile updated successfully!');
+            // localStorage.removeItem('userEmail');
+            // localStorage.removeItem('phone');
         } catch (error: any) {
             const field = error.response?.data?.field;
             const message = error.response?.data?.message || 'User update failed';
@@ -140,6 +143,61 @@ const Page = () => {
             setLoading(false);
         }
     };
+
+    const handlePayment = async (schoolDetails: any) => {
+        try {
+            const orderId = `REG_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+            const email = localStorage.getItem('userEmail');
+            const phone = localStorage.getItem('phone');
+
+            // Prepare payment data
+            const paymentData = {
+                amount: 75,
+                currency: 'AED',
+                customerEmail: email,
+                customerPhone: phone,
+                orderId: orderId,
+                productInfo: 'subscription',
+                metadata: {
+                    registrationData: formData,
+                    step: 'step3_completed'
+                }
+            };
+
+            // Initiate payment with PayGlocal
+            const paymentResponse = await axios.post(
+                '/api/payment/initiate',
+                paymentData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+
+            const paymentResult = paymentResponse.data;
+            console.log('md-paymentResult: ', paymentResult);
+
+            if (paymentResult.success) {
+                if (typeof window !== 'undefined') {
+                    localStorage.setItem('pendingPayment', JSON.stringify({
+                        orderId,
+                        gid: paymentResult.gid,
+                        muid: paymentResult.muid,
+                        formData,
+                        timestamp: Date.now()
+                    }));
+                }
+
+                window.location.href = paymentResult.paymentUrl;
+            } else {
+                throw new Error(paymentResult.message || 'Payment initiation failed');
+            }
+        } catch (error) {
+            console.error('Payment error: ', error);
+        }
+    }
 
     return (
         <div className="auth-container">
