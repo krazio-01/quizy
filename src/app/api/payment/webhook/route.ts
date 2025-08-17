@@ -1,4 +1,3 @@
-import { PayGlocalClient } from '@/utils/payGlocalAuth';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
@@ -23,22 +22,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.redirect(failureUrl);
         }
 
-        const { status, gid, merchantUniqueId, merchantTxnId, Amount } = paymentStatus;
-
-        console.log('\n\n\n----------------------------md-paymentStatus:', paymentStatus);
-
-        const payload = {
-            merchantTxnId,
-            paymentData: {
-                totalAmount: Amount,
-                txnCurrency: 'AED',
-            },
-            merchantCallbackURL: `${process.env.FRONTEND_URL}${REDIRECT_ENDPOINT}`,
-        };
-        const payglocalClient = new PayGlocalClient();
-        const response = await payglocalClient.checkPaymentStatus(gid, payload);
-
-        console.log('\n\n\n----------------------------md-response:', response);
+        const { status, gid, merchantUniqueId } = paymentStatus;
 
         await updatePaymentStatus({
             orderId: merchantUniqueId,
@@ -47,12 +31,12 @@ export async function POST(request: NextRequest) {
             paymentData: paymentStatus,
         });
 
-        // const statusUrl = new URL(REDIRECT_ENDPOINT, BASEURL);
-        // statusUrl.searchParams.set('orderId', merchantUniqueId);
-        // statusUrl.searchParams.set('gid', gid);
-        // statusUrl.searchParams.set('status', status);
+        const url = new URL(REDIRECT_ENDPOINT, BASEURL);
+        url.searchParams.set('orderId', merchantUniqueId);
+        url.searchParams.set('gid', gid);
+        url.searchParams.set('status', status);
 
-        // return NextResponse.redirect(statusUrl);
+        return NextResponse.redirect(url);
     } catch (error) {
         const failureUrl = new URL(REDIRECT_ENDPOINT, BASEURL);
         failureUrl.searchParams.set('error', 'processing-error');

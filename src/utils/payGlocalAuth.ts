@@ -123,7 +123,7 @@ export class PayGlocalClient {
         return this.makeAPICall('/gl/v1/payments/initiate/paycollect', paymentData, true);
     }
 
-    async checkPaymentStatus(gid: string, payload: GenerateTokensPayload): Promise<any> {
+    async checkPaymentStatus(gid: string, payload: any): Promise<any> {
         return this.makeAPICall(`/gl/v1/payments/${gid}/status`, payload, false);
     }
 }
