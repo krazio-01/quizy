@@ -72,16 +72,6 @@ function isCancelledStatus(status) {
 async function updatePaymentStatus({ orderId, gid, status, paymentData }) {
     try {
         // TODO: Implement your actual database update logic here
-        // Example with Prisma:
-        // await prisma.order.update({
-        //     where: { id: orderId },
-        //     data: {
-        //         paymentStatus: status,
-        //         paymentGid: gid,
-        //         paymentData: JSON.stringify(paymentData),
-        //         updatedAt: new Date()
-        //     }
-        // });
 
         // Handle different status types for business logic
         if (isSuccessStatus(status)) {
