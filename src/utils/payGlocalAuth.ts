@@ -57,24 +57,12 @@ export class PayGlocalClient {
         this.publicKeyId = process.env.PAYGLOCAL_PUBLIC_KEY_ID;
         this.baseUrl = process.env.PAYGLOCAL_BASE_URL ?? '';
 
-        if (!this.merchantId || !this.privateKey || !this.publicKey) {
+        if (!this.merchantId || !this.privateKey || !this.publicKey)
             throw new Error('PayGlocal configuration incomplete. Check environment variables.');
-        }
-
-        console.log('PayGlocal Client initialized:', {
-            merchantId: this.merchantId,
-            baseUrl: this.baseUrl,
-            hasPrivateKey: !!this.privateKey,
-            hasPublicKey: !!this.publicKey,
-            privateKeyId: this.privateKeyId,
-            publicKeyId: this.publicKeyId,
-        });
     }
 
     async generateTokens(payload: GenerateTokensPayload): Promise<PayGlocalTokens> {
         try {
-            console.log('Generating tokens with payload:', JSON.stringify(payload, null, 2));
-
             const data = {
                 payload,
                 publicKey: this.publicKey,
@@ -85,8 +73,6 @@ export class PayGlocalClient {
             };
 
             const tokens = await generateJWEAndJWS(data);
-            console.log('Tokens generated successfully');
-            console.log('Tokens \n:', tokens);
             return tokens;
         } catch (error) {
             console.error('PayGlocal token generation failed:', error);
@@ -94,39 +80,39 @@ export class PayGlocalClient {
         }
     }
 
-    async makeAPICall(endpoint: string, payload: GenerateTokensPayload): Promise<any> {
+    async makeAPICall(
+        endpoint: string,
+        payload: GenerateTokensPayload | null,
+        includeBody: boolean = true
+    ): Promise<any> {
         try {
-            console.log('Making API call to:', `${this.baseUrl}${endpoint}`);
-            console.log('With payload:', JSON.stringify(payload, null, 2));
+            console.log(`\n\n\n\nMaking PayGlocal API call to ${endpoint} with payload:`, payload);
 
             const { jweToken, jwsToken } = await this.generateTokens(payload);
 
-            const headers = {
-                'Content-Type': 'application/json',
+            const headers: Record<string, string> = {
                 accept: 'application/json',
                 'x-gl-token-external': jwsToken,
             };
 
-            console.log('Request headers:', headers);
-
-            const response = await fetch(`${this.baseUrl}${endpoint}`, {
+            const fetchOptions: RequestInit = {
                 method: 'POST',
                 headers,
-                body: jweToken,
-            });
+            };
 
-            console.log('Response status:', response.status);
-            console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+            if (includeBody && payload) {
+                headers['Content-Type'] = 'application/json';
+                fetchOptions.body = jweToken;
+            }
+
+            const response = await fetch(`${this.baseUrl}${endpoint}`, fetchOptions);
 
             if (!response.ok) {
                 const errorText = await response.text();
-                console.error('API error response:', errorText);
                 throw new Error(`PayGlocal API error (${response.status}): ${errorText}`);
             }
 
-            const result = await response.json();
-            console.log('API response:', JSON.stringify(result, null, 2));
-            return result;
+            return await response.json();
         } catch (error) {
             console.error('PayGlocal API call failed:', error);
             throw error;
@@ -134,10 +120,10 @@ export class PayGlocalClient {
     }
 
     async initiatePayment(paymentData: PayGlocalPayCollectRequest): Promise<any> {
-        return this.makeAPICall('/gl/v1/payments/initiate/paycollect', paymentData);
+        return this.makeAPICall('/gl/v1/payments/initiate/paycollect', paymentData, true);
     }
 
-    async checkPaymentStatus(gid: string): Promise<any> {
-        return this.makeAPICall(`/gl/v1/payments/${gid}/status`, {});
+    async checkPaymentStatus(gid: string, payload: GenerateTokensPayload): Promise<any> {
+        return this.makeAPICall(`/gl/v1/payments/${gid}/status`, payload, false);
     }
 }

@@ -153,7 +153,7 @@ const Step3 = ({
     const isValid = country && city && (school || customSchool) && (board || customBoard) && grade;
 
     const handleSubmit = () => {
-        if (isValid) {
+        if (!isValid) {
             onNext({
                 country,
                 city,

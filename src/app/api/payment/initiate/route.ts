@@ -1,31 +1,37 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { PayGlocalClient } from '@/utils/payGlocalAuth';
 
-export async function POST(request) {
-    try {
-        const body = await request.json();
-        const { amount, currency = 'INR', customerEmail, customerPhone, orderId } = body;
+const AMOUNT = '75';
+const CURRENCY = 'AED';
 
-        if (!amount || !customerEmail || !customerPhone || !orderId) {
+export async function POST(request: NextRequest) {
+    try {
+        const { customerEmail, customerPhone } = await request.json();
+
+        if (!customerEmail || !customerPhone) {
             return NextResponse.json(
                 {
                     success: false,
-                    message: 'Missing required fields: amount, customerEmail, customerPhone, orderId',
+                    message: 'Missing required fields: email, phone',
                 },
                 { status: 400 }
             );
         }
 
-        const muid = `${orderId}_${Date.now()}`;
+        const orderId = `REG_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
-        // Fixed payload structure according to PayGlocal docs
+        const convertedAmount = parseFloat(AMOUNT) * 1;
+
+        const merchantTxnId = `TXN_${Date.now()}`.slice(0, 40);
+        const merchantUniqueId = String(orderId).slice(0, 40);
+
         const paymentPayload = {
-            merchantTxnId: muid,
-            merchantUniqueId: muid,
-            merchantCallbackURL: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/payment/webhook`,
+            merchantTxnId,
+            merchantUniqueId,
+            merchantCallbackURL: `${process.env.FRONTEND_URL}/api/payment/webhook`,
             paymentData: {
-                totalAmount: String(amount),
-                txnCurrency: String(currency),
+                totalAmount: convertedAmount.toFixed(2),
+                txnCurrency: 'AED',
                 billingData: {
                     emailId: customerEmail,
                     callingCode: '+91',
@@ -43,9 +49,6 @@ export async function POST(request) {
             },
         };
 
-        console.log('Initiating PayGlocal payment:', { orderId, amount, currency, muid });
-        console.log('Payment payload:', JSON.stringify(paymentPayload, null, 2));
-
         const payglocalClient = new PayGlocalClient();
         const result = await payglocalClient.initiatePayment(paymentPayload);
 
@@ -53,8 +56,10 @@ export async function POST(request) {
             success: true,
             paymentUrl: result.data?.redirectUrl || result.redirectUrl,
             gid: result.gid,
-            muid: muid,
+            muid: merchantTxnId,
             orderId: orderId,
+            currency: CURRENCY,
+            amount: convertedAmount.toFixed(2),
             message: 'Payment initiated successfully',
         });
     } catch (error) {
