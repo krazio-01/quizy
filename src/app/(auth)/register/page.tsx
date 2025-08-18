@@ -56,6 +56,7 @@ const Page = () => {
             await axios.post('/api/auth/signup', personalData);
             setOtpSent(true);
             localStorage.setItem('userEmail', personalData.email);
+            localStorage.setItem('phone', personalData.phone);
             nextStep();
         } catch (error: any) {
             const { message = '', fields = [] } = error.response?.data || {};
@@ -122,10 +123,13 @@ const Page = () => {
             setFieldErrors({});
             const email = localStorage.getItem('userEmail');
 
-            await axios.post('/api/auth/updateUser', { email, ...schoolDetails });
-
+            const response = await axios.post('/api/user/updateUser', { email, ...schoolDetails });
             toast.success('Profile updated successfully!');
-            localStorage.removeItem('userEmail');
+
+            if (response.status === 200) await handlePayment();
+
+            // localStorage.removeItem('userEmail');
+            // localStorage.removeItem('phone');
         } catch (error: any) {
             const field = error.response?.data?.field;
             const message = error.response?.data?.message || 'User update failed';
@@ -138,6 +142,29 @@ const Page = () => {
             } else toast.error(message);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handlePayment = async () => {
+        try {
+            const email = localStorage.getItem('userEmail');
+            const phone = localStorage.getItem('phone');
+
+            const paymentData = {
+                customerEmail: email,
+                customerPhone: phone,
+                metadata: {
+                    registrationData: formData,
+                    step: 'step3_completed',
+                },
+            };
+
+            const { data } = await axios.post('/api/payment/initiate', paymentData);
+
+            if (data.success) window.location.href = data.paymentUrl;
+            else toast.error(data.message || 'Payment initiation failed');
+        } catch (error) {
+            console.error('Payment error: ', error);
         }
     };
 
