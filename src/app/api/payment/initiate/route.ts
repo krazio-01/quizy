@@ -104,7 +104,6 @@ export async function POST(request: NextRequest) {
         const paymentPayload = {
             merchantTxnId,
             merchantUniqueId: orderId,
-            merchantCallbackURL: `${process.env.FRONTEND_URL}/api/payment/webhook`,
             paymentData: {
                 totalAmount: convertedAmount.toString(),
                 txnCurrency: transactionCurrency,
@@ -123,6 +122,7 @@ export async function POST(request: NextRequest) {
                     emailId: customerEmail,
                 },
             },
+            merchantCallbackURL: `${process.env.FRONTEND_URL}/api/payment/webhook`,
         };
 
         const payglocalClient = new PayGlocalClient();

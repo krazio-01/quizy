@@ -23,9 +23,7 @@ export async function POST(request: NextRequest) {
         const { email, country, city, school, board, grade } = await request.json();
 
         const user = await User.findOne({ email });
-        if (!user) {
-            return NextResponse.json({ field: 'email', message: 'User not found' }, { status: 404 });
-        }
+        if (!user) return NextResponse.json({ field: 'email', message: 'User not found' }, { status: 404 });
 
         // Age validation
         if (user.dob && gradeAgeLimits[grade]) {

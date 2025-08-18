@@ -79,7 +79,8 @@ const Step3 = ({
     };
 
     const getTruncateLength = () => {
-        if (typeof window !== 'undefined') return window.innerWidth <= 768 ? 32 : 42;
+        if (typeof window !== 'undefined')
+            return window.innerWidth <= 768 ? 32 : 42;
         return 42;
     };
 
@@ -133,7 +134,7 @@ const Step3 = ({
                     .map((element: any, index: number) => ({
                         id: element.id?.toString() || `school-${index}`,
                         name: element.tags.name,
-                        address: element.tags['addr:full'] || element.tags['addr:street'] || '',
+                        address: element.tags['addr:full'] || element.tags['addr:street'] || ''
                     }));
 
                 fetchedSchools.push({ id: 'other', name: 'Other (Please specify)' });
@@ -287,12 +288,7 @@ const Step3 = ({
             </div>
 
             <div className="form-buttons">
-                <button
-                    type="button"
-                    className="next-btn"
-                    onClick={handleSubmit}
-                    disabled={!isValid || loadingSchools || loading}
-                >
+                <button type="button" className="next-btn" onClick={handleSubmit} disabled={!isValid || loadingSchools}>
                     {loading ? 'Submitting...' : 'Continue to Payment!'}
                 </button>
             </div>

@@ -9,7 +9,7 @@ interface UpdatePaymentParams {
 
 export async function POST(request: NextRequest) {
     const BASEURL = process.env.FRONTEND_URL;
-    const REDIRECT_ENDPOINT = '/api/payment/status';
+    const REDIRECT_ENDPOINT = '/api/payment/callback';
 
     try {
         const formData = await request.formData();

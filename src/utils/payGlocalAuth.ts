@@ -1,13 +1,4 @@
-import { generateJWEAndJWS } from 'payglocal-js-client';
-
-interface PayGlocalTokens {
-    jweToken: string;
-    jwsToken: string;
-}
-
-interface GenerateTokensPayload {
-    [key: string]: any;
-}
+import { generateJWEAndJWS, generateJWS } from 'payglocal-js-client';
 
 interface PayGlocalPayCollectRequest {
     merchantTxnId: string;
@@ -16,18 +7,7 @@ interface PayGlocalPayCollectRequest {
     paymentData: {
         totalAmount: string;
         txnCurrency: string;
-        billingData?: {
-            firstName?: string;
-            lastName?: string;
-            emailId: string;
-            callingCode?: string;
-            phoneNumber: string;
-            addressStreet1?: string;
-            addressCity?: string;
-            addressState?: string;
-            addressPostalCode?: string;
-            addressCountry?: string;
-        };
+        billingData?: Object;
     };
     riskData?: {
         customerData?: {
@@ -61,67 +41,64 @@ export class PayGlocalClient {
             throw new Error('PayGlocal configuration incomplete. Check environment variables.');
     }
 
-    async generateTokens(payload: GenerateTokensPayload): Promise<PayGlocalTokens> {
-        try {
-            const data = {
-                payload,
-                publicKey: this.publicKey,
-                privateKey: this.privateKey,
-                merchantId: this.merchantId,
-                privateKeyId: this.privateKeyId,
-                publicKeyId: this.publicKeyId,
-            };
+    private async requestAPI(
+        endpoint: string,
+        method: 'GET' | 'POST',
+        headers: Record<string, string>,
+        body?: string
+    ): Promise<any> {
+        const response = await fetch(`${this.baseUrl}${endpoint}`, {
+            method,
+            headers,
+            body,
+        });
 
-            const tokens = await generateJWEAndJWS(data);
-            return tokens;
-        } catch (error) {
-            console.error('PayGlocal token generation failed:', error);
-            throw new Error(`Failed to generate PayGlocal tokens: ${error.message}`);
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`PayGlocal API error (${response.status}): ${errorText}`);
         }
+
+        return await response.json();
     }
 
-    async makeAPICall(
-        endpoint: string,
-        payload: GenerateTokensPayload | null,
-        includeBody: boolean = true
-    ): Promise<any> {
-        try {
-            const { jweToken, jwsToken } = await this.generateTokens(payload);
+    async initiatePayment(payload: PayGlocalPayCollectRequest): Promise<any> {
+        const signedPayload = {
+            payload,
+            publicKey: this.publicKey,
+            privateKey: this.privateKey,
+            merchantId: this.merchantId,
+            privateKeyId: this.privateKeyId,
+            publicKeyId: this.publicKeyId,
+        };
 
-            const headers: Record<string, string> = {
+        const { jweToken, jwsToken } = await generateJWEAndJWS(signedPayload);
+
+        return this.requestAPI(
+            '/gl/v1/payments/initiate/paycollect',
+            'POST',
+            {
                 accept: 'application/json',
                 'x-gl-token-external': jwsToken,
-            };
-
-            const fetchOptions: RequestInit = {
-                method: 'POST',
-                headers,
-            };
-
-            if (includeBody && payload) {
-                headers['Content-Type'] = 'application/json';
-                fetchOptions.body = jweToken;
-            }
-
-            const response = await fetch(`${this.baseUrl}${endpoint}`, fetchOptions);
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`PayGlocal API error (${response.status}): ${errorText}`);
-            }
-
-            return await response.json();
-        } catch (error) {
-            console.error('PayGlocal API call failed:', error);
-            throw error;
-        }
+                'Content-Type': 'application/json',
+            },
+            jweToken
+        );
     }
 
-    async initiatePayment(paymentData: PayGlocalPayCollectRequest): Promise<any> {
-        return this.makeAPICall('/gl/v1/payments/initiate/paycollect', paymentData, true);
-    }
+    async checkPaymentStatus(gid: string): Promise<any> {
+        const statusUri = `/gl/v1/payments/${gid}/status`;
+        const signedPayload = {
+            payload: statusUri,
+            privateKey: this.privateKey,
+            merchantId: this.merchantId,
+            privateKeyId: this.privateKeyId,
+        };
 
-    async checkPaymentStatus(gid: string, payload: any): Promise<any> {
-        return this.makeAPICall(`/gl/v1/payments/${gid}/status`, payload, false);
+        const jwsToken = await generateJWS(signedPayload);
+
+        return this.requestAPI(statusUri, 'GET', {
+            accept: 'application/json',
+            'x-gl-token-external': jwsToken,
+        });
     }
 }
