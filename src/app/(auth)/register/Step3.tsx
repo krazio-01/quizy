@@ -153,7 +153,7 @@ const Step3 = ({
     const isValid = country && city && (school || customSchool) && (board || customBoard) && grade;
 
     const handleSubmit = () => {
-        if (!isValid) {
+        if (isValid) {
             onNext({
                 country,
                 city,
@@ -291,7 +291,7 @@ const Step3 = ({
                     type="button"
                     className="next-btn"
                     onClick={handleSubmit}
-                    disabled={loading}
+                    disabled={!isValid || loadingSchools || loading}
                 >
                     {loading ? 'Submitting...' : 'Continue to Payment!'}
                 </button>
