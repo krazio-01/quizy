@@ -31,8 +31,6 @@ export async function POST(request: NextRequest) {
 
         const { status, gid, merchantUniqueId } = paymentStatus;
 
-        console.log('----------------\nPayment Status:', paymentStatus);
-
         await updatePaymentStatus({
             orderId: merchantUniqueId,
             status,
