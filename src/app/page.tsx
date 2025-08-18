@@ -57,60 +57,43 @@ const HomePage = () => {
     return (
         <main className="home">
             <section className="hero">
-                <RotatingCircle
-                    size={250}
-                    centerDotSize={30}
-                    orbitDotSize={25}
-                    orbitRadius={15}
-                    orbitDuration={3}
-                    position={{ top: '-10%', left: '-5%' }}
-                />
-                <RotatingCircle
-                    size={250}
-                    centerDotSize={30}
-                    orbitDotSize={25}
-                    orbitRadius={15}
-                    orbitDuration={3}
-                    position={{ top: '20%', right: '-8%' }}
-                />
+                <video autoPlay muted loop playsInline className="hero-video">
+                    <source src="/videos/homepageBanner.mp4" type="video/mp4" />
+                </video>
 
                 <div className="hero-content">
-                    <h1>
-                        Compete Globally
-                        <br />
-                        Think Logically.
-                    </h1>
-                    <MotionDiv initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }}>
-                        <p>
-                            Join the League of Logic by Ei ASSET - a global challenge igniting logic, curiosity, and
-                            critical thinking!
-                        </p>
-                    </MotionDiv>
-                    <MotionDiv initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }}>
-                        <Link href="/register" className="cta-btn">
-                            Register
-                        </Link>
-                    </MotionDiv>
-
-                    <div className="stats-container">
-                        <StatsBar statsArray={stats} gap="clamp(2rem, 5vw, 4.5rem)" />
+                    <div>
+                        <MotionDiv initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }}>
+                            <p>
+                                Join the League of Logic by Ei ASSET - a global challenge igniting logic, curiosity, and
+                                critical thinking!
+                            </p>
+                        </MotionDiv>
+                        <h1>
+                            Compete Globally
+                            <br />
+                            Think Logically.
+                        </h1>
                     </div>
                 </div>
             </section>
 
+            <div className="stats-container">
+                <StatsBar statsArray={stats} gap="clamp(2rem, 5vw, 4.5rem)" />
+            </div>
+
             <section className="potential">
                 <div className="potential-wrapper">
-                    <Image width={250} height={200} src="/images/home/section.jpg" alt="Child doing math" />
+                    {/* <Image width={250} height={200} src="/images/home/section.jpg" alt="Child doing math" /> */}
+                    <video autoPlay muted loop playsInline className="hero-video">
+                        <source src="/videos/Kids.mp4" type="video/mp4" />
+                    </video>
                     <div className="text">
-                        <h2>Unlock Your Child&apos;s True Potential</h2>
+                        <h2>Are they ready to think outside the box?</h2>
                         <p>
-                            Don&apos;t miss this exceptional opportunity to see your child shine as a future logic
-                            master! Harness their today for the League of Logic competition, an international platform
-                            by Ei ASSET CT that fosters intellectual growth, sharpens logical reasoning, and builds
-                            confidence through friendly global competition. Beyond the thrill of solving challenges,
-                            your child will join a vibrant community of young thinkers, experience the joy of learning,
-                            and unlock exciting rewards along the way. Give them the chance to grow, compete, and
-                            thrive—register now and let their logical journey begin!
+                            The League of Logic is a global online competition designed to promote and develop critical thinking, logical reasoning, and problem-solving abilities in students from Grades 3 to 10, across all curricula.
+
+                            In today&apos;s rapidly changing world, academic success alone is not enough. Children must be equipped with the ability to think independently, solve problems in innovative ways, and engage with the world through logic and reflection. That&apos;s exactly where the League of Logic steps in — it goes beyond conventional academic exams to focus on nurturing cognitive skills that are essential for the 21st century.
                         </p>
                     </div>
                 </div>
