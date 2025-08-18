@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PayGlocalClient } from '@/utils/payGlocalAuth';
+import UserModel from '@/models/UserModel';
 
 const AMOUNT = '75';
 const CURRENCY = 'AED';
@@ -17,6 +18,10 @@ export async function POST(request: NextRequest) {
                 { status: 400 }
             );
         }
+
+        const user = await UserModel.findOne({ email: customerEmail });
+        console.log('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nmd--------user: ', user);
+        if (!user) return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
 
         const orderId = `REG_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
@@ -40,7 +45,7 @@ export async function POST(request: NextRequest) {
             },
             riskData: {
                 customerData: {
-                    merchantAssignedCustomerId: orderId,
+                    merchantAssignedCustomerId: user._id.toString(),
                 },
                 shippingData: {
                     addressCountry: 'IN',

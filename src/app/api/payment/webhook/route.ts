@@ -1,4 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
+import Payment from '@/models/PayMentModel';
+
+interface UpdatePaymentParams {
+    userId?: string;
+    orderId: string;
+    transactionId: string;
+    status: string;
+    amount?: number;
+}
 
 export async function POST(request: NextRequest) {
     const BASEURL = process.env.FRONTEND_URL;
@@ -22,13 +31,15 @@ export async function POST(request: NextRequest) {
             return NextResponse.redirect(failureUrl);
         }
 
-        const { status, gid, merchantUniqueId } = paymentStatus;
+        const { Amount, status, gid, merchantUniqueId } = paymentStatus;
+
+        console.log('Payment status received:', paymentStatus);
 
         await updatePaymentStatus({
             orderId: merchantUniqueId,
-            gid,
             status,
-            paymentData: paymentStatus,
+            amount: Amount,
+            transactionId: gid,
         });
 
         const url = new URL(REDIRECT_ENDPOINT, BASEURL);
@@ -68,20 +79,31 @@ function isCancelledStatus(status) {
     return cancelledStatuses.includes(status);
 }
 
-// Placeholder function to update payment status in your database
-async function updatePaymentStatus({ orderId, gid, status, paymentData }) {
+export async function updatePaymentStatus({ userId, orderId, status, amount, transactionId }: UpdatePaymentParams) {
     try {
-        // TODO: Implement your actual database update logic here
+        const payment = await Payment.findOneAndUpdate(
+            { orderId },
+            {
+                userId,
+                orderId,
+                status,
+                amount,
+                transactionId,
+            },
+            { upsert: true, new: true, setDefaultsOnInsert: true }
+        );
 
-        // Handle different status types for business logic
         if (isSuccessStatus(status)) {
-            console.log('Payment successful - proceed with order fulfillment');
+            console.log('✅ Payment successful - proceed with order fulfillment');
         } else if (isCancelledStatus(status)) {
-            console.log('Payment cancelled - release inventory/booking');
+            console.log('⚠️ Payment cancelled - release inventory/booking');
         } else {
-            console.log('Payment failed - handle failure case');
+            console.log('❌ Payment failed - handle failure case');
         }
+
+        return payment;
     } catch (error) {
         console.error('Database update error:', error);
+        throw error;
     }
 }
