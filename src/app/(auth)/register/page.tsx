@@ -124,10 +124,9 @@ const Page = () => {
             const email = localStorage.getItem('userEmail');
 
             const response = await axios.post('/api/user/updateUser', { email, ...schoolDetails });
-            toast.success('Profile updated successfully!');
-
             if (response.status === 200) await handlePayment();
-
+            
+            toast.success('Profile updated successfully!');
             // localStorage.removeItem('userEmail');
             // localStorage.removeItem('phone');
         } catch (error: any) {

@@ -86,8 +86,6 @@ export class PayGlocalClient {
         includeBody: boolean = true
     ): Promise<any> {
         try {
-            console.log(`\n\n\n\nMaking PayGlocal API call to ${endpoint} with payload:`, payload);
-
             const { jweToken, jwsToken } = await this.generateTokens(payload);
 
             const headers: Record<string, string> = {
