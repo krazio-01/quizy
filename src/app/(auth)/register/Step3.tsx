@@ -288,7 +288,7 @@ const Step3 = ({
             </div>
 
             <div className="form-buttons">
-                <button type="button" className="next-btn" onClick={handleSubmit} disabled={!isValid || loadingSchools}>
+                <button type="button" className="next-btn" onClick={handleSubmit} disabled={!isValid || loadingSchools || loading}>
                     {loading ? 'Submitting...' : 'Continue to Payment!'}
                 </button>
             </div>
