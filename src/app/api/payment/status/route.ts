@@ -1,18 +1,15 @@
-import fs from 'fs';
 import { NextRequest } from 'next/server';
+import fs from 'fs';
 import path from 'path';
 
 export async function POST(req: NextRequest) {
     try {
-        console.log('-------\nPayment status requested');
-
         const url = new URL(req.url);
         const orderId = url.searchParams.get('orderId') || 'N/A';
         const gid = url.searchParams.get('gid') || 'N/A';
         const status = url.searchParams.get('status') || 'pending';
         const error = url.searchParams.get('error') || '';
 
-        // Map status to text and class
         let statusText = 'Payment Status';
         let message = '';
         let statusClass = 'unknown';
@@ -33,10 +30,15 @@ export async function POST(req: NextRequest) {
                 message = 'You cancelled the payment.';
                 statusClass = 'cancelled';
                 break;
-            case 'pending':
-                statusText = 'Checking Payment...';
-                message = 'We are verifying your payment status.';
-                statusClass = 'unknown';
+            case 'SYSTEM_ERROR':
+                statusText = 'System Error';
+                message = 'Transaction failed. No charges applied.';
+                statusClass = 'error';
+                break;
+            case 'ISSUER_DECLINE':
+                statusText = 'Payment Declined';
+                message = 'Your bank declined the payment. Please try another payment method.';
+                statusClass = 'error';
                 break;
             default:
                 statusText = 'Payment Status';
@@ -44,11 +46,9 @@ export async function POST(req: NextRequest) {
                 statusClass = 'unknown';
         }
 
-        // Read HTML template
         const templatePath = path.resolve(process.cwd(), 'src/templates/paymentStatus.html');
         let html = fs.readFileSync(templatePath, 'utf-8');
 
-        // Replace placeholders
         html = html
             .replace('{{statusClass}}', statusClass)
             .replace('{{statusText}}', statusText)

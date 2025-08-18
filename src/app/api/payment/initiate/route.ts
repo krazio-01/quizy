@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PayGlocalClient } from '@/utils/payGlocalAuth';
 import UserModel from '@/models/UserModel';
+import PaymentModel from '@/models/PayMentModel';
 import axios from 'axios';
 
 const BASE_AMOUNT = 75;
@@ -91,10 +92,10 @@ export async function POST(request: NextRequest) {
         const { data: geoData } = await axios.get(`http://ip-api.com/json/${ip}`);
         const countryCode = geoData?.countryCode ?? 'AE';
 
-        let userCurrency = COUNTRY_TO_CURRENCY[countryCode] ?? 'USD';
-        if (!COMMON_CURRENCIES.has(userCurrency)) userCurrency = 'USD';
+        let transactionCurrency = COUNTRY_TO_CURRENCY[countryCode] ?? 'USD';
+        if (!COMMON_CURRENCIES.has(transactionCurrency)) transactionCurrency = 'USD';
 
-        const rate = await getConversionRate(BASE_CURRENCY, userCurrency);
+        const rate = await getConversionRate(BASE_CURRENCY, transactionCurrency);
         const convertedAmount = +(BASE_AMOUNT * rate).toFixed(2);
 
         const orderId = generateId('REG');
@@ -106,7 +107,7 @@ export async function POST(request: NextRequest) {
             merchantCallbackURL: `${process.env.FRONTEND_URL}/api/payment/webhook`,
             paymentData: {
                 totalAmount: convertedAmount.toString(),
-                txnCurrency: userCurrency,
+                txnCurrency: transactionCurrency,
                 billingData: {
                     emailId: customerEmail,
                     callingCode: '+91',
@@ -127,13 +128,26 @@ export async function POST(request: NextRequest) {
         const payglocalClient = new PayGlocalClient();
         const result = await payglocalClient.initiatePayment(paymentPayload);
 
+        await PaymentModel.findOneAndUpdate(
+            { userId: user._id },
+            {
+                $set: {
+                    orderId,
+                    status: result.status,
+                    amount: `${convertedAmount} ${transactionCurrency}`,
+                    transactionId: null,
+                },
+            },
+            { upsert: true, new: true }
+        );
+
         return NextResponse.json({
             success: true,
             paymentUrl: result.data?.redirectUrl ?? result.redirectUrl,
             gid: result.gid,
             muid: merchantTxnId,
             orderId,
-            currency: userCurrency,
+            currency: transactionCurrency,
             amount: convertedAmount,
             rate,
             baseAmount: BASE_AMOUNT,

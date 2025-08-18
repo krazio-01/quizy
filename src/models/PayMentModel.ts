@@ -3,9 +3,9 @@ import mongoose, { Schema, Document, Model } from 'mongoose';
 export interface IPayment {
     userId: mongoose.Types.ObjectId;
     orderId: string;
-    transactionId: string;
     status: string;
-    amount?: number;
+    transactionId: string | null;
+    amount: string;
 
     createdAt: Date;
     updatedAt: Date;
@@ -17,9 +17,9 @@ const PaymentSchema: Schema<IPaymentDocument> = new Schema<IPaymentDocument>(
     {
         userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
         orderId: { type: String, required: true, unique: true },
-        transactionId: { type: String, required: true },
         status: { type: String, required: true },
-        amount: { type: Number },
+        amount: { type: String, required: true },
+        transactionId: { type: String, default: null },
     },
     { timestamps: true }
 );

@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Payment from '@/models/PayMentModel';
+import PaymentModel from '@/models/PayMentModel';
 
 interface UpdatePaymentParams {
-    userId?: string;
     orderId: string;
     transactionId: string;
     status: string;
-    amount?: number;
 }
 
 export async function POST(request: NextRequest) {
@@ -31,12 +29,13 @@ export async function POST(request: NextRequest) {
             return NextResponse.redirect(failureUrl);
         }
 
-        const { Amount, status, gid, merchantUniqueId } = paymentStatus;
+        const { status, gid, merchantUniqueId } = paymentStatus;
+
+        console.log('----------------\nPayment Status:', paymentStatus);
 
         await updatePaymentStatus({
             orderId: merchantUniqueId,
             status,
-            amount: Amount,
             transactionId: gid,
         });
 
@@ -67,39 +66,11 @@ function decodePayGlocalToken(token) {
     }
 }
 
-function isSuccessStatus(status) {
-    const successStatuses = ['SENT_FOR_CAPTURE', 'CAPTURED', 'SUCCESS', 'AUTHORIZED', 'SETTLED'];
-    return successStatuses.includes(status);
-}
-
-function isCancelledStatus(status) {
-    const cancelledStatuses = ['CANCELLED', 'USER_CANCELLED', 'ABANDONED', 'EXPIRED', 'TIMEOUT', 'CUSTOMER_CANCELLED'];
-    return cancelledStatuses.includes(status);
-}
-
-export async function updatePaymentStatus({ userId, orderId, status, amount, transactionId }: UpdatePaymentParams) {
+export async function updatePaymentStatus({ orderId, status, transactionId }: UpdatePaymentParams) {
     try {
-        const payment = await Payment.findOneAndUpdate(
-            { orderId },
-            {
-                userId,
-                orderId,
-                status,
-                amount,
-                transactionId,
-            },
-            { upsert: true, new: true, setDefaultsOnInsert: true }
-        );
-
-        if (isSuccessStatus(status)) {
-            console.log('✅ Payment successful - proceed with order fulfillment');
-        } else if (isCancelledStatus(status)) {
-            console.log('⚠️ Payment cancelled - release inventory/booking');
-        } else {
-            console.log('❌ Payment failed - handle failure case');
-        }
-
-        return payment;
+        if (status !== 'SENT_FOR_CAPTURE') return;
+        status = 'success';
+        await PaymentModel.findOneAndUpdate({ orderId }, { status, transactionId }, { new: true });
     } catch (error) {
         console.error('Database update error:', error);
         throw error;
