@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import StatsBar from '@/components/UI/StatsBar/StatsBar';
 import { toast } from 'sonner';
 import axios from 'axios';
-import RotatingCircle from '@/components/UI/RotatingCircles/RotatingCircles';
 import useAppStore from '@/store/store';
 import './registerQuiz.scss';
 
@@ -54,23 +53,11 @@ const Page = () => {
     return (
         <div className="practice-quiz-container">
             <div>
-                <RotatingCircle
-                    size={250}
-                    centerDotSize={30}
-                    orbitDotSize={25}
-                    orbitRadius={15}
-                    orbitDuration={3}
-                    position={{ top: '-10%', left: '-5%' }}
-                />
-                <RotatingCircle
-                    size={250}
-                    centerDotSize={30}
-                    orbitDotSize={25}
-                    orbitRadius={15}
-                    orbitDuration={3}
-                    position={{ top: '20%', right: '-8%' }}
-                />
                 <div className='hero-content-wrapper'>
+                    <video autoPlay muted loop playsInline className="quizRegister-video">
+                        <source src="/videos/quizbanner1.mp4" type="video/mp4" />
+                    </video>
+                    
                     <h1>Practice Quiz</h1>
                     <p className="subtitle">Ready to test your skills?</p>
                     <p className="label">Select Your Grade</p>
