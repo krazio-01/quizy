@@ -7,7 +7,7 @@ interface PayGlocalPayCollectRequest {
     paymentData: {
         totalAmount: string;
         txnCurrency: string;
-        billingData?: Object;
+        billingData?: object;
     };
     riskData?: {
         customerData?: {
