@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import ccs from 'countrycitystatejson';
-import boardsData from './boards.json';
+import { Boards } from './boards';
 import schoolList from './schoolList_ISO.json';
 
 interface School {
@@ -30,7 +30,6 @@ const Step3 = ({
     const [schools, setSchools] = useState<School[]>([]);
     const [school, setSchool] = useState('');
     const [customSchool, setCustomSchool] = useState('');
-    const [boards, setBoards] = useState<string[]>([]);
     const [board, setBoard] = useState('');
     const [customBoard, setCustomBoard] = useState('');
     const [grade, setGrade] = useState('');
@@ -128,11 +127,6 @@ const Step3 = ({
 
     useEffect(() => {
         if (country && city) {
-            const availableBoards = boardsData[country] || boardsData.default;
-            setBoards(availableBoards);
-            setBoard('');
-            setCustomBoard('');
-
             fetchSchools(country, city);
         } else {
             setSchools([]);
@@ -204,6 +198,7 @@ const Step3 = ({
 
             <div className="form-group">
                 <label htmlFor="school">School</label>
+                <span>Select the &apos;Other&apos; option if you don&apos;t find your school in the list.</span>
                 <div className="select-wrapper">
                     {school === 'Other (Please specify)' ? (
                         <input
@@ -238,6 +233,7 @@ const Step3 = ({
 
             <div className="form-group">
                 <label htmlFor="board">Board</label>
+                <span>Select the &apos;Other&apos; option if you don&apos;t find your board in the list.</span>
                 <div className="select-wrapper">
                     {board === 'Other' ? (
                         <input
@@ -254,10 +250,9 @@ const Step3 = ({
                                 value={board}
                                 onChange={(e) => setBoard(e.target.value)}
                                 required
-                                disabled={boards.length === 0}
                             >
                                 <option value="">Choose your Board</option>
-                                {boards.map((b, index) => (
+                                {Boards.map((b, index) => (
                                     <option key={index} value={b}>
                                         {b}
                                     </option>
