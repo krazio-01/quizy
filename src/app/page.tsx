@@ -282,7 +282,7 @@ const HomePage = () => {
                 </div>
             </section>
 
-            <CTASection buttonText="Register Now" videoSrc="/videos/tryQuizBanner.mp4" link="/register" />
+            <CTASection buttonText="Register Now" videoSrc="/videos/homepageBanner2.mp4" link="/register" />
 
             <section className="about-ie">
                 <h3>About Ei</h3>
