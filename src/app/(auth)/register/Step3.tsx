@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import ccs from 'countrycitystatejson';
 import boardsData from './boards.json';
@@ -59,31 +59,7 @@ const Step3 = ({
         }
     }, [country]);
 
-    useEffect(() => {
-        if (country && city) {
-            const availableBoards = boardsData[country] || boardsData.default;
-            setBoards(availableBoards);
-            setBoard('');
-            setCustomBoard('');
-
-            fetchSchools(country, city);
-        } else {
-            setSchools([]);
-            setSchool('');
-            setCustomSchool('');
-        }
-    }, [country, city]);
-
-    const truncateText = (text: string, maxLength: number) => {
-        return text.length > maxLength ? text.slice(0, maxLength) + '…' : text;
-    };
-
-    const getTruncateLength = () => {
-        if (typeof window !== 'undefined') return window.innerWidth <= 768 ? 32 : 42;
-        return 42;
-    };
-
-    const fetchSchools = async (countryCode: string, cityName: string) => {
+    const fetchSchools = useCallback(async (countryCode: string, cityName: string) => {
         setLoadingSchools(true);
         setSchoolError('');
 
@@ -148,6 +124,30 @@ const Step3 = ({
         } finally {
             setLoadingSchools(false);
         }
+    }, []);
+
+    useEffect(() => {
+        if (country && city) {
+            const availableBoards = boardsData[country] || boardsData.default;
+            setBoards(availableBoards);
+            setBoard('');
+            setCustomBoard('');
+
+            fetchSchools(country, city);
+        } else {
+            setSchools([]);
+            setSchool('');
+            setCustomSchool('');
+        }
+    }, [country, city, fetchSchools]);
+
+    const truncateText = (text: string, maxLength: number) => {
+        return text.length > maxLength ? text.slice(0, maxLength) + '…' : text;
+    };
+
+    const getTruncateLength = () => {
+        if (typeof window !== 'undefined') return window.innerWidth <= 768 ? 32 : 42;
+        return 42;
     };
 
     const isValid = country && city && (school || customSchool) && (board || customBoard) && grade;

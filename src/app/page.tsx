@@ -197,7 +197,7 @@ const HomePage = () => {
                     <h2 className="section-title">Why It Matters</h2>
 
                     <p className="intro">
-                        Because today's world doesn&apos;t need more people with memorized answers — it needs people who
+                        Because today&apos;s world doesn&apos;t need more people with memorized answers — it needs people who
                         can think for themselves.
                     </p>
 
@@ -223,7 +223,7 @@ const HomePage = () => {
                     </p>
 
                     <p className="closing">
-                        Whether you're a future coder, creator, entrepreneur, or simply a curious mind — this challenge
+                        Whether you&apos;re a future coder, creator, entrepreneur, or simply a curious mind — this challenge
                         is your stage.
                     </p>
                 </div>

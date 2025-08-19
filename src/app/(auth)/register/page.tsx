@@ -39,7 +39,7 @@ const Page = () => {
         const params = new URLSearchParams(window.location.search);
         const stepParam = params.get('step');
         if (stepParam === '3') setStep(3);
-    }, []);
+    }, [setStep]);
 
     const nextStep = () => setStep(step + 1);
     const prevStep = () => setStep(step - 1);
