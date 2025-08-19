@@ -64,7 +64,7 @@ function decodePayGlocalToken(token) {
     }
 }
 
-export async function updatePaymentStatus({ orderId, status, transactionId }: UpdatePaymentParams) {
+async function updatePaymentStatus({ orderId, status, transactionId }: UpdatePaymentParams) {
     try {
         if (status !== 'SENT_FOR_CAPTURE') return;
         status = 'success';
