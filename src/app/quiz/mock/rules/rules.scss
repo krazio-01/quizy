@@ -47,32 +47,24 @@
             }
         }
 
-        .feedback-examples {
-            text-align: left;
-            margin-bottom: 1rem;
+        .answer-gifs {
+            display: flex;
+            justify-content: start;
+            gap: 3rem;
+            margin-top: 2rem;
+            margin-left: 3.5rem;
 
-            p {
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-            }
+            .gif-item {
+                text-align: center;
 
-            .indicator {
-                width: 15px;
-                height: 15px;
-                border-radius: 50%;
-                display: inline-block;
-
-                &.correct {
-                    background-color: #67d642;
+                p {
+                    margin-bottom: 0.5rem;
+                    font-weight: 500;
                 }
 
-                &.incorrect {
-                    background-color: #ff4248;
-                }
-
-                &.current {
-                    background-color: #ffea72;
+                img {
+                    width: 120px;
+                    height: auto;
                 }
             }
         }

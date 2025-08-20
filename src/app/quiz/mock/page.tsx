@@ -10,20 +10,20 @@ const Quiz = () => {
     const { selectedGrade, setScoreString } = useAppStore();
     const router = useRouter();
 
-    useEffect(() => {
-        if (!selectedGrade?.trim()) {
-            router.replace('/');
-            return;
-        }
+    // useEffect(() => {
+    //     if (!selectedGrade?.trim()) {
+    //         router.replace('/');
+    //         return;
+    //     }
 
-        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-            e.preventDefault();
-            e.returnValue = '';
-        };
+    //     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+    //         e.preventDefault();
+    //         e.returnValue = '';
+    //     };
 
-        window.addEventListener('beforeunload', handleBeforeUnload);
-        return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-    }, [selectedGrade, router]);
+    //     window.addEventListener('beforeunload', handleBeforeUnload);
+    //     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    // }, [selectedGrade, router]);
 
     const gradeKey = selectedGrade.replace('Grade ', '').trim();
     const gradeData = gradeWiseQuestions.find((g) => g.grade === gradeKey);
@@ -36,7 +36,7 @@ const Quiz = () => {
         Array(totalQuestions).fill(null)
     );
 
-    if (!selectedGrade?.trim()) return <div className="returning-state" />;
+    // if (!selectedGrade?.trim()) return <div className="returning-state" />;
 
     const currentQuestion = gradeData?.questions[currentIndex];
     const isCorrectAnswer = selectedOption === currentQuestion?.correctAnswerIndex;
@@ -76,7 +76,12 @@ const Quiz = () => {
 
     const renderFeedback = () => (
         <div className={`feedback ${isCorrectAnswer ? 'correct-feedback' : 'incorrect-feedback'}`}>
-            <div className="icon-placeholder" />
+            <div className="icon-placeholder">
+                <img
+                    src={isCorrectAnswer ? '/videos/quiz2.gif' : '/videos/quiz3.gif'}
+                    alt={isCorrectAnswer ? 'Correct Answer' : 'Wrong Answer'}
+                />
+            </div>
             <div className="feedback-text">
                 {isCorrectAnswer ? (
                     <>
@@ -103,8 +108,7 @@ const Quiz = () => {
             <div className="options">
                 {currentQuestion?.options.map((option, index) => {
                     let className = 'option';
-                    if (!isAnswered && selectedOption === index)
-                        className += ' selected';
+                    if (!isAnswered && selectedOption === index) className += ' selected';
 
                     if (isAnswered) {
                         if (isCorrectAnswer && index === currentQuestion.correctAnswerIndex) className += ' correct';

@@ -11,22 +11,22 @@ const Page = () => {
 
     const router = useRouter();
 
-    useEffect(() => {
-        if (!selectedGrade?.trim()) {
-            router.replace('/');
-            return;
-        }
+    // useEffect(() => {
+    //     if (!selectedGrade?.trim()) {
+    //         router.replace('/');
+    //         return;
+    //     }
 
-        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-            e.preventDefault();
-            e.returnValue = '';
-        };
+    //     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+    //         e.preventDefault();
+    //         e.returnValue = '';
+    //     };
 
-        window.addEventListener('beforeunload', handleBeforeUnload);
-        return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-    }, [selectedGrade, router]);
+    //     window.addEventListener('beforeunload', handleBeforeUnload);
+    //     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    // }, [selectedGrade, router]);
 
-    if (!selectedGrade?.trim()) return <div className="returning-state" />;
+    // if (!selectedGrade?.trim()) return <div className="returning-state" />;
 
     return (
         <div className="quiz-instructions-container">
@@ -46,21 +46,6 @@ const Page = () => {
                     <li>After checking your answer, you&apos;ll get instant feedback:</li>
                 </ul>
 
-                <div className="feedback-examples">
-                    <p>
-                        Green means your answer is correct.
-                        <span className="indicator correct"></span>
-                    </p>
-                    <p>
-                        Red means your answer is incorrect—you can retry.
-                        <span className="indicator incorrect"></span>
-                    </p>
-                    <p>
-                        Yellow highlights your current quiz page in the navigation bar.
-                        <span className="indicator current"></span>
-                    </p>
-                </div>
-
                 <p>
                     You can move between questions using the Previous and Next buttons, or click the page numbers below
                     to jump to any question directly.
@@ -69,6 +54,17 @@ const Page = () => {
                 <p>
                     Use each attempt as a learning opportunity. Good luck, and enjoy sharpening your logical thinking!
                 </p>
+
+                <div className="answer-gifs">
+                    <div className="gif-item">
+                        <p>Correct Answer</p>
+                        <img src="/videos/quiz2.gif" alt="Correct Answer" />
+                    </div>
+                    <div className="gif-item">
+                        <p>Wrong Answer</p>
+                        <img src="/videos/quiz3.gif" alt="Wrong Answer" />
+                    </div>
+                </div>
 
                 <Link
                     className="start-btn"
