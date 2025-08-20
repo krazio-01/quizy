@@ -94,6 +94,10 @@
         & {
             .quiz-card {
                 max-width: 100% !important;
+
+                .answer-gifs {
+                    margin-left: 0 !important;
+                }
             }
         }
     }
