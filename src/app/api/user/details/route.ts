@@ -20,7 +20,7 @@ export async function GET() {
             return NextResponse.json({
                 name: `${user.firstName} ${user.lastName}`,
                 email: user.email,
-                profilePhoto: user.avatar || '/default-avatar.png',
+                avatar: user.avatar,
                 billing: null,
             });
         }
@@ -45,7 +45,7 @@ export async function GET() {
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
-            profilePhoto: user.avatar || '/default-avatar.png',
+            avatar: user.avatar,
             billing,
         };
 

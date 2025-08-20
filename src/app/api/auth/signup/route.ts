@@ -5,6 +5,7 @@ import sendEmail from '@/utils/sendMail';
 import bcrypt from 'bcrypt';
 import fs from 'fs';
 import path from 'path';
+import { validateEmail } from '@/utils/helperFn';
 
 export async function POST(request: NextRequest) {
     // connect to the database
@@ -45,8 +46,7 @@ export async function POST(request: NextRequest) {
         if (password !== confirmPassword)
             return NextResponse.json({ message: 'Passwords do not match' }, { status: 400 });
 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) return NextResponse.json({ message: 'Invalid email format' }, { status: 400 });
+        if (!validateEmail(email)) return NextResponse.json({ message: 'Invalid email format' }, { status: 400 });
 
         const passwordRegex = /^(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         if (!passwordRegex.test(password)) {
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
                 { status: 400 }
             );
         }
-        
+
         const userExists = await User.findOne({ email });
         if (userExists) return NextResponse.json({ message: 'This account already registered' }, { status: 400 });
 

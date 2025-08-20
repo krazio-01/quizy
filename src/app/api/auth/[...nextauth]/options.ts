@@ -111,10 +111,11 @@ export const authOptions: AuthOptions = {
             await connectToDB();
 
             if (token) {
-                const sessionUser = await UserModel.findOne({
-                    email: session.user.email,
-                });
-                if (sessionUser) (session.user as Session['user'])._id = sessionUser._id.toString();
+                const sessionUser = await UserModel.findById(token._id).lean();
+                if (sessionUser) {
+                    (session.user as Session['user'])._id = sessionUser._id.toString();
+                    session.user.email = sessionUser.email;
+                }
             }
             return session;
         },

@@ -5,3 +5,8 @@ export const calculateAge = (dob: Date) => {
     if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
     return age;
 };
+
+export const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+};
