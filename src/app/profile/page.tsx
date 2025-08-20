@@ -1,10 +1,13 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
+import { toast } from 'sonner';
 import './profile.scss';
 
 interface UserDetails {
-    name: string;
+    userId: string;
+    firstName: string;
+    lastName: string;
     email: string;
     profilePhoto: string;
     billing: {
@@ -22,21 +25,60 @@ interface UserDetails {
 const ProfilePage = () => {
     const [user, setUser] = useState<UserDetails | null>(null);
     const [loading, setLoading] = useState(true);
+    const [updating, setUpdating] = useState(false);
+
+    const [editMode, setEditMode] = useState<{ field: string | null }>({ field: null });
+    const [formData, setFormData] = useState<{ name: string; email: string }>({
+        name: '',
+        email: '',
+    });
+
+    const fetchUser = useCallback(async () => {
+        try {
+            setLoading(true);
+            const { data } = await axios.get<UserDetails>('/api/user/details');
+            setUser(data);
+            setFormData({
+                name: `${data.firstName} ${data.lastName}`.trim(),
+                email: data.email,
+            });
+        } catch (error) {
+            toast.error('Failed to fetch user details');
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
     useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const res = await axios.get<UserDetails>('/api/user/details');
-                console.log('md-res:', res.data);
-                setUser(res.data);
-            } catch (error) {
-                console.error('Failed to fetch user details:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchUser();
-    }, []);
+    }, [fetchUser]);
+
+    const handleSave = async () => {
+        if (!user) return;
+        try {
+            setUpdating(true);
+
+            const [firstName, ...rest] = formData.name.trim().split(' ');
+            const lastName = rest.join(' ');
+
+            const res = await axios.post('/api/user/update', {
+                userId: user.userId,
+                firstName,
+                lastName,
+                email: formData.email,
+            });
+
+            if (res.status === 200) {
+                toast.success('Profile updated successfully');
+                await fetchUser();
+                setEditMode({ field: null });
+            }
+        } catch (err) {
+            toast.error('Failed to update profile');
+        } finally {
+            setUpdating(false);
+        }
+    };
 
     if (loading) return <div className="profile-page loading">Loading...</div>;
 
@@ -48,7 +90,7 @@ const ProfilePage = () => {
                 <div className="user-info">
                     <img src={'/images/avatar.png'} alt="User" className="avatar" />
                     <div>
-                        <span className="username">{user.name.split(' ')[0]}</span>
+                        <span className="username">{user.firstName}</span>
                         <span className="role">User</span>
                     </div>
                 </div>
@@ -62,7 +104,7 @@ const ProfilePage = () => {
             <main className="content">
                 <header className="header">
                     <h2>
-                        Welcome, <span>{user.name.split(' ')[0]}</span>
+                        Welcome, <span>{user.firstName}</span>
                     </h2>
                 </header>
 
@@ -83,16 +125,43 @@ const ProfilePage = () => {
                     <div className="field">
                         <div>
                             <span className="label">Name</span>
-                            <span className="value">{user.name}</span>
+                            {editMode.field === 'name' ? (
+                                <input
+                                    value={formData.name}
+                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                />
+                            ) : (
+                                <span className="value">{formData.name}</span>
+                            )}
                         </div>
-                        <button className="edit-btn">Edit</button>
+                        {editMode.field === 'name' ? (
+                            <button className="edit-btn" onClick={handleSave} disabled={updating}>
+                                {updating ? 'Saving...' : 'Save'}
+                            </button>
+                        ) : (
+                            <button className="edit-btn" onClick={() => setEditMode({ field: 'name' })}>Edit</button>
+                        )}
                     </div>
+
                     <div className="field">
                         <div>
-                            <span className="label">Email Address</span>
-                            <span className="value">{user.email}</span>
+                            <span className="label">Email</span>
+                            {editMode.field === 'email' ? (
+                                <input
+                                    value={formData.email}
+                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                />
+                            ) : (
+                                <span className="value">{user.email}</span>
+                            )}
                         </div>
-                        <button className="edit-btn">Edit</button>
+                        {editMode.field === 'email' ? (
+                            <button className="edit-btn" onClick={handleSave} disabled={updating}>
+                                {updating ? 'Saving...' : 'Save'}
+                            </button>
+                        ) : (
+                            <button className="edit-btn" onClick={() => setEditMode({ field: 'email' })}>Edit</button>
+                        )}
                     </div>
 
                     <div className="billing">

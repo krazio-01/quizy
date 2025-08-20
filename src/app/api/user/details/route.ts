@@ -41,7 +41,9 @@ export async function GET() {
         };
 
         const userDetails = {
-            name: `${user.firstName} ${user.lastName}`,
+            userId: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
             email: user.email,
             profilePhoto: user.avatar || '/default-avatar.png',
             billing,
