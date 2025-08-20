@@ -1,0 +1,226 @@
+.profile-page {
+    display: flex;
+    min-height: 100vh;
+    color: #333;
+
+    .sidebar {
+        width: 240px;
+        background: #fff;
+        border-right: 1px solid #e5e5e5;
+        padding: 24px 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 40px;
+            border-radius: 5px;
+            border: 1px solid rgba(171, 32, 36, 0.34);
+            background: rgba(171, 32, 36, 0.05);
+
+            .avatar {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                margin-right: 1rem;
+                object-fit: cover;
+                outline: 1px solid black;
+            }
+
+            .username {
+                font-weight: 600;
+                font-size: 15px;
+                display: block;
+            }
+
+            .role {
+                font-size: 13px;
+                color: #9e9e9e;
+            }
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 8px;
+
+            button {
+                background: #fff;
+                border: none;
+                padding: 10px 14px;
+                text-align: left;
+                border-radius: 6px;
+                font-size: 14px;
+                color: #333;
+                cursor: pointer;
+                transition: background 0.2s;
+
+                &:hover {
+                    background: #f6f6f6;
+                }
+
+                &.active {
+                    background: #fef3f2;
+                    color: #ab2024;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+
+    .content {
+        flex: 1;
+        padding: 32px 48px;
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            h2 {
+                font-size: var(--fz-xl);
+                font-weight: 600;
+                color: #ab2024;
+            }
+
+            .logout {
+                font-size: 14px;
+                color: #666;
+                text-decoration: none;
+                transition: color 0.2s;
+
+                &:hover {
+                    color: #ab2024;
+                }
+            }
+        }
+
+        .profile-section {
+            border-radius: 10px;
+            padding: 24px 0;
+
+            h3 {
+                font-size: 18px;
+                font-weight: 600;
+                margin-bottom: 20px;
+                color: #ab2024;
+            }
+
+            .profile-photo {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                margin-bottom: 28px;
+
+                img {
+                    width: 72px;
+                    height: 72px;
+                    border-radius: 50%;
+                    border: 1px solid #ddd;
+                    object-fit: cover;
+                }
+
+                .change-btn {
+                    padding: 6px 12px;
+                    border: 1px solid #ccc;
+                    border-radius: 6px;
+                    background: #fff;
+                    font-size: 14px;
+                    cursor: pointer;
+                    transition: background 0.2s;
+
+                    &:hover {
+                        background: #f5f5f5;
+                    }
+                }
+            }
+
+            .field {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 0;
+                border-bottom: 1px solid #f0f0f0;
+
+                .label {
+                    font-weight: 500;
+                    font-size: 15px;
+                    color: #555;
+                    flex: 0 0 160px;
+                }
+
+                .value {
+                    flex: 1;
+                    color: #222;
+                    font-size: 15px;
+                }
+
+                .edit-btn {
+                    padding: 4px 12px;
+                    border: 1px solid #ccc;
+                    border-radius: 6px;
+                    background: #fff;
+                    font-size: 13px;
+                    cursor: pointer;
+
+                    &:hover {
+                        background: #f6f6f6;
+                    }
+                }
+            }
+
+            .billing {
+                margin-top: 28px;
+
+                h4 {
+                    font-size: 16px;
+                    font-weight: 600;
+                    margin-bottom: 12px;
+                }
+
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-bottom: 12px;
+
+                    th,
+                    td {
+                        padding: 10px 12px;
+                        text-align: center;
+                        font-size: 14px;
+                    }
+
+                    th {
+                        font-weight: 600;
+                    }
+                }
+
+                .status {
+                    display: flex;
+                    align-items: center;
+                    font-size: 14px;
+                    color: #2e7d32;
+                    font-weight: 500;
+
+                    .check {
+                        margin-right: 6px;
+                    }
+                }
+            }
+        }
+    }
+
+    &.loading,
+    &.error {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        color: #777;
+    }
+}

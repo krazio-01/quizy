@@ -132,6 +132,7 @@ export async function POST(request: NextRequest) {
             { userId: user._id },
             {
                 $set: {
+                    userId: user._id,
                     orderId,
                     status: result.status,
                     amount: `${convertedAmount} ${transactionCurrency}`,
