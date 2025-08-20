@@ -38,19 +38,15 @@ const ProfilePage = () => {
         fetchUser();
     }, []);
 
-    if (loading) {
-        return <div className="profile-page loading">Loading...</div>;
-    }
+    if (loading) return <div className="profile-page loading">Loading...</div>;
 
-    if (!user) {
-        return <div className="profile-page error">No user data available</div>;
-    }
+    if (!user) return <div className="profile-page error">No user data available</div>;
 
     return (
         <div className="profile-page">
             <aside className="sidebar">
                 <div className="user-info">
-                    <img src={user.profilePhoto || '/images/avatar.png'} alt="User" className="avatar" />
+                    <img src={'/images/avatar.png'} alt="User" className="avatar" />
                     <div>
                         <span className="username">{user.name.split(' ')[0]}</span>
                         <span className="role">User</span>
@@ -68,67 +64,69 @@ const ProfilePage = () => {
                     <h2>
                         Welcome, <span>{user.name.split(' ')[0]}</span>
                     </h2>
-                    <a href="/logout" className="logout">
-                        Logout
-                    </a>
                 </header>
 
                 <section className="profile-section">
                     <h3>Your Profile</h3>
 
                     <div className="profile-photo">
-                        <img src={user.profilePhoto || '/images/avatar.png'} alt="Profile" />
-                        <button className="change-btn">Change Photo</button>
+                        <div>
+                            <span>Profile Photo</span>
+                            <img src={'/images/avatar.png'} alt="Profile" />
+                        </div>
+                        <div>
+                            <span>Profile Photo</span>
+                            <button className="change-btn">Change Photo</button>
+                        </div>
                     </div>
 
                     <div className="field">
-                        <span className="label">Name</span>
-                        <span className="value">{user.name}</span>
+                        <div>
+                            <span className="label">Name</span>
+                            <span className="value">{user.name}</span>
+                        </div>
                         <button className="edit-btn">Edit</button>
                     </div>
                     <div className="field">
-                        <span className="label">Email Address</span>
-                        <span className="value">{user.email}</span>
+                        <div>
+                            <span className="label">Email Address</span>
+                            <span className="value">{user.email}</span>
+                        </div>
                         <button className="edit-btn">Edit</button>
                     </div>
 
                     <div className="billing">
                         <h4>Billing</h4>
 
-                        {user.billing ? (
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Description</th>
-                                        <th>HSN/SAC</th>
-                                        <th>Qty</th>
-                                        <th>Rate (AED)</th>
-                                        <th>IGST</th>
-                                        <th>Amount</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>{user.billing.description}</td>
-                                        <td>{user.billing.hsn}</td>
-                                        <td>{user.billing.qty}</td>
-                                        <td>{user.billing.rate}</td>
-                                        <td>
-                                            {user.billing.igst} ({user.billing.igstAmount})
-                                        </td>
-                                        <td>{user.billing.paidAmount}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        {!user.billing ? (
+                            <div className="billing__empty">No billing information available.</div>
                         ) : (
-                            <div className="no-billing">
-                                No billing information available.
+                            <div className="billing__card">
+                                <div className="billing__header">
+                                    <span>Description</span>
+                                    <span>HSN/SAC</span>
+                                    <span>Qty</span>
+                                    <span>Rate (AED)</span>
+                                    <span>IGST</span>
+                                    <span>Amount</span>
+                                </div>
+
+                                <div className="billing__row">
+                                    <span>{user.billing.description}</span>
+                                    <span>{user.billing.hsn}</span>
+                                    <span>{user.billing.qty}</span>
+                                    <span>{user.billing.rate}</span>
+                                    <span>
+                                        {user.billing.igst} ({user.billing.igstAmount})
+                                    </span>
+                                    <span>{user.billing.paidAmount}</span>
+                                </div>
                             </div>
                         )}
 
                         {user.billing && (
                             <div className="status">
-                                <span className="check">✔</span> Fees Status
+                                Fees Status <span className="check">✔</span>
                             </div>
                         )}
                     </div>

@@ -1,16 +1,16 @@
 .profile-page {
     display: flex;
-    min-height: 100vh;
+    min-height: 85svh;
     color: #333;
 
     .sidebar {
         width: 240px;
-        background: #fff;
-        border-right: 1px solid #e5e5e5;
         padding: 24px 16px;
         display: flex;
         flex-direction: column;
         align-items: center;
+        background: #fff;
+        box-shadow: 4px 0 49px 0 rgba(0, 0, 0, 0.11);
 
         .user-info {
             display: flex;
@@ -28,18 +28,17 @@
                 border-radius: 50%;
                 margin-right: 1rem;
                 object-fit: cover;
-                outline: 1px solid black;
             }
 
             .username {
-                font-weight: 600;
-                font-size: 15px;
+                font-weight: 590;
+                font-size: var(--fz-sm);
                 display: block;
             }
 
             .role {
-                font-size: 13px;
-                color: #9e9e9e;
+                font-size: var(--fz-sm);
+                color: #ab2024;
             }
         }
 
@@ -50,15 +49,20 @@
             gap: 8px;
 
             button {
-                background: #fff;
                 border: none;
                 padding: 10px 14px;
                 text-align: left;
-                border-radius: 6px;
-                font-size: 14px;
-                color: #333;
+                font-size: var(--fz-sm);
+                color: #3e3e3e;
+                font-weight: 700;
                 cursor: pointer;
+                border-radius: 5px;
+                background: rgba(171, 32, 36, 0.11);
                 transition: background 0.2s;
+
+                &:last-child {
+                    background: rgba(0, 0, 0, 0.11);
+                }
 
                 &:hover {
                     background: #f6f6f6;
@@ -83,7 +87,7 @@
             align-items: center;
 
             h2 {
-                font-size: var(--fz-xl);
+                font-size: clamp(var(--fz-lg), 7vw, var(--fz-xl));
                 font-weight: 600;
                 color: #ab2024;
             }
@@ -114,25 +118,48 @@
             .profile-photo {
                 display: flex;
                 align-items: center;
+                justify-content: space-between;
                 gap: 16px;
-                margin-bottom: 28px;
+                padding-bottom: 2rem;
+                border-bottom: 1px solid #d5d5d5;
 
-                img {
-                    width: 72px;
-                    height: 72px;
-                    border-radius: 50%;
-                    border: 1px solid #ddd;
-                    object-fit: cover;
+                > div {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+                    &:nth-child(2) {
+                        flex-direction: row;
+
+                        span {
+                            margin-right: 2rem;
+                        }
+                    }
+
+                    span {
+                        font-size: var(--fz-sm);
+                        font-weight: 700;
+                        color: #3e3e3e;
+                    }
+
+                    img {
+                        width: 72px;
+                        height: 72px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                    }
                 }
 
                 .change-btn {
                     padding: 6px 12px;
-                    border: 1px solid #ccc;
-                    border-radius: 6px;
-                    background: #fff;
-                    font-size: 14px;
+                    font-size: var(--fz-sm);
+                    font-weight: 700;
                     cursor: pointer;
                     transition: background 0.2s;
+                    color: #3e3e3e;
+                    border-radius: 10px;
+                    border: 1px solid rgba(171, 32, 36, 0.32);
+                    background: rgba(171, 32, 36, 0.05);
 
                     &:hover {
                         background: #f5f5f5;
@@ -144,29 +171,34 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                padding: 14px 0;
-                border-bottom: 1px solid #f0f0f0;
+                padding: 2rem 0;
+                border-bottom: 1px solid #d5d5d5;
 
-                .label {
-                    font-weight: 500;
-                    font-size: 15px;
-                    color: #555;
-                    flex: 0 0 160px;
-                }
+                > div {
+                    display: flex;
+                    flex-direction: column;
 
-                .value {
-                    flex: 1;
-                    color: #222;
-                    font-size: 15px;
+                    .label {
+                        margin-bottom: 1rem;
+                    }
+
+                    .label,
+                    .value {
+                        font-weight: 700;
+                        font-size: var(--fz-sm);
+                        color: #3e3e3e;
+                    }
                 }
 
                 .edit-btn {
                     padding: 4px 12px;
-                    border: 1px solid #ccc;
-                    border-radius: 6px;
-                    background: #fff;
-                    font-size: 13px;
+                    font-weight: 700;
+                    font-size: var(--fz-sm);
+                    color: #3e3e3e;
                     cursor: pointer;
+                    border-radius: 10px;
+                    border: 1px solid rgba(171, 32, 36, 0.32);
+                    background: rgba(171, 32, 36, 0.05);
 
                     &:hover {
                         background: #f6f6f6;
@@ -183,32 +215,49 @@
                     margin-bottom: 12px;
                 }
 
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
+                &__card {
+                    display: flex;
+                    flex-direction: column;
+                    font-size: 14px;
+                    color: #333;
                     margin-bottom: 12px;
 
-                    th,
-                    td {
-                        padding: 10px 12px;
-                        text-align: center;
-                        font-size: 14px;
+                    .billing__header,
+                    .billing__row {
+                        display: grid;
+                        grid-template-columns: 2fr 1fr 0.7fr 1fr 1fr 1fr;
+                        gap: 1rem;
+                        padding: 8px 0;
+                        align-items: center;
+                        font-size: var(--fz-sm);
+                        font-weight: 590;
+                        color: #3e3e3e;
                     }
 
-                    th {
-                        font-weight: 600;
+                    .billing__header span:nth-child(5),
+                    .billing__row span:nth-child(5),
+                    .billing__row span:nth-child(6) {
+                        color: #000;
                     }
+                }
+
+                &__empty {
+                    text-align: center;
+                    font-size: 14px;
+                    color: #777;
+                    padding: 1rem 0;
                 }
 
                 .status {
                     display: flex;
                     align-items: center;
-                    font-size: 14px;
-                    color: #2e7d32;
-                    font-weight: 500;
+                    font-size: var(--fz-sm);
+                    font-weight: 590;
+                    color: #3e3e3e;
 
                     .check {
-                        margin-right: 6px;
+                        margin-left: 6px;
+                        color: #2e7d32;
                     }
                 }
             }
@@ -222,5 +271,75 @@
         justify-content: center;
         font-size: 16px;
         color: #777;
+    }
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+
+        .sidebar {
+            align-items: start !important;
+            width: 100%;
+            padding: 1rem;
+            box-shadow: none;
+            border-bottom: 1px solid #e5e5e5;
+            flex-direction: column;
+
+            .user-info {
+                width: 50%;
+                margin-bottom: 0.5rem !important;
+
+                .avatar {
+                    width: 32px;
+                    height: 32px;
+                    margin-right: 0.5rem;
+                }
+            }
+
+            .menu {
+                flex-direction: row;
+                gap: 6px;
+
+                button {
+                    padding: 6px 10px;
+                }
+            }
+        }
+
+        .content {
+            padding: 16px;
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .profile-section {
+                padding: 16px 0;
+
+                .profile-photo {
+                    img {
+                        width: 56px;
+                        height: 56px;
+                    }
+
+                    .change-btn {
+                        padding: 4px 8px;
+                    }
+                }
+
+                .field {
+                    padding: 1rem 0;
+
+                    > div {
+                        width: 100%;
+                    }
+
+                    .edit-btn {
+                        align-self: flex-end;
+                    }
+                }
+            }
+        }
     }
 }
