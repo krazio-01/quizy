@@ -338,6 +338,13 @@
                 padding: 16px 0;
 
                 .profile-photo {
+                    > div {
+                        &:nth-child(2) {
+                            span {
+                                margin-right: 1rem;
+                            }
+                        }
+                    }
                     img {
                         width: 56px;
                         height: 56px;
@@ -357,6 +364,15 @@
 
                     .edit-btn {
                         align-self: flex-end;
+                    }
+                }
+
+                .billing {
+                    &__card {
+                        .billing__header,
+                        .billing__row {
+                            font-size: var(--fz-xs);
+                        }
                     }
                 }
             }
