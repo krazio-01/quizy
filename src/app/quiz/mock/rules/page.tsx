@@ -11,22 +11,22 @@ const Page = () => {
 
     const router = useRouter();
 
-    // useEffect(() => {
-    //     if (!selectedGrade?.trim()) {
-    //         router.replace('/');
-    //         return;
-    //     }
+    useEffect(() => {
+        if (!selectedGrade?.trim()) {
+            router.replace('/');
+            return;
+        }
 
-    //     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-    //         e.preventDefault();
-    //         e.returnValue = '';
-    //     };
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+            e.preventDefault();
+            e.returnValue = '';
+        };
 
-    //     window.addEventListener('beforeunload', handleBeforeUnload);
-    //     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-    // }, [selectedGrade, router]);
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    }, [selectedGrade, router]);
 
-    // if (!selectedGrade?.trim()) return <div className="returning-state" />;
+    if (!selectedGrade?.trim()) return <div className="returning-state" />;
 
     return (
         <div className="quiz-instructions-container">
