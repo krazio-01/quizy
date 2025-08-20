@@ -115,6 +115,7 @@ export const authOptions: AuthOptions = {
                 if (sessionUser) {
                     (session.user as Session['user'])._id = sessionUser._id.toString();
                     session.user.email = sessionUser.email;
+                    session.user.image = sessionUser.avatar;
                 }
             }
             return session;

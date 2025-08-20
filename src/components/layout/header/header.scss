@@ -22,6 +22,7 @@
     .links-container {
         ul {
             display: flex;
+            align-items: center;
             gap: 2rem;
             list-style: none;
             margin: 0;
@@ -37,7 +38,7 @@
                     border-radius: 10px;
                     transition: all 300ms ease;
 
-                    &:hover {
+                    &:not(.profile-icon):hover {
                         color: #fff;
                         background-color: #ab2024;
                     }
@@ -57,9 +58,18 @@
     }
 
     .profile-icon {
-        border-radius: 50%;
-        object-fit: cover;
-        border: 2px solid #ddd;
+        display: flex;
+        align-items: center;
+
+        .profile-avatar {
+            border-radius: 50%;
+            object-fit: cover;
+            transition: transform 0.2s ease;
+
+            &:hover {
+                transform: scale(1.05);
+            }
+        }
     }
 
     .logout-btn button {

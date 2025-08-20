@@ -77,9 +77,15 @@ const Header = () => {
                                 </div>
                             </li>
 
-                            <li className="link username">
-                                <Link href="/" onClick={() => setMenuOpen(false)}>
-                                    {session.user.name}
+                            <li className="link">
+                                <Link className="profile-icon" href="/profile" onClick={() => setMenuOpen(false)}>
+                                    <Image
+                                        src={session.user.image || '/images/avatar.png'}
+                                        alt="profile"
+                                        width={36}
+                                        height={36}
+                                        className="profile-avatar"
+                                    />
                                 </Link>
                             </li>
                         </>
