@@ -1,11 +1,11 @@
 import React from 'react';
 import './rewardsSection.scss';
 
-const RewardsSection = () => {
+const RewardsSection = ({ title }) => {
     return (
-        <section className="rewards-container">
+        <section className="rewards">
             <div className="container">
-                <h2 className="section-title">Rewards</h2>
+                <h2 className="section-title">{title}</h2>
 
                 <div className="rewards-grid">
                     <div className="reward-card">

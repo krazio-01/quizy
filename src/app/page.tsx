@@ -218,7 +218,7 @@ const HomePage = () => {
                 </div>
             </section>
 
-            <RewardsSection />
+            <RewardsSection title="Rewards" />
 
             <section className="register">
                 <h3>How to register?</h3>
