@@ -10,9 +10,7 @@ const PUBLIC_PATHS = new Set([
     '/forgot-password/request',
 ]);
 
-const PROTECTED_PATHS = new Set([
-    '/profile',
-]);
+const PROTECTED_PATHS = new Set(['/profile']);
 
 export async function middleware(request) {
     const token = await getToken({ req: request });
@@ -25,12 +23,10 @@ export async function middleware(request) {
     if (pathname.startsWith('/forgot-password/change') && !tokenParams)
         return NextResponse.redirect(new URL('/', request.url));
 
-    if (token) {
-        if (isPublicPath || pathname.startsWith('/forgot-password/change'))
-            return NextResponse.redirect(new URL('/profile', request.url));
-    } else {
-        if (isProtectedPath) return NextResponse.redirect(new URL('/login', request.url));
-    }
+    if (!token && isProtectedPath) return NextResponse.redirect(new URL('/login', request.url));
+
+    if (token && (pathname === '/login' || pathname === '/register'))
+        return NextResponse.redirect(new URL('/profile', request.url));
 
     return NextResponse.next();
 }
