@@ -76,36 +76,36 @@ async function updatePaymentStatus({ orderId, status, transactionId }: UpdatePay
 
         const payment = await PaymentModel.findOneAndUpdate({ orderId }, { status, transactionId }, { new: true });
 
-        if (payment) {
-            const user = await UserModel.findById(payment.userId);
+        // if (payment) {
+        //     const user = await UserModel.findById(payment.userId);
 
-            if (user?.email) {
-                const to = user.email;
+        //     if (user?.email) {
+        //         const to = user.email;
 
-                if (!user.hasReceivedWelcomeEmail) {
-                    const accountTemplatePath = path.resolve(process.cwd(), 'src/templates/accountCreation.html');
-                    const accountContent = generateMailTemplate(accountTemplatePath, {
-                        name: `${user.firstName} ${user.lastName}`,
-                        otp: user.otp,
-                    });
+        //         if (!user.hasReceivedWelcomeEmail) {
+        //             const accountTemplatePath = path.resolve(process.cwd(), 'src/templates/accountCreation.html');
+        //             const accountContent = generateMailTemplate(accountTemplatePath, {
+        //                 name: `${user.firstName} ${user.lastName}`,
+        //                 otp: user.otp,
+        //             });
 
-                    await sendEmail(to, 'Successful Account Creation', null, accountContent);
-                    user.hasReceivedWelcomeEmail = true;
-                    await user.save();
-                }
+        //             await sendEmail(to, 'Successful Account Creation', null, accountContent);
+        //             user.hasReceivedWelcomeEmail = true;
+        //             await user.save();
+        //         }
 
-                const paymentTemplatePath = path.resolve(process.cwd(), 'src/templates/paymentSuccess.html');
-                const paymentContent = generateMailTemplate(paymentTemplatePath, {
-                    name: `${user.firstName} ${user.lastName}`,
-                    amount: parseFloat(payment.amount).toFixed(2),
-                    orderId: payment.orderId,
-                    transactionId: payment.transactionId,
-                    createdAt: payment.createdAt.toLocaleString(),
-                });
+        //         const paymentTemplatePath = path.resolve(process.cwd(), 'src/templates/paymentSuccess.html');
+        //         const paymentContent = generateMailTemplate(paymentTemplatePath, {
+        //             name: `${user.firstName} ${user.lastName}`,
+        //             amount: parseFloat(payment.amount).toFixed(2),
+        //             orderId: payment.orderId,
+        //             transactionId: payment.transactionId,
+        //             createdAt: payment.createdAt.toLocaleString(),
+        //         });
 
-                await sendEmail(to, 'Payment Successful', null, paymentContent);
-            }
-        }
+        //         await sendEmail(to, 'Payment Successful', null, paymentContent);
+        //     }
+        // }
     } catch (error) {
         console.error('Database update error:', error);
         throw error;
