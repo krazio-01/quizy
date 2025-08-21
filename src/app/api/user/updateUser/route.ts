@@ -20,35 +20,35 @@ export async function POST(request: NextRequest) {
     await connectToDB();
 
     try {
-        // const { email, country, city, school, board, grade } = await request.json();
+        const { email, country, city, school, board, grade } = await request.json();
 
-        // const user = await User.findOne({ email });
-        // if (!user) return NextResponse.json({ field: 'email', message: 'User not found' }, { status: 404 });
+        const user = await User.findOne({ email });
+        if (!user) return NextResponse.json({ field: 'email', message: 'User not found' }, { status: 404 });
 
-        // // Age validation
-        // if (user.dob && gradeAgeLimits[grade]) {
-        //     const userAge = calculateAge(new Date(user.dob));
-        //     const [minAge, maxAge] = gradeAgeLimits[grade];
+        // Age validation
+        if (user.dob && gradeAgeLimits[grade]) {
+            const userAge = calculateAge(new Date(user.dob));
+            const [minAge, maxAge] = gradeAgeLimits[grade];
 
-        //     if (userAge < minAge || userAge > maxAge) {
-        //         return NextResponse.json(
-        //             {
-        //                 field: 'grade',
-        //                 message: `Age ${userAge} is not eligible for ${grade}.`,
-        //             },
-        //             { status: 403 }
-        //         );
-        //     }
-        // }
+            if (userAge < minAge || userAge > maxAge) {
+                return NextResponse.json(
+                    {
+                        field: 'grade',
+                        message: `Age ${userAge} is not eligible for ${grade}.`,
+                    },
+                    { status: 403 }
+                );
+            }
+        }
 
-        // // Update fields
-        // user.country = country;
-        // user.city = city;
-        // user.school = school;
-        // user.board = board;
-        // user.grade = grade;
+        // Update fields
+        user.country = country;
+        user.city = city;
+        user.school = school;
+        user.board = board;
+        user.grade = grade;
 
-        // await user.save();
+        await user.save();
 
         return NextResponse.json({ message: 'User details updated successfully' }, { status: 200 });
     } catch (error: any) {
