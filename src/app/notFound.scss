@@ -1,0 +1,32 @@
+.not-found {
+    min-height: 80svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: url('/images/bg.png') no-repeat center top / cover;
+    padding: 2rem;
+
+    .error-code {
+        font-size: clamp(var(--fz-2xl), 13vw, 6rem);
+        font-weight: 800;
+        color: #ab2024;
+        margin-bottom: 1rem;
+    }
+
+    .error-text {
+        font-size: clamp(var(--fz-xl), 10vw, var(--fz-2xl));
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 2rem;
+    }
+
+    .error-subtext {
+        font-size: var(--fz-md);
+        color: #3e3e3e;
+        font-weight: 590;
+        max-width: 500px;
+        margin-bottom: 2rem;
+    }
+}
