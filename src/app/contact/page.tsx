@@ -4,21 +4,47 @@ import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope } from 'react-icons/fa';
 import { toast } from 'sonner';
 import './contact.scss';
 
-const contactInfo = [
+const contactData = [
     {
-        icon: <FaMapMarkerAlt className="icon" />,
-        label: 'Address',
-        detail: 'The First Building, Corporate House A2, 1st Floor, Nyay Marg, Vastrapur, Ahmedabad',
+        country: "India",
+        address:
+            "The First Building, Corporate House A2, 1st Floor, Nyay Marg, Vastrapur, Ahmedabad",
+        phone: "+91-7946011589",
+        email: "competition@ei.study",
     },
     {
-        icon: <FaPhoneAlt className="icon" />,
-        label: 'Phone',
-        detail: '+91-7946011589',
+        country: "India",
+        address:
+            "The CUBE - Karle Town Center, 100 Ft, Nagavara, Bengaluru",
+        phone: "+91-80-4925 2828",
+        email: "competition@ei.study",
     },
     {
-        icon: <FaEnvelope className="icon" />,
-        label: 'E-mail',
-        detail: <a href="mailto:admin@regaloutsourceindia.com">admin@regaloutsourceindia.com</a>,
+        country: "South Africa",
+        address:
+            "2 Ncondo Place, Ridgeside Umhlanga Ridge, Durban 4320, South Africa",
+        phone: "+27827859718",
+        email: "competition@ei.study",
+    },
+    {
+        country: "UAE",
+        address:
+            "Sage Educational Consultants, Office 110, 1st floor, Building 6, Dubai Outsource City",
+        phone: "+971 56 333 7645",
+        email: "competition@ei.study",
+    },
+    {
+        country: "USA",
+        address: "3819 N 3rd St., Ste E-104, Phoenix, Arizona - 85012",
+        phone: "+13323318436",
+        email: "competition@ei.study",
+    },
+    {
+        country: "Kingdom of Saudi Arabia",
+        address:
+            "Office 225, Business Plaza, East Tower, Sharifiyah district, Madinah Road Jeddah",
+        phone: "+971 44396233 / +13323318436",
+        email: "competition@ei.study",
     },
 ];
 
@@ -100,17 +126,25 @@ const Page = () => {
         <div className="contact-container">
             <h1>Get in Touch</h1>
 
-            <div className="contact-top">
-                <div className="contact-info">
-                    {contactInfo.map(({ icon, label, detail }) => (
-                        <div key={label} className="info-section">
-                            <div>{icon}<span>{label}</span></div>
-                            <p>{detail}</p>
+            <div className='contact-top'>
+                <div className="grid">
+                    {contactData.map((item, index) => (
+                        <div className="card" key={index}>
+                            <div className="country">{item.country}</div>
+                            <div className="info">
+                                <p><FaMapMarkerAlt /> Address</p>
+                                <p>{item.address}</p>
+                            </div>
+                            <div className="info">
+                                <p><FaPhoneAlt /> Phone</p>
+                                <p>{item.phone}</p>
+                            </div>
+                            <div className="info">
+                                <p><FaEnvelope />{" "} E-mail</p>
+                                <a href={`mailto:${item.email}`}>{item.email}</a>
+                            </div>
                         </div>
                     ))}
-                </div>
-                <div className="contact-map">
-                    <div className="map-placeholder"></div>
                 </div>
             </div>
 
