@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account Created Successfully</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            color: #fff;
+        }
+
+        body {
+            font-family: Roboto, sans-serif;
+            padding: 1rem;
+            font-size: 17px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            padding: 1.5rem;
+            background-color: #2196f3;
+            border-radius: 7px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .info-box {
+            background-color: #fff;
+            color: #000;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .info-box p {
+            margin: 0.5rem 0;
+            font-size: 16px;
+        }
+
+        .footer p {
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <table role="presentation" cellspacing="0" cellpadding="0" width="100%">
+        <tr>
+            <td>
+                <table role="presentation" cellspacing="0" cellpadding="0" width="700" class="container">
+                    <tr>
+                        <td class="header">
+                            <h2 style="color: #fff">Welcome to League Of Logic</h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="content" style="color: #fff">
+                            <p>Dear {{name}},</p>
+                            <div>
+                                <p>
+                                    Congratulations! Your account has been successfully created with League Of
+                                    Logic.
+                                </p>
+
+                                <div class="info-box">
+                                    <p><strong>Email:</strong> {{email}}</p>
+                                    <p><strong>Account Created On:</strong> {{createdAt}}</p>
+                                    <p><strong>OTP (for verification):</strong> {{otp}}</p>
+                                </div>
+
+                                <p>
+                                    Please use the OTP above to verify your account. This OTP is valid for 10
+                                    minutes.
+                                </p>
+
+                                <p>
+                                    If you didn't request this account, you can safely ignore this email. No further
+                                    action will be taken.
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="footer" style="color: #fff">
+                            <p>Best regards,</p>
+                            <p>League Of Logic Team</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

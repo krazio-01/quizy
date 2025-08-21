@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import PaymentModel from '@/models/PayMentModel';
+import UserModel from '@/models/UserModel';
+import path from 'path';
+import sendEmail from '@/utils/sendMail';
+import { generateMailTemplate } from '@/utils/helperFn';
 
 interface UpdatePaymentParams {
     orderId: string;
@@ -31,6 +35,7 @@ export async function POST(request: NextRequest) {
 
         const { status, gid, merchantUniqueId } = paymentStatus;
 
+        // Update the payment status in the database
         await updatePaymentStatus({
             orderId: merchantUniqueId,
             status,
@@ -68,7 +73,39 @@ async function updatePaymentStatus({ orderId, status, transactionId }: UpdatePay
     try {
         if (status !== 'SENT_FOR_CAPTURE') return;
         status = 'success';
-        await PaymentModel.findOneAndUpdate({ orderId }, { status, transactionId }, { new: true });
+
+        const payment = await PaymentModel.findOneAndUpdate({ orderId }, { status, transactionId }, { new: true });
+
+        if (payment) {
+            const user = await UserModel.findById(payment.userId);
+
+            if (user?.email) {
+                const to = user.email;
+
+                if (!user.hasReceivedWelcomeEmail) {
+                    const accountTemplatePath = path.resolve(process.cwd(), 'src/templates/accountCreation.html');
+                    const accountContent = generateMailTemplate(accountTemplatePath, {
+                        name: `${user.firstName} ${user.lastName}`,
+                        otp: user.otp,
+                    });
+
+                    await sendEmail(to, 'Successful Account Creation', null, accountContent);
+                    user.hasReceivedWelcomeEmail = true;
+                    await user.save();
+                }
+
+                const paymentTemplatePath = path.resolve(process.cwd(), 'src/templates/paymentSuccess.html');
+                const paymentContent = generateMailTemplate(paymentTemplatePath, {
+                    name: `${user.firstName} ${user.lastName}`,
+                    amount: parseFloat(payment.amount).toFixed(2),
+                    orderId: payment.orderId,
+                    transactionId: payment.transactionId,
+                    createdAt: payment.createdAt.toLocaleString(),
+                });
+
+                await sendEmail(to, 'Payment Successful', null, paymentContent);
+            }
+        }
     } catch (error) {
         console.error('Database update error:', error);
         throw error;

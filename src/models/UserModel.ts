@@ -19,6 +19,8 @@ export interface IUser {
     otpExpiry: Date;
     isVerified: boolean;
 
+    hasReceivedWelcomeEmail: boolean;
+
     forgotPasswordToken?: string;
     forgotPasswordTokenExpiry?: number;
 
@@ -49,6 +51,8 @@ const UserSchema: Schema<IUserDocument> = new Schema<IUserDocument>(
         otp: String,
         otpExpiry: Date,
         isVerified: { type: Boolean, default: false },
+
+        hasReceivedWelcomeEmail: { type: Boolean, default: false },
 
         forgotPasswordToken: { type: String },
         forgotPasswordTokenExpiry: { type: Number },
