@@ -16,7 +16,7 @@ const CTASection = ({ buttonText, bannerText, videoSrc, link }: CTASectionProps)
         <video autoPlay muted loop playsInline>
             <source src={videoSrc} type="video/mp4" />
         </video>
-        <p style={bannerText?.style}>{bannerText.text}</p>
+        <p style={bannerText?.style}>{bannerText?.text}</p>
         <Link href={link} className="cta-btn">
             {buttonText}
         </Link>
