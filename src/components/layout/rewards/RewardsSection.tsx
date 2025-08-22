@@ -1,7 +1,7 @@
 import React from 'react';
 import './rewardsSection.scss';
 
-const RewardsSection = ({ title }) => {
+const RewardsSection = ({ title, showLink = false }) => {
     return (
         <section className="rewards">
             <div className="container">
@@ -40,9 +40,11 @@ const RewardsSection = ({ title }) => {
                                     of circuits, wheels, and real-world fun.
                                 </p>
                             </div>
-                            <a href="/rewards" className="more-link">
-                                More Rewards {'>'}
-                            </a>
+                            {showLink &&
+                                <a href="/rewards" className="more-link">
+                                    More Rewards {'>'}
+                                </a>
+                            }
                         </div>
                     </div>
                 </div>

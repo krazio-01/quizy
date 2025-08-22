@@ -218,7 +218,7 @@ const HomePage = () => {
                 </div>
             </section>
 
-            <RewardsSection title="Rewards" />
+            <RewardsSection title="Rewards" showLink={true} />
 
             <section className="register">
                 <h3>How to register?</h3>

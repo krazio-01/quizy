@@ -1,17 +1,16 @@
 .rewards-container {
-    padding-inline: clamp(1rem, 3.8vw, 4rem);
     overflow: hidden;
 
-    > .banner {
-        margin-inline: calc(clamp(1rem, 3.8vw, 4rem) * -1);
+    > *:not(.rewards-wrapper) {
+        padding-inline: clamp(1rem, 3.8vw, 4rem);
     }
 
     .banner {
         position: relative;
-        padding: 6rem 0;
         text-align: center;
-        min-height: 70svh;
+        min-height: clamp(30svh, 40vw, 70svh);
         margin-bottom: 3rem;
+        overflow: hidden;
 
         .rewards-video {
             position: absolute;
@@ -26,17 +25,17 @@
         h1 {
             position: relative;
             margin-inline: auto;
-            font-size: 2.8rem;
-            font-weight: 700;
+            padding-top: clamp(1rem, 10vw, 6rem);
+            font-size: clamp(var(--fz-lg), 8vw, var(--fz-2xl));
             color: #ab2024;
-            line-height: 1.3;
             max-width: 40%;
-            z-index: 100;
+            z-index: 10;
         }
     }
 
     .extra-rewards {
         padding-top: 2rem;
+        margin-bottom: 4rem;
 
         h2 {
             font-size: var(--fz-lg);
@@ -71,14 +70,14 @@
                 p {
                     font-size: var(--fz-sm);
                     color: #3e3e3e;
+                    font-weight: 700;
                 }
             }
         }
     }
 
     .personalized-report {
-        padding: 4rem 0;
-        background: #fff;
+        margin-bottom: 4rem;
 
         .section-title {
             font-size: 1.8rem;
@@ -92,6 +91,7 @@
             font-size: 1rem;
             text-align: center;
             color: #3e3e3e;
+            font-weight: 590;
             margin-bottom: 2.5rem;
         }
 
@@ -119,7 +119,7 @@
 
         .report-text {
             .report-item {
-                margin-bottom: 1.2rem;
+                margin-bottom: 1.5rem;
 
                 h4 {
                     font-size: var(--fz-sm);
@@ -138,43 +138,35 @@
     }
 
     .bonuses {
-        padding: 3rem 2rem;
-
         &__grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            gap: 3rem;
             margin-bottom: 4rem;
 
             .bonus-card {
                 background: #fff;
                 border-radius: 12px;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-                padding: 1.5rem;
-                text-align: center;
-
-                .bonus-image {
-                    img {
-                        width: 100%;
-                        max-width: 380px;
-                        margin: 0 auto 1rem;
-                        aspect-ratio: 4 / 3;
-                        object-fit: cover;
-                        border-radius: 8px;
-                    }
-                }
 
                 h3 {
-                    font-size: 1.25rem;
-                    font-weight: 600;
-                    color: #c00000;
+                    font-size: var(--fz-lg);
+                    color: #ab2024;
                     margin-bottom: 0.5rem;
                 }
 
+                .bonus-video {
+                    video {
+                        width: 100%;
+                        height: auto;
+                        margin: 0 auto 1rem;
+                        object-fit: cover;
+                    }
+                }
+
                 p {
-                    font-size: 1rem;
-                    line-height: 1.6;
-                    color: #333;
+                    font-size: var(--fz-md);
+                    color: #000;
                 }
             }
         }
@@ -183,38 +175,37 @@
             display: flex;
             gap: 2rem;
             align-items: center;
-            flex-wrap: wrap;
+            margin-bottom: 4rem;
 
-            .asset-image {
-                flex: 1;
-                img {
+            .video-container {
+                width: 50%;
+
+                video {
                     width: 100%;
-                    max-width: 420px;
-                    aspect-ratio: 5 / 3;
+                    height: auto;
                     object-fit: cover;
-                    border-radius: 10px;
                 }
             }
 
             .asset-content {
-                flex: 2;
+                width: 50%;
 
                 h3 {
-                    font-size: 1.4rem;
-                    font-weight: 600;
-                    color: #c00000;
+                    font-size: var(--fz-md);
+                    color: #ab2024;
                     margin-bottom: 1rem;
                 }
 
                 p {
-                    margin-bottom: 1rem;
-                    color: #333;
-                    line-height: 1.6;
+                    font-size: var(--fz-sm);
+                    color: #000;
                 }
 
                 ul {
-                    margin: 0 0 1rem 1.5rem;
+                    margin: 0 0 0 1.5rem;
+
                     li {
+                        font-size: var(--fz-sm);
                         list-style: disc;
                         margin-bottom: 0.4rem;
                     }
@@ -223,7 +214,83 @@
         }
     }
 
+    .whatif-section {
+        margin: 4rem 0;
+
+        .title {
+            font-size: var(--fz-lg);
+            color: #ab2024;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: var(--fz-md);
+            color: #000;
+
+            &.space {
+                margin-bottom: 1rem;
+            }
+        }
+
+        .benefits {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+
+            .benefit-card {
+                border-radius: 1rem;
+                width: 30%;
+                text-align: center;
+                transition: transform 0.2s ease-in-out;
+
+                &:hover {
+                    transform: translateY(-5px);
+                }
+
+                .icon {
+                    border-radius: 50%;
+                    width: 120px;
+                    height: 120px;
+                    margin: 0 auto 1rem;
+
+                    img {
+                        width: 100%;
+                        height: auto;
+                        object-fit: cover;
+                    }
+                }
+
+                h3 {
+                    font-size: var(--fz-md);
+                    color: #000;
+                    margin-inline: auto;
+                    max-width: 80%;
+                }
+            }
+        }
+
+        .closing {
+            margin: 0 auto;
+            font-size: 1.1rem;
+
+            p {
+                margin-bottom: 1rem;
+                color: #000;
+                font-weight: 590;
+            }
+        }
+    }
+
     .exposure-partners-container {
+        h3 {
+            font-size: var(--fz-lg);
+            color: #ab2024;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
         .partner-row {
             display: flex;
             flex-wrap: wrap;
@@ -232,14 +299,15 @@
             gap: 1.5rem;
 
             .image-placeholder {
-                width: 220px;
-                height: 200px;
-                background-color: #404040;
-                flex-shrink: 0;
+                width: 50%;
+                height: 100%;
+                background: #404040;
+                outline: 1px solid black;
             }
 
             .partner-text {
                 flex: 1;
+                width: 50%;
                 font-size: var(--fz-sm);
                 font-weight: 590;
                 color: #3e3e3e;
@@ -257,21 +325,49 @@
 
     @media screen and (max-width: 599px) {
         & {
-            .banner h1 {
-                max-width: 85%;
-            }
-
-            .partner-row {
-                .image-placeholder {
-                    width: 100% !important;
+            .banner {
+                h1 {
+                    max-width: 85% !important;
                 }
             }
 
-            .partner-row {
-                flex-direction: column !important;
+            .bonuses {
+                &__grid {
+                    grid-template-columns: 1fr !important;
+                }
 
-                .partner-text {
-                    text-align: left;
+                .asset-discount {
+                    flex-direction: column;
+
+                    .video-container,
+                    .asset-content {
+                        width: 100% !important;
+                    }
+                }
+            }
+
+            .whatif-section {
+                .benefits {
+                    flex-direction: column;
+
+                    .benefit-card {
+                        width: 100% !important;
+                    }
+                }
+            }
+
+            .exposure-partners-container {
+                .partner-row {
+                    flex-direction: column !important;
+
+                    .image-placeholder {
+                        width: 100% !important;
+                    }
+
+                    .partner-text {
+                        text-align: left;
+                        width: 100% !important;
+                    }
                 }
             }
 

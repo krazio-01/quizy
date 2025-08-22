@@ -90,3 +90,40 @@
         }
     }
 }
+
+// mobile media queries
+@media (max-width: 599px) {
+    .rewards {
+        padding-inline: 1rem !important;
+        .reward-card {
+            flex-direction: column;
+
+            &:nth-child(2) {
+                .reward-content {
+                    padding: 1.5rem 1.5rem 0;
+
+                    h3 {
+                        max-width: 100% !important;
+                    }
+
+                    p {
+                        max-width: 100% !important;
+                    }
+                }
+            }
+
+            video {
+                width: 100% !important;
+                margin-bottom: 0.7rem;
+            }
+
+            .reward-content {
+                max-width: 100% !important;
+
+                p {
+                    margin-bottom: 1rem;
+                }
+            }
+        }
+    }
+}
