@@ -3,9 +3,9 @@ import './ctaSection.scss';
 
 interface CTASectionProps {
     buttonText: string;
-    bannerText: {
+    bannerText?: {
         text: string;
-        style: React.CSSProperties;
+        style?: React.CSSProperties;
     };
     videoSrc: string;
     link: string;
