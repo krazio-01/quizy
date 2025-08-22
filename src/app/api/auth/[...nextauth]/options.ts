@@ -82,6 +82,8 @@ export const authOptions: AuthOptions = {
                         JSON.stringify({
                             field: null,
                             message: 'Please Complete Your Profile To Log In.',
+                            email: user.email,
+                            phone: user.phone,
                         })
                     );
                 }

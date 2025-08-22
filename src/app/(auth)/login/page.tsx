@@ -24,13 +24,23 @@ const LoginPage = () => {
             password: passwordRef.current?.value,
         });
 
+        const email = localStorage.getItem('userEmail');
+        const phone = localStorage.getItem('phone');
+        if (!result.error && email && phone) {
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('phone');
+        }
+
         if (result?.error) {
             try {
                 const parsedError = JSON.parse(result.error);
 
                 if (!parsedError.field) {
-                    if (parsedError.message === 'Please Complete Your Profile To Log In.')
+                    if (parsedError.message === 'Please Complete Your Profile To Log In.') {
+                        localStorage.setItem('userEmail', parsedError?.email);
+                        localStorage.setItem('phone', parsedError?.phone);
                         router.push('/register?step=3');
+                    }
                     toast.error(parsedError.message);
                     return;
                 }

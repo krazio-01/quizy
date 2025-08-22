@@ -127,9 +127,6 @@ const Page = () => {
             toast.success('Profile updated successfully!');
 
             if (response.status === 200) await handlePayment();
-
-            // localStorage.removeItem('userEmail');
-            // localStorage.removeItem('phone');
         } catch (error: any) {
             const field = error.response?.data?.field;
             const message = error.response?.data?.message || 'User update failed';
