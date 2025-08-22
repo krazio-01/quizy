@@ -131,6 +131,10 @@ const HomePage = () => {
 
             <CTASection
                 buttonText="Try Practice Quiz"
+                bannerText={{
+                    text: 'See how sharp your logical thinking is!',
+                    style: { fontSize: 'var(--fz-xl)', width: '350px' },
+                }}
                 videoSrc="/videos/tryQuizBanner.mp4"
                 link="/quiz/mock/register"
             />
@@ -230,7 +234,15 @@ const HomePage = () => {
                 </div>
             </section>
 
-            <CTASection buttonText="Register Now" videoSrc="/videos/homepageBanner2.mp4" link="/register" />
+            <CTASection
+                buttonText="Register Now"
+                bannerText={{
+                    text: 'Give your child the chance to shine globally and build future-ready skills',
+                    style: { fontSize: 'var(--fz-lg)', width: '350px' },
+                }}
+                videoSrc="/videos/homepageBanner2.mp4"
+                link="/register"
+            />
 
             <section className="about-ie">
                 <h3>About Ei</h3>

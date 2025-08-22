@@ -1,12 +1,22 @@
-import Link from "next/link";
+import Link from 'next/link';
 import './ctaSection.scss';
 
-const CTASection = ({ buttonText, videoSrc, link }: { buttonText: string; videoSrc: string; link: string }) => (
+interface CTASectionProps {
+    buttonText: string;
+    bannerText: {
+        text: string;
+        style: React.CSSProperties;
+    };
+    videoSrc: string;
+    link: string;
+}
+
+const CTASection = ({ buttonText, bannerText, videoSrc, link }: CTASectionProps) => (
     <section className="practice-cta">
         <video autoPlay muted loop playsInline>
             <source src={videoSrc} type="video/mp4" />
         </video>
-        <p></p>
+        <p style={bannerText.style}>{bannerText.text}</p>
         <Link href={link} className="cta-btn">
             {buttonText}
         </Link>
