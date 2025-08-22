@@ -142,7 +142,7 @@ const Page = () => {
                             <li>A badge of talent that stands out everywhere</li>
                         </ul>
                         <p>
-                            Ei ATS is not for every student, but being in the League of Logic means you're closer than
+                            Ei ATS is not for every student, but being in the League of Logic means you&apos;re closer than
                             most.
                         </p>
                     </div>
