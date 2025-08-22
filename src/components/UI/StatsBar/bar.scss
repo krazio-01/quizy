@@ -5,8 +5,6 @@
     padding: 0.5rem 2.5rem;
     background-color: #000;
     border-radius: 90px;
-    // max-width: 90%;
-    border: 0 solid #e5e7eb;
 
     .stat-card {
         display: flex;
@@ -39,7 +37,9 @@
 
     @media screen and (max-width: 599px) {
         & {
-            padding: 2rem;
+            padding: 1.5rem;
+            border-radius: 30px !important;
+            margin-inline: 1rem;
             flex-direction: column;
 
             .stat-card {

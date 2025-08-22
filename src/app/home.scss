@@ -13,7 +13,7 @@
 
     .hero {
         position: relative;
-        padding: 4rem 0;
+        min-height: clamp(30svh, 40vw, 70svh);
         text-align: center;
         overflow: hidden;
 
@@ -30,7 +30,8 @@
         .hero-content {
             position: relative;
             z-index: 10;
-            margin: 0 auto;
+            margin-inline: auto;
+            margin-top: 6rem;
             min-height: 40vh;
 
             h1 {
@@ -54,7 +55,7 @@
 
     .stats-container {
         margin-inline: auto;
-        max-width: 85%;
+        max-width: 900px;
         margin-bottom: 2rem;
     }
 

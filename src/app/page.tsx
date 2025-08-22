@@ -25,19 +25,19 @@ const feature = [
     {
         title: 'Develop Computational Thinking',
         description:
-            'We want to help you develop critical skills such as problem-solving, pattern thinking, logic, and algorithms. These skills help solve problems with real-world thinking.',
+            'We want to help you develop critical skills such as problem-solving, logical reasoning, and algorithmic thinking. These skills will help you tackle complex problems with ease.',
         icon: '/images/home/icon1.png',
     },
     {
         title: 'Promote Collaboration',
         description:
-            'Collaboration is the key to success in the 21st century. Through team activities, kids learn how to think with others, share ideas, and learn together.',
+            "Collaboration is the key to success in the 21st century workforce. Through this test you will learn effective communication skills, ways to share ideas and leverage each other's strengths to solve problems.",
         icon: '/images/home/icon2.png',
     },
     {
         title: 'Inspire Creativity',
         description:
-            "Unleash your child's creative and innovative solutions to fascinating challenges in ways that spill into all aspects of life!",
+            'Unleash your creativity and find innovative solutions to fascinating problems. Creativity is a superpower that can lead to success in all aspects of life!',
         icon: '/images/home/icon3.png',
     },
 ];
@@ -102,11 +102,11 @@ const HomePage = () => {
                             across all curricula.
                         </p>
                         <p>
-                            In today&apos;s rapidly changing world, academic success alone is not
-                            enough. Children must be equipped with the ability to think independently, solve problems in
-                            innovative ways, and engage with the world through logic and reflection. That&apos;s exactly
-                            where the League of Logic steps in — it goes beyond conventional academic exams to focus on
-                            nurturing cognitive skills that are essential for the 21st century.
+                            In today&apos;s rapidly changing world, academic success alone is not enough. Children must
+                            be equipped with the ability to think independently, solve problems in innovative ways, and
+                            engage with the world through logic and reflection. That&apos;s exactly where the League of
+                            Logic steps in — it goes beyond conventional academic exams to focus on nurturing cognitive
+                            skills that are essential for the 21st century.
                         </p>
                     </div>
                 </div>
@@ -152,29 +152,32 @@ const HomePage = () => {
                         <div className="grade-card">
                             <h4>Grades 3 &amp; 4</h4>
                             <p>
-                                Jump into fun, game-like challenges that spark logical thinking and playful
-                                problem-solving.
+                                Introduces younger students to structured thinking in a simple, engaging way. Tasks are
+                                focused on helping them identify patterns, follow sequences, and understand logical
+                                relationships.
                             </p>
                         </div>
                         <div className="grade-card">
                             <h4>Grades 5 &amp; 6</h4>
                             <p>
-                                Tackle more in-depth challenges that require sharp logic, critical thinking, and
-                                creativity.
+                                Challenges deepen in complexity, helping students build computational thinking
+                                strategies like decomposition, pattern recognition, and stepwise reasoning.
                             </p>
                         </div>
                         <div className="grade-card">
                             <h4>Grades 7 &amp; 8</h4>
                             <p>
-                                Explore open-ended, complex tasks that strengthen logical fluency and advanced
-                                problem-solving.
+                                Students deal with open-ended, logic-driven scenarios that require methodical thinking
+                                and adaptability. These challenges simulate the cognitive demands of upper middle school
+                                and real-life thinking.
                             </p>
                         </div>
                         <div className="grade-card">
                             <h4>Grades 9 &amp; 10</h4>
                             <p>
-                                Take on multidisciplinary challenges designed to elevate analytical thinking and foster
-                                innovation.
+                                Students face real-world style challenges that integrate critical reasoning with
+                                analytical decision-making. This level prepares students for high school-level academic
+                                reasoning and future problem-solving beyond school.
                             </p>
                         </div>
                     </div>
@@ -186,8 +189,8 @@ const HomePage = () => {
                     <h2 className="section-title">Why It Matters</h2>
 
                     <p className="intro">
-                        Because today&apos;s world doesn&apos;t need more people with memorized answers — it needs people who
-                        can think for themselves.
+                        Because today&apos;s world doesn&apos;t need more people with memorized answers — it needs
+                        people who can think for themselves.
                     </p>
 
                     <span>In the league of logic, your child will:</span>
@@ -212,8 +215,8 @@ const HomePage = () => {
                     </p>
 
                     <p className="closing">
-                        Whether you&apos;re a future coder, creator, entrepreneur, or simply a curious mind — this challenge
-                        is your stage.
+                        Whether you&apos;re a future coder, creator, entrepreneur, or simply a curious mind — this
+                        challenge is your stage.
                     </p>
                 </div>
             </section>
