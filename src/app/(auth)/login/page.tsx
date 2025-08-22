@@ -24,13 +24,6 @@ const LoginPage = () => {
             password: passwordRef.current?.value,
         });
 
-        const email = localStorage.getItem('userEmail');
-        const phone = localStorage.getItem('phone');
-        if (!result.error && email && phone) {
-            localStorage.removeItem('userEmail');
-            localStorage.removeItem('phone');
-        }
-
         if (result?.error) {
             try {
                 const parsedError = JSON.parse(result.error);
@@ -59,6 +52,10 @@ const LoginPage = () => {
                 toast.error(result.error);
             }
         } else if (result?.url) {
+            if (localStorage.getItem('userEmail') && localStorage.getItem('phone')) {
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('phone');
+            }
             toast.success('Login successful');
             router.push('/');
         }
