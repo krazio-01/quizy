@@ -1,10 +1,10 @@
 'use client';
 import { useEffect, useState, useCallback, useRef } from 'react';
 import axios from 'axios';
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import { FiDownload } from 'react-icons/fi';
-import { FiChevronRight } from "react-icons/fi";
+import { FiChevronRight } from 'react-icons/fi';
 import { toast } from 'sonner';
 import './profile.scss';
 
@@ -116,7 +116,7 @@ const ProfilePage = () => {
 
     const handleDownloadInvoice = () => {
         if (!user?.billing) {
-            toast.error("No billing information available");
+            toast.error('No billing information available');
             return;
         }
 
@@ -125,11 +125,11 @@ const ProfilePage = () => {
         // --- HEADER ---
         doc.setFontSize(22);
         doc.setTextColor(40);
-        doc.text("League of Logic", 20, 20);
+        doc.text('League of Logic', 20, 20);
 
         doc.setFontSize(14);
         doc.setTextColor(100);
-        doc.text("Invoice", 20, 35);
+        doc.text('Invoice', 20, 35);
         doc.text(`Date: ${new Date().toLocaleDateString()}`, 150, 35);
 
         // --- USER INFO ---
@@ -140,7 +140,7 @@ const ProfilePage = () => {
 
         autoTable(doc, {
             startY: 75,
-            head: [["Description", "HSN", "Qty", "Rate (AED)", "IGST", "Amount", "Status"]],
+            head: [['Description', 'HSN', 'Qty', 'Rate (AED)', 'IGST', 'Amount', 'Status']],
             body: [
                 [
                     user.billing.description,
@@ -152,26 +152,24 @@ const ProfilePage = () => {
                     user.billing.status,
                 ],
             ],
-            theme: "grid",
+            theme: 'grid',
             headStyles: {
                 fillColor: [220, 53, 69],
                 textColor: [255, 255, 255],
-                halign: "center",
+                halign: 'center',
             },
-            bodyStyles: { halign: "center" },
+            bodyStyles: { halign: 'center' },
         });
 
         // --- FOOTER ---
         const finalY = (doc as any).lastAutoTable.finalY || 120;
         doc.setFontSize(11);
         doc.setTextColor(120);
-        doc.text(
-            "Thank you for your payment. Please contact support if you have any questions.",
-            20,
-            finalY + 20
-        );
+        doc.text('Thank you for your payment. Please contact support if you have any questions.', 20, finalY + 20);
 
-        doc.save(`invoice-${user.userId}.pdf`);
+        const fileName = `invoice-${user.firstName}_${user.lastName}-${new Date().toISOString().split('T')[0]}.pdf`;
+
+        doc.save(fileName);
     };
 
     if (loading) return <div className="profile-page loading">Loading...</div>;
