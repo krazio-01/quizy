@@ -167,7 +167,7 @@ const ProfilePage = () => {
         doc.setTextColor(120);
         doc.text('Thank you for your payment. Please contact support if you have any questions.', 20, finalY + 20);
 
-        const fileName = `invoice-${user.firstName}_${user.lastName}-${new Date().toISOString().split('T')[0]}.pdf`;
+        const fileName = `invoice-${user?.firstName}_${user?.lastName}-${new Date().toISOString().split('T')[0]}.pdf`;
 
         doc.save(fileName);
     };
@@ -182,7 +182,7 @@ const ProfilePage = () => {
                     <div className="user-info">
                         <img src={user.avatar || '/images/avatar.png'} alt="User" className="avatar" />
                         <div>
-                            <span className="username">{user.firstName}</span>
+                            <span className="username">{user?.firstName}</span>
                             <span className="role">User</span>
                         </div>
                     </div>
