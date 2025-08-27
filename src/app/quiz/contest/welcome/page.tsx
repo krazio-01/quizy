@@ -23,14 +23,17 @@ const Page = () => {
     return (
         <div className="welcome-container">
             <div className="banner">
+                <video autoPlay muted loop playsInline className="welcome-video">
+                    <source src="/videos/contestWelcome.mp4" type="video/mp4" />
+                </video>
                 <h1>Welcome to the League of Logic.</h1>
             </div>
 
             <section className="info-section">
                 <h3>Important Information</h3>
-                <p><strong>Test Date -</strong> To be announced</p>
-                <p><strong>Time -</strong> 4:00 PM to 5:00 PM (local time)</p>
-                <p><strong>System Requirements -</strong> Desktop/Laptop with stable internet connection and Chrome browser</p>
+                <p><strong>Test Date -</strong></p>
+                <p><strong>Time -</strong></p>
+                <p><strong>System Requirements -</strong></p>
             </section>
 
             <section className="faq-section">
@@ -45,10 +48,12 @@ const Page = () => {
 
             <section className="contact-section">
                 <h3>Contact Us</h3>
-                <p>
-                    If you have any queries, feel free to email us at{' '}
-                    <a href="mailto:competition@ei.study">competition@ei.study</a>
-                </p>
+                <div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
             </section>
         </div>
     );
