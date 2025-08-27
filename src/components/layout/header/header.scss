@@ -75,10 +75,17 @@
     .logout-btn button {
         background: none;
         border: none;
-        color: #404040;
+        color: #ab2024;
+        padding: 7px;
+        border-radius: 10px;
         font-weight: 590;
         cursor: pointer;
-        padding: 0;
+        transition: all 300ms ease;
+
+        &:hover {
+            color: #8d1e22;
+            text-decoration: underline;
+        }
     }
 
     @media (max-width: 768px) {
