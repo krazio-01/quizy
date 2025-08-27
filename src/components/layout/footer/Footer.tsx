@@ -15,14 +15,14 @@ const Footer = () => {
                     className="footer-logo"
                 />
                 <div>
-                    <Link href="/quiz/register">League of Logic</Link>
-                    <Link href="/practice">Practice Test</Link>
-                    <Link href="/awards">Awards</Link>
+                    <Link href="/">League of Logic</Link>
+                    <Link href="/quiz/mock/register">Practice Test</Link>
+                    <Link href="/quiz/contest/rewards">Rewards</Link>
                 </div>
                 <div>
                     <Link href="/contact">Contact Us</Link>
-                    <Link href="/about">About Ei</Link>
-                    <Link href="/faq">FAQ</Link>
+                    <Link href="/">About Ei</Link>
+                    <Link href="/">FAQ</Link>
                 </div>
                 <div>
                     <Link href="/facebook">Facebook</Link>
