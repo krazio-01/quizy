@@ -1,42 +1,82 @@
 .mock-success-container {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: end;
     margin-bottom: 4rem;
-    min-height: 50svh;
-    background: url('/images/bg.png') no-repeat center top / cover;
 
     .score-status {
-        p {
-            font-size: var(--fz-xl);
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        aspect-ratio: 16 / 6;
+        margin-bottom: 3rem;
+
+        .score-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .banner-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: relative;
+            z-index: 10;
+
+            p {
+                font-size: clamp(var(--fz-lg), 6vw, var(--fz-xl));
+                font-weight: 600;
+                color: #2c3e50;
+                margin-bottom: 2rem;
+            }
+
+            h1 {
+                font-size: clamp(var(--fz-xl), 10vw, var(--fz-2xl));
+                color: #ab2024;
+                max-width: 400px;
+                text-align: center;
+            }
+
+            .sub-text {
+                font-size: var(--fz-sm);
+                font-weight: 590;
+                text-align: center;
+                margin: 1.5rem auto;
+                color: #3e3e3e;
+            }
+
+            a {
+                padding: 0.7rem 2rem;
+                color: #fff;
+                border-radius: 12px;
+                border: 2px solid #630003;
+                background: #ab2024;
+                box-shadow: 0 4px 49px 0 rgba(0, 0, 0, 0.16);
+            }
         }
     }
 
-    h1 {
-        font-size: var(--fz-2xl);
-        color: #ab2024;
-        max-width: 40%;
-        text-align: center;
-    }
+    @media screen and (max-width: 599px) {
+        & {
+            .score-status {
+                .banner-content {
+                    padding: 1rem 0;
+                    max-width: 90%;
 
-    .sub-text {
-        font-size: var(--fz-sm);
-        font-weight: 590;
-        margin: 1.5em 0;
-        color: #3e3e3e;
-    }
+                    p {
+                        margin-bottom: 1rem !important;
+                    }
 
-    a {
-        padding: 0.7rem 2rem;
-        color: #fff;
-        border-radius: 12px;
-        border: 2px solid #630003;
-        background: var(--Primary, #ab2024);
-        box-shadow: 0 4px 49px 0 rgba(0, 0, 0, 0.16);
+                    .sub-text {
+                        margin: 1rem auto !important;
+                    }
+                }
+            }
+        }
     }
 }
 

@@ -7,8 +7,13 @@
         margin-inline: auto;
 
         .hero-content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            aspect-ratio: 16 / 5;
+            padding-top: 4rem;
             position: relative;
-            padding: 4rem 1.5rem 0;
 
             .quizRegister-video {
                 position: absolute;
@@ -46,7 +51,8 @@
             }
 
             .grade-selector-container {
-                max-width: clamp(100px, 80vw, 800px);
+                width: 100%;
+                max-width: 900px;
                 margin-inline: auto;
             }
         }
@@ -112,6 +118,14 @@
 
     @media screen and (max-width: 599px) {
         & {
+            > div {
+                .hero-content-wrapper {
+                    .grade-selector-container {
+                        max-width: 100% !important;
+                    }
+                }
+            }
+
             .quiz-form {
                 max-width: 90% !important;
             }

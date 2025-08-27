@@ -39,7 +39,7 @@ const Page = () => {
         };
 
         try {
-            const { data } = await axios.post('/api/quiz/mockTest', payload);
+            await axios.post('/api/quiz/mockTest', payload);
             setSelectedGrade(selectedGrade)
             router.push('/quiz/mock/rules');
         } catch (error: any) {
@@ -57,10 +57,12 @@ const Page = () => {
                     <video autoPlay muted loop playsInline className="quizRegister-video">
                         <source src="/videos/quizbanner1.mp4" type="video/mp4" />
                     </video>
-                    
-                    <h1>Practice Quiz</h1>
-                    <p className="subtitle">Ready to test your skills?</p>
-                    <p className="label">Select Your Grade</p>
+
+                    <div>
+                        <h1>Practice Quiz</h1>
+                        <p className="subtitle">Ready to test your skills?</p>
+                        <p className="label">Select Your Grade</p>
+                    </div>
 
                     <div className="grade-selector-container">
                         <StatsBar
