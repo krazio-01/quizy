@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import './rewardsSection.scss';
 
 const RewardsSection = ({ title, showLink = false }) => {
@@ -41,9 +42,9 @@ const RewardsSection = ({ title, showLink = false }) => {
                                 </p>
                             </div>
                             {showLink &&
-                                <a href="/rewards" className="more-link">
+                                <Link href="/quiz/contest/rewards" className="more-link">
                                     More Rewards {'>'}
-                                </a>
+                                </Link>
                             }
                         </div>
                     </div>

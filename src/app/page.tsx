@@ -192,7 +192,7 @@ const HomePage = () => {
                 <div className="container">
                     <h2 className="section-title">Why It Matters</h2>
 
-                    <p className="intro">
+                    <p>
                         Because today&apos;s world doesn&apos;t need more people with memorized answers — it needs
                         people who can think for themselves.
                     </p>
@@ -213,7 +213,7 @@ const HomePage = () => {
                         </li>
                     </ul>
 
-                    <p className="highlight">
+                    <p>
                         Because no matter your age or grade, logic is your superpower.And in the League of Logic, we
                         don&apos;t just test it — we train it, grow it, and celebrate it.
                     </p>

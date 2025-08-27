@@ -75,6 +75,8 @@
             }
 
             .text {
+                max-width: 50%;
+
                 h2 {
                     color: #ab2024;
                     font-size: clamp(var(--fz-lg), 7vw, var(--fz-xl));
@@ -195,52 +197,44 @@
 
         .container {
             margin: 0 auto;
-        }
 
-        .section-title {
-            text-align: center;
-            font-size: clamp(var(--fz-lg), 7vw, var(--fz-xl));
-            color: #ab2024;
-            margin-bottom: 2rem;
-        }
+            .section-title {
+                text-align: center;
+                font-size: clamp(var(--fz-lg), 7vw, var(--fz-xl));
+                color: #ab2024;
+                margin-bottom: 2rem;
+            }
 
-        .intro {
-            font-size: var(--fz-sm);
-            color: #000;
-            margin-bottom: 1rem;
-            font-weight: 510;
-        }
-
-        .benefits {
-            list-style: none;
-            margin-bottom: 1rem;
-
-            li {
-                display: flex;
-                align-items: flex-start;
-                gap: 0.3rem;
+            span,
+            p {
                 font-size: var(--fz-sm);
-                color: #000;
+                color: #3e3e3e;
+                margin-bottom: 1rem;
                 font-weight: 510;
+            }
 
-                .icon {
-                    color: #000;
-                    font-weight: bold;
-                    flex-shrink: 0;
-                    font-size: 1rem;
+            .benefits {
+                list-style: none;
+                margin-bottom: 1rem;
+
+                li {
+                    gap: 0.3rem;
+                    font-size: var(--fz-sm);
+                    color: #3e3e3e;
+                    font-weight: 510;
+
+                    .icon {
+                        color: #3e3e3e;
+                        font-weight: bold;
+                        flex-shrink: 0;
+                        font-size: 1rem;
+                    }
                 }
             }
-        }
 
-        .highlight {
-            font-size: var(--fz-sm);
-            color: #000;
-            margin-bottom: 1.5rem;
-        }
-
-        .closing {
-            font-size: var(--fz-sm);
-            color: #000;
+            .closing {
+                margin-bottom: 0;
+            }
         }
     }
 
@@ -356,6 +350,10 @@
             flex-direction: column;
 
             video {
+                max-width: 100% !important;
+            }
+
+            .text {
                 max-width: 100% !important;
             }
         }
