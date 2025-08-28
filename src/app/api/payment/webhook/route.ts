@@ -114,7 +114,7 @@ function getPaymentTemplateData(status: string, payment: any, user: any, transac
     let statusText = 'Unknown Status';
     let message = 'We were unable to determine your payment status.';
     let containerColor = '#ffd382';
-    let containerStyle = `style="background-color: ${containerColor}`;
+    const containerStyle = `style="background-color: ${containerColor}`;
 
     switch (status?.toUpperCase()) {
         case 'SUCCESS':
