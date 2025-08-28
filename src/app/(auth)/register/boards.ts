@@ -1,1 +1,1 @@
-export const Boards = ['ICSE', 'CBSE', 'Common Core', 'Cambridge'];
+export const Boards = ['ICSE', 'CBSE', 'IB', 'Common Core', 'Cambridge'];
