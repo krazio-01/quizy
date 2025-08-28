@@ -330,7 +330,10 @@
 @media (max-width: 599px) {
     .hero {
         .hero-content {
+            margin-top: 3rem !important;
+
             p {
+                margin-bottom: 1rem !important;
                 max-width: 100% !important;
             }
 

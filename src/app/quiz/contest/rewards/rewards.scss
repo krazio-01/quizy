@@ -8,7 +8,7 @@
     .banner {
         position: relative;
         text-align: center;
-        min-height: clamp(30svh, 40vw, 70svh);
+        aspect-ratio: 16 / 7;
         margin-bottom: 3rem;
         overflow: hidden;
 
