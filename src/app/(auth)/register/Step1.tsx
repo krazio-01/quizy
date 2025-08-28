@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import ConfirmDialog from '@/components/UI/ConfirmDialog/ConfirmDialog';
 import '../auth.scss';
 
 interface Step2Props {
@@ -17,6 +18,7 @@ interface Step2Props {
 
 const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2Props) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
+    const [confirmOpen, setConfirmOpen] = useState(false);
     const [formData, setFormData] = useState<{
         firstName: string;
         lastName: string;
@@ -66,158 +68,163 @@ const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2P
             toast.error('Please accept the terms.');
             return;
         }
+
+        setConfirmOpen(true);
+    };
+
+    const handleConfirm = () => {
+        setConfirmOpen(false);
         onNext(formData);
     };
 
     return (
-        <form className="step-form">
-            <div className="form-group">
-                <label htmlFor="firstName">Name*</label>
-                <input
-                    placeholder="John"
-                    id="firstName"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    required
-                    className={fieldErrors.firstName ? 'error' : ''}
-                />
-                {fieldErrors.firstName && <p className="error-message">{fieldErrors.firstName}</p>}
-            </div>
+        <>
+            <form className="step-form">
+                <div className="form-group">
+                    <label htmlFor="firstName">Name*</label>
+                    <input
+                        placeholder="John"
+                        id="firstName"
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        required
+                        className={fieldErrors.firstName ? 'error' : ''}
+                    />
+                    {fieldErrors.firstName && <p className="error-message">{fieldErrors.firstName}</p>}
+                </div>
 
-            <div className="form-group">
-                <label htmlFor="lastName">Last name*</label>
-                <input
-                    placeholder="Smith"
-                    id="lastName"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    required
-                    className={fieldErrors.lastName ? 'error' : ''}
-                />
-                {fieldErrors.lastName && <p className="error-message">{fieldErrors.lastName}</p>}
-            </div>
+                <div className="form-group">
+                    <label htmlFor="lastName">Last name*</label>
+                    <input
+                        placeholder="Smith"
+                        id="lastName"
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        required
+                        className={fieldErrors.lastName ? 'error' : ''}
+                    />
+                    {fieldErrors.lastName && <p className="error-message">{fieldErrors.lastName}</p>}
+                </div>
 
-            <div className="form-group">
-                <label htmlFor="dob">Date of birth*</label>
-                <DatePicker
-                    placeholderText="Choose your date of birth"
-                    selected={formData.dob}
-                    onChange={(date: Date | null) => {
-                        if (date) setFormData({ ...formData, dob: date });
-                    }}
-                    id="dob"
-                    name="dob"
-                    dateFormat="yyyy-MM-dd"
-                    required
-                    showYearDropdown
-                    scrollableYearDropdown
-                    yearDropdownItemNumber={100}
-                    className={`${fieldErrors.dob ? 'error' : ''} custom-datepicker-input`}
-                    calendarClassName="custom-datepicker-calendar"
-                />
-                {fieldErrors.dob && <p className="error-message">{fieldErrors.dob}</p>}
-            </div>
+                <div className="form-group">
+                    <label htmlFor="dob">Date of birth*</label>
+                    <DatePicker
+                        placeholderText="Choose your date of birth"
+                        selected={formData.dob}
+                        onChange={(date: Date | null) => {
+                            if (date) setFormData({ ...formData, dob: date });
+                        }}
+                        id="dob"
+                        name="dob"
+                        dateFormat="yyyy-MM-dd"
+                        required
+                        showYearDropdown
+                        scrollableYearDropdown
+                        yearDropdownItemNumber={100}
+                        className={`${fieldErrors.dob ? 'error' : ''} custom-datepicker-input`}
+                        calendarClassName="custom-datepicker-calendar"
+                    />
+                    {fieldErrors.dob && <p className="error-message">{fieldErrors.dob}</p>}
+                </div>
 
-            <div className="form-group">
-                <label htmlFor="email">Email ID*</label>
-                <span>
-                    Please enter correct email address as this will be used for all future communications regarding the
-                    test.
-                </span>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className={fieldErrors.email ? 'error' : ''}
-                />
-                {fieldErrors.email && <p className="error-message">{fieldErrors.email}</p>}
-            </div>
+                <div className="form-group">
+                    <label htmlFor="email">Email ID*</label>
+                    <span>
+                        Please enter correct email address as this will be used for all future communications regarding the
+                        test.
+                    </span>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        className={fieldErrors.email ? 'error' : ''}
+                    />
+                    {fieldErrors.email && <p className="error-message">{fieldErrors.email}</p>}
+                </div>
 
-            <div className="form-group">
-                <label htmlFor="password">Password*</label>
-                <p>Minimum 8 characters required</p>
-                <p>Atleast 1 special character</p>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                    className={fieldErrors.password ? 'error' : ''}
-                />
-                {fieldErrors.password && <p className="error-message">{fieldErrors.password}</p>}
-            </div>
+                <div className="form-group">
+                    <label htmlFor="password">Password*</label>
+                    <p>Minimum 8 characters required</p>
+                    <p>Atleast 1 special character</p>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                        className={fieldErrors.password ? 'error' : ''}
+                    />
+                    {fieldErrors.password && <p className="error-message">{fieldErrors.password}</p>}
+                </div>
 
-            <div className="form-group">
-                <label htmlFor="confirmPassword">Confirm password*</label>
-                <input
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    required
-                    className={fieldErrors.confirmPassword ? 'error' : ''}
-                />
-                {fieldErrors.confirmPassword && <p className="error-message">{fieldErrors.confirmPassword}</p>}
-            </div>
+                <div className="form-group">
+                    <label htmlFor="confirmPassword">Confirm password*</label>
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        required
+                        className={fieldErrors.confirmPassword ? 'error' : ''}
+                    />
+                    {fieldErrors.confirmPassword && <p className="error-message">{fieldErrors.confirmPassword}</p>}
+                </div>
 
-            <div className="form-group">
-                <label htmlFor="phone">Phone number, with country code*</label>
-                <input
-                    placeholder="For eg. +44 7896543201"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    required
-                    className={fieldErrors.phone ? 'error' : ''}
-                />
-                {fieldErrors.phone && <p className="error-message">{fieldErrors.phone}</p>}
-            </div>
+                <div className="form-group">
+                    <label htmlFor="phone">Phone number, with country code*</label>
+                    <input
+                        placeholder="For eg. +44 7896543201"
+                        id="phone"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        required
+                        className={fieldErrors.phone ? 'error' : ''}
+                    />
+                    {fieldErrors.phone && <p className="error-message">{fieldErrors.phone}</p>}
+                </div>
 
-            <p className="auth-form-footer">
-                <input
-                    type="checkbox"
-                    id="terms"
-                    checked={termsAccepted}
-                    onChange={(e) => setTermsAccepted(e.target.checked)}
-                />
-                <label htmlFor="terms">
-                    I acknowledge and accept{' '}
-                    <Link className="tAndc" href="terms-and-conditions">
-                        all terms and conditions
-                    </Link>
-                </label>
-            </p>
+                <p className="auth-form-footer">
+                    <input
+                        type="checkbox"
+                        id="terms"
+                        checked={termsAccepted}
+                        onChange={(e) => setTermsAccepted(e.target.checked)}
+                    />
+                    <label htmlFor="terms">
+                        I acknowledge and accept{' '}
+                        <Link className="tAndc" href="terms-and-conditions">
+                            all terms and conditions
+                        </Link>
+                    </label>
+                </p>
 
-            <div className="form-buttons">
-                {/* <button type="button" className="back-btn" onClick={onBack}>
+                <div className="form-buttons">
+                    {/* <button type="button" className="back-btn" onClick={onBack}>
                     Back
                 </button> */}
-                <button type="button" className="next-btn" onClick={handleNext} disabled={loading}>
-                    {loading ? 'Registering...' : 'Next'}
-                </button>
-            </div>
-        </form>
+                    <button type="button" className="next-btn" onClick={handleNext} disabled={loading}>
+                        {loading ? 'Registering...' : 'Next'}
+                    </button>
+                </div>
+            </form>
+
+            <ConfirmDialog
+                open={confirmOpen}
+                title="Confirm Submission"
+                message="This information cannot be changed later. Are you sure you want to continue?"
+                onConfirm={handleConfirm}
+                onCancel={() => setConfirmOpen(false)}
+            />
+        </>
     );
 };
 
 export default Step1;
-
-// const CustomInput = React.forwardRef(({ value, onClick }: any, ref) => (
-//     <button
-//         type="button"
-//         onClick={onClick}
-//         ref={ref}
-//         className="custom-datepicker-button"
-//     >
-//         {value || 'Select date'}
-//     </button>
-// ));

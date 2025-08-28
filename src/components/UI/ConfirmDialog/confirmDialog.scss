@@ -1,0 +1,82 @@
+@use 'sass:color';
+
+.confirm-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.confirm-box {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    animation: scaleIn 0.2s ease-in-out;
+    text-align: center;
+
+    h2 {
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        color: #3e3e3e;
+        margin-bottom: 1.5rem;
+    }
+}
+
+.confirm-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+
+    .cancel-btn {
+        flex: 1;
+        padding: 0.6rem 1rem;
+        border: none;
+        border-radius: 8px;
+        background: #e5e5e5;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+
+        &:hover {
+            background: #d4d4d4;
+        }
+    }
+
+    .confirm-btn {
+        flex: 1;
+        padding: 0.6rem 1rem;
+        border: none;
+        border-radius: 8px;
+        background: #ab2024;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+
+        &:hover {
+            background: color.adjust(#ab2024, $lightness: 10%);
+        }
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
