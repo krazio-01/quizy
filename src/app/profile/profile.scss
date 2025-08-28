@@ -284,13 +284,29 @@
                 .status {
                     display: flex;
                     align-items: center;
+                    justify-content: center;
                     font-size: var(--fz-sm);
                     font-weight: 590;
                     color: #3e3e3e;
+                    width: fit-content;
+                    padding: 0.5rem;
+                    border-radius: 10px;
+                    font-weight: 700;
 
-                    .check {
-                        margin-left: 6px;
-                        color: #2e7d32;
+                    &.paid {
+                        outline: 1px solid #44B61E;
+                        color: #44B61E;
+                    }
+
+                    &.failed {
+                        outline: 1px solid #EA292E;
+                        color: #EA292E;
+                    }
+
+                    span {
+                        margin-left: 0.3rem;
+                        font-weight: 700;
+                        display: flex;
                     }
                 }
             }

@@ -1,22 +1,18 @@
 'use client';
 import { useEffect, useState, useCallback, useRef } from 'react';
+import { MdCheckCircle, MdOutlineCancel } from 'react-icons/md';
 import axios from 'axios';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import { FiDownload } from 'react-icons/fi';
 import { FiChevronRight } from 'react-icons/fi';
 import { toast } from 'sonner';
 import './profile.scss';
 
-interface UserDetails {
-    userId: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    avatar: string;
+interface PaymentDetails {
     billing: {
+        transactionId: string;
         description: string;
-        hsn: string;
+        hsnSac: string;
         qty: number;
         rate: number;
         igst: string;
@@ -27,7 +23,9 @@ interface UserDetails {
 }
 
 const ProfilePage = () => {
-    const [user, setUser] = useState<UserDetails | null>(null);
+    const [paymentInfoDB, setPaymentInfoDB] = useState<PaymentDetails | null>(null);
+    const [paymentInfoPayglocal, setPaymentInfoPayglocal] = useState(null);
+    const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [updating, setUpdating] = useState(false);
     const [uploading, setUploading] = useState(false);
@@ -40,28 +38,38 @@ const ProfilePage = () => {
         email: '',
     });
 
-    const fetchUser = useCallback(async () => {
+    const fetchAccountDetails = useCallback(async () => {
         try {
             setLoading(true);
-            const { data } = await axios.get<UserDetails>('/api/user/details');
-            setUser(data);
-            setFormData({
-                name: `${data.firstName} ${data.lastName}`.trim(),
-                email: data.email,
+            const { data: paymentInfoDB } = await axios.get<PaymentDetails>('/api/user/payment');
+
+            const { data: paymentInfoPayglocal } = await axios.get(`/api/payment/status`, {
+                params: { transactionId: paymentInfoDB.billing.transactionId },
             });
-        } catch {
+
+            const { data: user } = await axios.get('/api/user/details');
+
+            setPaymentInfoDB(paymentInfoDB);
+            setPaymentInfoPayglocal(paymentInfoPayglocal);
+            setUser(user);
+            setFormData({
+                name: `${user?.firstName} ${user?.lastName}`.trim(),
+                email: user?.email,
+            });
+        } catch (err) {
             toast.error('Failed to fetch user details');
         } finally {
             setLoading(false);
+            console.log('md-paymentInfoPayglocal: ', paymentInfoPayglocal);
         }
     }, []);
 
     useEffect(() => {
-        fetchUser();
-    }, [fetchUser]);
+        fetchAccountDetails();
+    }, [fetchAccountDetails]);
 
     const handleSave = async () => {
-        if (!user) return;
+        if (!paymentInfoDB) return;
         try {
             setUpdating(true);
 
@@ -69,7 +77,7 @@ const ProfilePage = () => {
             const lastName = rest.join(' ');
 
             const res = await axios.post('/api/user/update', {
-                userId: user.userId,
+                userId: user?._id,
                 firstName,
                 lastName,
                 email: formData.email,
@@ -77,7 +85,7 @@ const ProfilePage = () => {
 
             if (res.status === 200) {
                 toast.success('Profile updated successfully');
-                await fetchUser();
+                await fetchAccountDetails();
                 setEditMode({ field: null });
             }
         } catch (error) {
@@ -88,7 +96,7 @@ const ProfilePage = () => {
     };
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!e.target.files?.[0] || !user) return;
+        if (!e.target.files?.[0] || !paymentInfoDB) return;
 
         const file = e.target.files[0];
         const formData = new FormData();
@@ -100,12 +108,12 @@ const ProfilePage = () => {
             const imgUrl = uploadRes.data.imgUrl;
 
             await axios.post('/api/user/update', {
-                userId: user.userId,
+                userId: user?._id,
                 avatar: imgUrl,
             });
 
             toast.success('Profile photo updated');
-            await fetchUser();
+            await fetchAccountDetails();
         } catch {
             toast.error('Failed to upload image');
         } finally {
@@ -114,73 +122,85 @@ const ProfilePage = () => {
         }
     };
 
-    const handleDownloadInvoice = () => {
-        if (!user?.billing) {
-            toast.error('No billing information available');
-            return;
-        }
+    const handleDownloadInvoice = async () => {
+        const url = '/pdf/sampleInvoice.pdf';
+        const existingPdfBytes = await fetch(url).then((res) => res.arrayBuffer());
 
-        const doc = new jsPDF();
+        const pdfDoc = await PDFDocument.load(existingPdfBytes);
+        const pages = pdfDoc.getPages();
+        const firstPage = pages[0];
+        const { height } = firstPage.getSize();
 
-        // --- HEADER ---
-        doc.setFontSize(22);
-        doc.setTextColor(40);
-        doc.text('League of Logic', 20, 20);
+        const font = await pdfDoc.embedFont(StandardFonts.TimesRomanBold);
 
-        doc.setFontSize(14);
-        doc.setTextColor(100);
-        doc.text('Invoice', 20, 35);
-        doc.text(`Date: ${new Date().toLocaleDateString()}`, 150, 35);
-
-        // --- USER INFO ---
-        doc.setFontSize(12);
-        doc.setTextColor(50);
-        doc.text(`Name: ${user.firstName} ${user.lastName}`, 20, 50);
-        doc.text(`Email: ${user.email}`, 20, 58);
-
-        autoTable(doc, {
-            startY: 75,
-            head: [['Description', 'HSN', 'Qty', 'Rate (AED)', 'IGST', 'Amount', 'Status']],
-            body: [
-                [
-                    user.billing.description,
-                    user.billing.hsn,
-                    user.billing.qty,
-                    user.billing.rate,
-                    `${user.billing.igst} (${user.billing.igstAmount})`,
-                    user.billing.paidAmount,
-                    user.billing.status,
-                ],
-            ],
-            theme: 'grid',
-            headStyles: {
-                fillColor: [220, 53, 69],
-                textColor: [255, 255, 255],
-                halign: 'center',
-            },
-            bodyStyles: { halign: 'center' },
+        // === Fill in fields ===
+        firstPage.drawText('INTLATS/24/00045', {
+            x: 180,
+            y: height - 160,
+            size: 10,
+            font,
+            color: rgb(0, 0, 0),
         });
 
-        // --- FOOTER ---
-        const finalY = (doc as any).lastAutoTable.finalY || 120;
-        doc.setFontSize(11);
-        doc.setTextColor(120);
-        doc.text('Thank you for your payment. Please contact support if you have any questions.', 20, finalY + 20);
+        firstPage.drawText(`${Date.now()}`, {
+            x: 180,
+            y: height - 175,
+            size: 10,
+            font,
+            color: rgb(0, 0, 0),
+        });
 
-        const fileName = `invoice-${user?.firstName}_${user?.lastName}-${new Date().toISOString().split('T')[0]}.pdf`;
+        firstPage.drawText(`${user?.firstName + ' ' + user?.lastName}`, {
+            x: 55,
+            y: height - 260,
+            size: 10,
+            font,
+            color: rgb(0, 0, 0),
+        });
 
-        doc.save(fileName);
+        firstPage.drawText(`${paymentInfoDB.billing.paidAmount}`, {
+            x: 485,
+            y: height - 385,
+            size: 10,
+            font,
+            color: rgb(0, 0, 0),
+        });
+
+        firstPage.drawText('UAE Dirham Five Hundred only', {
+            x: 48,
+            y: height - 382,
+            size: 10,
+            font,
+            color: rgb(0, 0, 0),
+        });
+
+        firstPage.drawText(`${paymentInfoDB.billing.transactionId}`, {
+            x: 48,
+            y: height - 405,
+            size: 10,
+            font,
+            color: rgb(0, 0, 0),
+        });
+
+        const pdfBytes = await pdfDoc.save();
+
+        // === Trigger download ===
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'invoice-ATS.pdf';
+        link.click();
     };
 
     if (loading) return <div className="profile-page loading">Loading...</div>;
-    if (!user) return <div className="profile-page error">No user data available</div>;
+    if (!paymentInfoDB) return <div className="profile-page error">No user data available</div>;
 
     return (
         <div className="profile-page">
             <aside className="sidebar">
                 <div className="user-info-wrapper">
                     <div className="user-info">
-                        <img src={user.avatar || '/images/avatar.png'} alt="User" className="avatar" />
+                        <img src={user?.avatar || '/images/avatar.png'} alt="User" className="avatar" />
                         <div>
                             <span className="username">{user?.firstName}</span>
                             <span className="role">User</span>
@@ -194,7 +214,7 @@ const ProfilePage = () => {
                             <FiDownload /> Test Guidelines
                         </button>
                     </a>
-                    <button onClick={handleDownloadInvoice}>
+                    <button onClick={() => { }}>
                         <FiDownload /> Invoice
                     </button>
                     <button>
@@ -206,7 +226,7 @@ const ProfilePage = () => {
             <main className="content">
                 <header className="header">
                     <h2>
-                        Welcome, <span>{user.firstName}</span>
+                        Welcome, <span>{user?.firstName}</span>
                     </h2>
                 </header>
 
@@ -216,7 +236,7 @@ const ProfilePage = () => {
                     <div className="profile-photo">
                         <div>
                             <span>Profile Photo</span>
-                            <img src={user.avatar || '/images/avatar.png'} alt="Profile" />
+                            <img src={user?.avatar || '/images/avatar.png'} alt="Profile" />
                         </div>
                         <div>
                             <span>Profile Photo</span>
@@ -254,7 +274,11 @@ const ProfilePage = () => {
                                 {updating ? 'Saving...' : 'Save'}
                             </button>
                         ) : (
-                            <button className="edit-btn" onClick={() => setEditMode({ field: 'name' })}>
+                            <button
+                                style={{ display: 'none' }}
+                                className="edit-btn"
+                                onClick={() => setEditMode({ field: 'name' })}
+                            >
                                 Edit
                             </button>
                         )}
@@ -270,7 +294,7 @@ const ProfilePage = () => {
                                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                 />
                             ) : (
-                                <span className="value">{user.email}</span>
+                                <span className="value">{user?.email}</span>
                             )}
                         </div>
                         {editMode.field === 'email' ? (
@@ -278,7 +302,11 @@ const ProfilePage = () => {
                                 {updating ? 'Saving...' : 'Save'}
                             </button>
                         ) : (
-                            <button className="edit-btn" onClick={() => setEditMode({ field: 'email' })}>
+                            <button
+                                style={{ display: 'none' }}
+                                className="edit-btn"
+                                onClick={() => setEditMode({ field: 'email' })}
+                            >
                                 Edit
                             </button>
                         )}
@@ -287,7 +315,7 @@ const ProfilePage = () => {
                     <div className="billing">
                         <h4>Billing</h4>
 
-                        {!user.billing ? (
+                        {!paymentInfoDB.billing ? (
                             <div className="billing__empty">No billing information available.</div>
                         ) : (
                             <div className="billing__card">
@@ -295,27 +323,34 @@ const ProfilePage = () => {
                                     <span>Description</span>
                                     <span>HSN/SAC</span>
                                     <span>Qty</span>
-                                    <span>Rate (AED)</span>
+                                    <span>Rate ({paymentInfoPayglocal.data.Currency})</span>
                                     <span>IGST</span>
                                     <span>Amount</span>
                                 </div>
 
                                 <div className="billing__row">
-                                    <span>{user.billing.description}</span>
-                                    <span>{user.billing.hsn}</span>
-                                    <span>{user.billing.qty}</span>
-                                    <span>{user.billing.rate}</span>
+                                    <span>{paymentInfoDB.billing.description}</span>
+                                    <span>{paymentInfoDB.billing.hsnSac}</span>
+                                    <span>{paymentInfoDB.billing.qty}</span>
+                                    <span>{paymentInfoDB.billing.rate}</span>
                                     <span>
-                                        {user.billing.igst} ({user.billing.igstAmount})
+                                        {paymentInfoDB.billing.igst} ({paymentInfoDB.billing.igstAmount})
                                     </span>
-                                    <span>{user.billing.paidAmount}</span>
+                                    <span>{paymentInfoDB.billing.paidAmount}</span>
                                 </div>
                             </div>
                         )}
 
-                        {user.billing && (
-                            <div className="status">
-                                Fees Status <span className="check">✔</span>
+                        {paymentInfoDB.billing && (
+                            <div className={`status ${paymentInfoDB.billing.status === 'success' ? 'paid' : 'failed'}`}>
+                                Fees Status{' '}
+                                <span>
+                                    {paymentInfoDB.billing.status === 'success' ? (
+                                        <MdCheckCircle />
+                                    ) : (
+                                        <MdOutlineCancel />
+                                    )}
+                                </span>
                             </div>
                         )}
                     </div>
