@@ -12,8 +12,6 @@ interface School {
     type?: string;
 }
 
-const gradeOptions = [...Array.from({ length: 10 }, (_, i) => `Grade ${i + 3}`)];
-
 const Step3 = ({
     onNext,
     loading,
@@ -37,25 +35,37 @@ const Step3 = ({
     const [schoolError, setSchoolError] = useState('');
 
     useEffect(() => {
-        if (country) {
-            const states = ccs.getStatesByShort(country);
-            const citySet = new Set<string>();
-            states?.forEach((state: string) => {
-                const citiesInState = ccs.getCities(country, state);
-                citiesInState?.forEach((c: string) => citySet.add(c));
-            });
-            setCities(Array.from(citySet).sort());
-            setCity('');
-            setSchools([]);
-            setSchool('');
-            setCustomSchool('');
-        } else {
+        setCity('');
+        setSchools([]);
+        setSchool('');
+        setCustomSchool('');
+
+        if (!country) {
             setCities([]);
-            setCity('');
-            setSchools([]);
-            setSchool('');
-            setCustomSchool('');
+            return;
         }
+
+        if (country === 'AE') {
+            setCities([
+                'Abu Dhabi',
+                'Dubai',
+                'Sharjah',
+                'Ajman',
+                'Umm Al-Quwain',
+                'Ras Al Khaimah',
+                'Fujairah',
+            ]);
+            return;
+        }
+
+        const states = ccs.getStatesByShort(country);
+        const citySet = new Set<string>();
+
+        states?.forEach((state: string) => {
+            ccs.getCities(country, state)?.forEach((c: string) => citySet.add(c));
+        });
+
+        setCities(Array.from(citySet).sort());
     }, [country]);
 
     const fetchSchools = useCallback(async (countryCode: string, cityName: string) => {
@@ -83,39 +93,6 @@ const Step3 = ({
                 setSchools(localSchools);
                 setSchool('');
                 setCustomSchool('');
-            } else {
-                const overpassQuery = `
-                [out:json][timeout:25];
-                (
-                  node["amenity"~"^(school|university|college)$"]["addr:city"="${cityName}"];
-                  way["amenity"~"^(school|university|college)$"]["addr:city"="${cityName}"];
-                  relation["amenity"~"^(school|university|college)$"]["addr:city"="${cityName}"];
-                );
-                out center meta;
-            `;
-
-                const response = await fetch('https://overpass-api.de/api/interpreter', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: `data=${encodeURIComponent(overpassQuery)}`,
-                });
-
-                if (!response.ok) throw new Error('Failed to fetch schools');
-
-                const data = await response.json();
-                const fetchedSchools: School[] = data.elements
-                    .filter((element: any) => element.tags && element.tags.name)
-                    .map((element: any, index: number) => ({
-                        id: element.id?.toString() || `school-${index}`,
-                        name: element.tags.name,
-                        address: element.tags['addr:full'] || element.tags['addr:street'] || '',
-                    }));
-
-                fetchedSchools.push({ id: 'other', name: 'Other (Please specify)' });
-
-                setSchools(fetchedSchools);
-                setSchool('');
-                setCustomSchool('');
             }
         } catch (error) {
             console.error('Error fetching schools:', error);
@@ -135,6 +112,18 @@ const Step3 = ({
         }
     }, [country, city, fetchSchools]);
 
+    useEffect(() => {
+        setGrade('');
+    }, [board]);
+
+    const getGradeOptions = () => {
+        const normalized = board.toLowerCase();
+
+        if (normalized === 'cambridge') return Array.from({ length: 11 }, (_, i) => `Year ${i + 1}`);
+
+        return Array.from({ length: 12 }, (_, i) => `Grade ${i + 1}`);
+    };
+
     const truncateText = (text: string, maxLength: number) => {
         return text.length > maxLength ? text.slice(0, maxLength) + '…' : text;
     };
@@ -144,7 +133,14 @@ const Step3 = ({
         return 42;
     };
 
-    const isValid = country && city && (school || customSchool) && (board || customBoard) && grade;
+    const isValid =
+        country &&
+        city &&
+        (school === 'Other (Please specify)' ? customSchool : school) &&
+        (board === 'Other' ? customBoard : board) &&
+        grade;
+
+    const gradeOptions = getGradeOptions();
 
     const handleSubmit = () => {
         if (isValid) {
@@ -245,12 +241,7 @@ const Step3 = ({
                         />
                     ) : (
                         <>
-                            <select
-                                id="board"
-                                value={board}
-                                onChange={(e) => setBoard(e.target.value)}
-                                required
-                            >
+                            <select id="board" value={board} onChange={(e) => setBoard(e.target.value)} required>
                                 <option value="">Choose your Board</option>
                                 {Boards.map((b, index) => (
                                     <option key={index} value={b}>
@@ -268,10 +259,16 @@ const Step3 = ({
             <div className="form-group">
                 <label htmlFor="grade">Grade</label>
                 <div className={`select-wrapper ${fieldErrors.grade ? 'error' : ''}`}>
-                    <select id="grade" value={grade} onChange={(e) => setGrade(e.target.value)} required>
+                    <select
+                        id="grade"
+                        value={grade}
+                        onChange={(e) => setGrade(e.target.value)}
+                        disabled={gradeOptions.length === 0}
+                        required
+                    >
                         <option value="">Choose your Grade</option>
                         {gradeOptions.map((label) => (
-                            <option key={label} value={label.replace(' ', '').toLowerCase()}>
+                            <option key={label} value={label.replace(/\s+/g, '').toLowerCase()}>
                                 {label}
                             </option>
                         ))}
