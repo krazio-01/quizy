@@ -75,25 +75,25 @@ const Step3 = ({
         try {
             const countryEntry = schoolList.find((c) => c.country.toLowerCase() === countryCode.toLowerCase());
 
-            if (countryEntry) {
-                const localSchools = countryEntry.schools
-                    .filter((s) => s.City.toLowerCase() === cityName.toLowerCase())
+            const localSchools =
+                countryEntry?.schools
+                    ?.filter((s) => s.City.toLowerCase() === cityName.toLowerCase())
                     .map((s, index) => ({
                         id: `local-${index}`,
                         name: truncateText(s.school, getTruncateLength()),
                         fullName: s.school,
-                    }));
+                    })) ?? [];
 
-                localSchools.push({
-                    id: 'other',
-                    name: 'Other (Please specify)',
-                    fullName: 'Other (Please specify)',
-                });
+            localSchools?.push({
+                id: 'other',
+                name: 'Other (Please specify)',
+                fullName: 'Other (Please specify)',
+            });
 
-                setSchools(localSchools);
-                setSchool('');
-                setCustomSchool('');
-            }
+            setSchools(localSchools);
+            setSchool('');
+            setCustomSchool('');
+
         } catch (error) {
             console.error('Error fetching schools:', error);
             setSchoolError('Failed to load schools. Please try again.');
@@ -211,10 +211,10 @@ const Step3 = ({
                                 value={school}
                                 onChange={(e) => setSchool(e.target.value)}
                                 required
-                                disabled={loadingSchools || schools.length === 0}
+                                disabled={loadingSchools || schools?.length === 0}
                             >
                                 <option value="">{loadingSchools ? 'Loading schools...' : 'Choose your School'}</option>
-                                {schools.map((s) => (
+                                {schools?.map((s) => (
                                     <option key={s.id} value={s.name}>
                                         {s.name} {s.type && `(${s.type})`}
                                     </option>

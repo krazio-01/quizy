@@ -71,43 +71,101 @@ function decodePayGlocalToken(token) {
 
 async function updatePaymentStatus({ orderId, status, transactionId }: UpdatePaymentParams) {
     try {
-        if (status !== 'SENT_FOR_CAPTURE') return;
-        status = 'success';
+        const payment = await PaymentModel.findOne({ orderId });
 
-        const payment = await PaymentModel.findOneAndUpdate({ orderId }, { status, transactionId }, { new: true });
+        if (!payment) return;
 
-        // if (payment) {
-        //     const user = await UserModel.findById(payment.userId);
+        const user = await UserModel.findById(payment.userId);
 
-        //     if (user?.email) {
-        //         const to = user.email;
+        if (user?.email) {
+            const to = user.email;
 
-        //         if (!user.hasReceivedWelcomeEmail) {
-        //             const accountTemplatePath = path.resolve(process.cwd(), 'src/templates/accountCreation.html');
-        //             const accountContent = generateMailTemplate(accountTemplatePath, {
-        //                 name: `${user.firstName} ${user.lastName}`,
-        //                 otp: user.otp,
-        //             });
+            if (!user.hasReceivedWelcomeEmail) {
+                const accountTemplatePath = path.resolve(process.cwd(), 'src/templates/accountCreation.html');
+                const accountContent = generateMailTemplate(accountTemplatePath, {
+                    name: `${user.firstName} ${user.lastName}`,
+                });
 
-        //             await sendEmail(to, 'Successful Account Creation', null, accountContent);
-        //             user.hasReceivedWelcomeEmail = true;
-        //             await user.save();
-        //         }
+                await sendEmail(to, 'Successful Account Creation', null, accountContent);
+                user.hasReceivedWelcomeEmail = true;
+                await user.save();
+            }
 
-        //         const paymentTemplatePath = path.resolve(process.cwd(), 'src/templates/paymentSuccess.html');
-        //         const paymentContent = generateMailTemplate(paymentTemplatePath, {
-        //             name: `${user.firstName} ${user.lastName}`,
-        //             amount: parseFloat(payment.amount).toFixed(2),
-        //             orderId: payment.orderId,
-        //             transactionId: payment.transactionId,
-        //             createdAt: payment.createdAt.toLocaleString(),
-        //         });
+            const paymentTemplatePath = path.resolve(process.cwd(), 'src/templates/paymentStatusMail.html');
+            const templateData = getPaymentTemplateData(status, payment, user, transactionId);
+            const paymentContent = generateMailTemplate(paymentTemplatePath, templateData);
 
-        //         await sendEmail(to, 'Payment Successful', null, paymentContent);
-        //     }
-        // }
+            await sendEmail(to, templateData?.statusText, null, paymentContent);
+        }
+
+        if (status === 'SENT_FOR_CAPTURE') {
+            payment.status = 'success';
+            payment.transactionId = transactionId;
+            await payment.save();
+        }
     } catch (error) {
         console.error('Database update error:', error);
         throw error;
     }
+}
+
+function getPaymentTemplateData(status: string, payment: any, user: any, transactionId: string | null) {
+    let statusClass = 'unknown';
+    let statusText = 'Unknown Status';
+    let message = 'We were unable to determine your payment status.';
+    let containerColor = '#ffd382';
+    let containerStyle = `style="background-color: ${containerColor}`;
+
+    switch (status?.toUpperCase()) {
+        case 'SUCCESS':
+        case 'SENT_FOR_CAPTURE':
+            statusClass = 'success';
+            statusText = 'Payment Successful';
+            message = `Your payment of ₹${parseFloat(payment.amount).toFixed(2)} has been processed successfully.`;
+            containerColor = '#28a745';
+            break;
+
+        case 'ABANDONED':
+            statusClass = 'failed';
+            statusText = 'Payment Failed';
+            message = 'Unfortunately, your payment could not be processed. Please try again.';
+            containerColor = '#dc3545';
+            break;
+
+        case 'SYSTEM_ERROR':
+            statusClass = 'error';
+            statusText = 'Payment Error';
+            message = 'An unexpected error occurred while processing your payment.';
+            containerColor = '#ffc107';
+            break;
+
+        case 'CUSTOMER_CANCELLED':
+            statusClass = 'cancelled';
+            statusText = 'Payment Cancelled';
+            message = 'You have cancelled the payment. No amount has been deducted.';
+            containerColor = '#6c757d';
+            break;
+
+        default:
+            statusClass = 'unknown';
+            statusText = 'Unknown Status';
+            message = 'We were unable to verify your payment status. Please contact support.';
+            containerColor = '#17a2b8';
+            break;
+    }
+
+    return {
+        statusClass,
+        statusText,
+        message,
+        containerStyle,
+        name: `${user.firstName} ${user.lastName}`,
+        orderId: payment.orderId,
+        transactionId: transactionId ?? payment.transactionId,
+        amount: `₹${parseFloat(payment.amount).toFixed(2)}`,
+        createdAt: new Date(payment.createdAt).toLocaleString('en-IN', {
+            dateStyle: 'medium',
+            timeStyle: 'short',
+        }),
+    };
 }

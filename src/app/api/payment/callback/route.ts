@@ -13,12 +13,14 @@ export async function POST(req: NextRequest) {
         let statusText = 'Payment Status';
         let message = '';
         let statusClass = 'unknown';
+        let redirectUrl = '/'
 
         switch (status) {
             case 'SENT_FOR_CAPTURE':
                 statusText = 'Payment Successful';
                 message = 'Your payment has been processed successfully.';
                 statusClass = 'success';
+                redirectUrl = '/quiz/contest/welcome';
                 break;
             case 'ABANDONED':
                 statusText = 'Payment Failed';
@@ -54,7 +56,8 @@ export async function POST(req: NextRequest) {
             .replace('{{statusText}}', statusText)
             .replace('{{message}}', message)
             .replace('{{orderId}}', orderId)
-            .replace('{{gid}}', gid);
+            .replace('{{gid}}', gid)
+            .replace('{{redirectUrl}}', redirectUrl);
 
         return new Response(html, {
             headers: { 'Content-Type': 'text/html' },
