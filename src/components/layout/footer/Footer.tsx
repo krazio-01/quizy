@@ -21,15 +21,25 @@ const Footer = () => {
                 </div>
                 <div>
                     <Link href="/contact">Contact Us</Link>
-                    <Link href="/">About Ei</Link>
-                    <Link href="/">FAQ</Link>
+                    <Link href="https://ct.ei-usa.com/faq">About Ei</Link>
+                    <Link href="https://ei.study/">FAQ</Link>
                 </div>
                 <div>
-                    <Link href="/facebook">Facebook</Link>
-                    <Link href="/twitter">Twitter</Link>
-                    <Link href="/instagram">Instagram</Link>
-                    <Link href="/youtube">YouTube</Link>
-                    <Link href="/linkedin">LinkedIn</Link>
+                    <a href="https://www.facebook.com/profile.php?id=61566872191409" target="_blank" rel="noopener noreferrer">
+                        Facebook
+                    </a>
+                    <a href="https://x.com/eistudy1" target="_blank" rel="noopener noreferrer">
+                        Twitter
+                    </a>
+                    <a href="https://www.instagram.com/eistudy1" target="_blank" rel="noopener noreferrer">
+                        Instagram
+                    </a>
+                    <a href="https://www.youtube.com/eivideos" target="_blank" rel="noopener noreferrer">
+                        YouTube
+                    </a>
+                    <a href="https://www.linkedin.com/company/eistudy/posts/?feedView=all" target="_blank" rel="noopener noreferrer">
+                        LinkedIn
+                    </a>
                 </div>
             </div>
 
