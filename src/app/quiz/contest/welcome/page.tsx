@@ -27,7 +27,7 @@ const faqs = [
     },
     {
         question: 'Q - How will awards be delivered to participants?',
-        answer: 'Awards will be sent either directly to the selected school or to the individualss address. Ensure that you provide the correct email address and phone number for delivery.',
+        answer: "Awards will be sent either directly to the selected school or to the individual's address. Ensure that you provide the correct email address and phone number for delivery.",
     },
     {
         question: 'Q - How long is the duration of the exam?',
