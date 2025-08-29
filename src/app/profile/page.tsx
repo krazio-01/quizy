@@ -61,11 +61,9 @@ const ProfilePage = () => {
                 email: user?.email,
             });
         } catch (err) {
-            console.error('md-err: ', err);
             toast.error('Failed to fetch user details');
         } finally {
             setLoading(false);
-            console.log('md-paymentInfoPayglocal: ', paymentInfoPayglocal);
         }
     }, []);
 
