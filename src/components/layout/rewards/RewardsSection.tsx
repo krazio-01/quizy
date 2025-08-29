@@ -1,5 +1,5 @@
-import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import './rewardsSection.scss';
 
 const RewardsSection = ({ title, showLink = false }) => {
@@ -10,18 +10,17 @@ const RewardsSection = ({ title, showLink = false }) => {
 
                 <div className="rewards-grid">
                     <div className="reward-card">
-                        <video autoPlay muted loop playsInline>
-                            <source src="/videos/homeVoucher.mp4" type="video/mp4" />
-                        </video>
+                        <Image width={300} height={300} alt="voucher" src="/images/rewardsVoucher.png" />
                         <div className="reward-content">
                             <div>
-                                <h3>AED 500 Voucher for Group Toppers in:</h3>
-                                <ul>
-                                    <li>Grade 3-4</li>
-                                    <li>Grade 5-6</li>
-                                    <li>Grade 7-8</li>
-                                    <li>Grade 9-10</li>
-                                </ul>
+                                <h3>AED 500 Amazon Vouchers for all Class Toppers</h3>
+                                <p>
+                                    All class toppers will receive AED 500 Amazon vouchers, or the equivalent in their
+                                    local currency, as a reward for their exceptional performance. This celebrates their
+                                    dedication, hard work, and effort in the test. The vouchers can be used to explore a
+                                    wide range of products and resources, giving students the freedom to choose
+                                    something that inspires their learning journey.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -32,26 +31,27 @@ const RewardsSection = ({ title, showLink = false }) => {
                         </video>
                         <div className="reward-content">
                             <div>
-                                <h3>1-2 Week Robotic Camps in December for all Group Toppers!</h3>
+                                <h3>2 Week in person Robotic Camps worth AED 1300 in December for Group Toppers!</h3>
                                 <p className="subtext">
-                                    <em>(Learn, build, and play with real robots!)</em>
-                                </p>
-                                <p>
-                                    A sponsored spot at an exclusive Robotics Camp — where your logic takes control
-                                    of circuits, wheels, and real-world fun.
+                                    An exciting opportunity for the top performers of the League of Logic Four lucky
+                                    Group toppers will win courses worth 1300 AED! These engaging courses provide a
+                                    hands-on learning space where kids can dive into the world of robots, coding, and
+                                    STEM through age-appropriate activities. Students will have the opportunity to
+                                    program robots, design circuits, and solve fun challenges while building creativity,
+                                    problem-solving, and logical thinking skills.
                                 </p>
                             </div>
-                            {showLink &&
+                            {showLink && (
                                 <Link href="/quiz/contest/rewards" className="more-link">
                                     More Rewards {'>'}
                                 </Link>
-                            }
+                            )}
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-    )
-}
+    );
+};
 
 export default RewardsSection;

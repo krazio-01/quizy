@@ -23,21 +23,21 @@ const stats = [
 
 const feature = [
     {
-        title: 'Develop Computational Thinking',
+        title: 'Future-ready skills',
         description:
-            'We want to help you develop critical skills such as problem-solving, logical reasoning, and algorithmic thinking. These skills will help you tackle complex problems with ease.',
+            'Go beyond textbooks and exams — equip your child with critical thinking, creativity, and problem-solving abilities that are vital for the 21st century.',
         icon: '/images/home/icon1.png',
     },
     {
-        title: 'Promote Collaboration',
+        title: 'Global recognition',
         description:
-            "Collaboration is the key to success in the 21st century workforce. Through this test you will learn effective communication skills, ways to share ideas and leverage each other's strengths to solve problems.",
+            'Compete with peers from over 120 countries, earn certificates and badges, and showcase achievements that stand out on school and career applications.',
         icon: '/images/home/icon2.png',
     },
     {
-        title: 'Inspire Creativity',
+        title: 'Fun challenges',
         description:
-            'Unleash your creativity and find innovative solutions to fascinating problems. Creativity is a superpower that can lead to success in all aspects of life!',
+            'Interactive, thought-provoking challenges designed to build confidence, logical reasoning, and innovative thinking for lifelong success.',
         icon: '/images/home/icon3.png',
     },
 ];
@@ -85,9 +85,12 @@ const HomePage = () => {
                 </div>
             </section>
 
-            <div className="stats-container">
-                <StatsBar statsArray={stats} gap="clamp(2rem, 5vw, 4.5rem)" />
-            </div>
+            <section className="stats-container">
+                <div>120+ countries</div>
+                <div>Recognition <br />Certificates &amp; medals</div>
+                <div>Growth &amp; Rewards <br />Career Boost &amp; Prizes</div>
+                <div>Test date: <br />11-12th Oct</div>
+            </section>
 
             <section className="potential">
                 <div className="potential-wrapper">
@@ -97,16 +100,17 @@ const HomePage = () => {
                     <div className="text">
                         <h2>Are they ready to think outside the box?</h2>
                         <p>
-                            The League of Logic is a global online competition designed to promote and develop critical
-                            thinking, logical reasoning, and problem-solving abilities in students from Grades 3 to 10,
-                            across all curricula.
+                            The League of Logic is a global online competition that helps students in Grades 3 to 10
+                            build essential skills for life — critical thinking, logical reasoning, and problem-solving
+                            — across all curricula.
                         </p>
                         <p>
-                            In today&apos;s rapidly changing world, academic success alone is not enough. Children must
-                            be equipped with the ability to think independently, solve problems in innovative ways, and
-                            engage with the world through logic and reflection. That&apos;s exactly where the League of
-                            Logic steps in — it goes beyond conventional academic exams to focus on nurturing cognitive
-                            skills that are essential for the 21st century.
+                            In a world that is changing faster than ever, academic success alone is not enough. Children
+                            need the ability to think independently, approach challenges creatively, and apply logic to
+                            real-world situations. The League of Logic goes beyond traditional exams, focusing on
+                            developing the cognitive skills that prepare students to thrive in the 21st century. It is
+                            not just a competition, but a journey to unlock potential and prepare young minds for the
+                            future.
                         </p>
                     </div>
                 </div>
@@ -188,47 +192,24 @@ const HomePage = () => {
                 </MotionDiv>
             </section>
 
-            <section className="matters-container">
-                <div className="container">
-                    <h2 className="section-title">Why It Matters</h2>
+            <section className="info-section">
+                <h2>Preparing Young Minds to Thrive</h2>
 
-                    <p>
-                        Because today&apos;s world doesn&apos;t need more people with memorized answers — it needs
-                        people who can think for themselves.
-                    </p>
-
-                    <span>In the league of logic, your child will:</span>
-                    <ul className="benefits">
-                        <li>
-                            <span className="icon">✔</span>
-                            Strengthen strategic and logical reasoning skills
-                        </li>
-                        <li>
-                            <span className="icon">✔</span>
-                            Learn to approach problems with clarity and structure
-                        </li>
-                        <li>
-                            <span className="icon">✔</span>
-                            Develop lifelong habits of careful planning, analysis, and decision-making
-                        </li>
-                    </ul>
-
-                    <p>
-                        Because no matter your age or grade, logic is your superpower.And in the League of Logic, we
-                        don&apos;t just test it — we train it, grow it, and celebrate it.
-                    </p>
-
-                    <p className="closing">
-                        Whether you&apos;re a future coder, creator, entrepreneur, or simply a curious mind — this
-                        challenge is your stage.
-                    </p>
-                </div>
+                <p>
+                    Today&apos;s world doesn&apos;t need more people with memorized answers; it needs individuals who
+                    can think for themselves. In the League of Logic, your child will strengthen strategic and logical
+                    reasoning, learn to approach problems with clarity and structure, and develop lifelong habits of
+                    careful planning, analysis, and decision-making. Logic is a superpower at any age or grade, and in
+                    the League of Logic, we don&apos;t just test it — we train it, grow it, and celebrate it. Whether
+                    your child is a future coder, creator, entrepreneur, or simply a curious mind, this challenge is
+                    their stage to shine.
+                </p>
             </section>
 
             <RewardsSection title="Rewards" showLink={true} />
 
             <section className="register">
-                <h3>How to register?</h3>
+                <h3>How to Register?</h3>
                 <div className="video-placeholder">
                     <div className="video-box"></div>
                 </div>

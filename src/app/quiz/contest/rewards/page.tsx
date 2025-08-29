@@ -1,4 +1,3 @@
-import React from 'react';
 import RewardsSection from '@/components/layout/rewards/RewardsSection';
 import Image from 'next/image';
 import CTASection from '@/components/layout/CTASection/CTASection';
@@ -6,12 +5,14 @@ import './rewards.scss';
 
 const partnersData = [
     {
-        text: 'RoboFunLab is an innovative learning space where children dive into robotics, coding, and hands-on STEM through engaging, age-appropriate courses. With a focus on creativity, problem-solving, and logical reasoning, the programs help kids go beyond theory to build real projects and gain future-ready skills. From programming robots to designing circuits, every course sparks curiosity and confidence—empowering young learners to thrive in a tech-driven world. And here’s the best part: top performers from the League of Logic will get sponsored access to RoboFunLab courses, opening doors to even greater learning opportunities.',
+        text: 'As our key UAE partner, Sage leads programs like Ei ASSET, Ei Mindspark, and the League of Logic, nurturing critical thinking and problem-solving skills. This year, rewards for top performers are even more exciting. League of Logic toppers receive fully sponsored access to hands-on Robotics Courses, applying their logical thinking in real-world innovation through design and building.All participants can also enjoy a special discounted rate with their participation certificate, accessing learning that inspires creativity, technical skills, and practical problem-solving.',
         imagePosition: 'left',
+        image: '/images/rewards1.png',
     },
     {
         text: 'GenWise is a learning community that brings together some of India’s finest educators to mentor curious, motivated students. With a focus on critical thinking, exploration, and lifelong learning, GenWise creates programs that go beyond school to nurture intellectual growth and real-world problem-solving. And for League of Logic toppers, there’s a special reward: a free Masterclass with GenWise—because great thinking deserves great mentoring.',
         imagePosition: 'right',
+        image: '/images/rewards2.png',
     },
 ];
 
@@ -38,18 +39,19 @@ const Page = () => {
                 <h2>Extra Rewards That Spark Success</h2>
                 <div className="rewards-grid">
                     <div className="reward-item">
-                        <h4>Digital Certificates for all participants</h4>
+                        <h4>Digital Certificates for all participants.</h4>
                         <img src="/images/certificate.png" alt="Digital Certificate" />
-                        <p>A digital certificate, designed to spotlight your problem-solving superpower</p>
+                        <p>
+                            All participants will receive digital certificates, while class toppers will be awarded
+                            special certificates delivered to their school
+                        </p>
                     </div>
                     <div className="reward-item">
-                        <h4>Personalized Student Report</h4>
-                        <video autoPlay muted loop playsInline>
-                            <source src="/videos/medals.mp4" type="video/mp4" />
-                        </video>
+                        <h4>Medals for toppers</h4>
+                        <img src="/images/rewardsmedals.png" alt="medals" />
                         <p>
-                            Gold medals for group toppers, silver medals for class toppers and bronze for 2nd in class.
-                            Real, proud-to-hold reminder that you cracked it.
+                            All class toppers will be proudly awarded shiny gold medals, which will be carefully sent to
+                            their schools for distribution.
                         </p>
                     </div>
                 </div>
@@ -142,8 +144,8 @@ const Page = () => {
                             <li>A badge of talent that stands out everywhere</li>
                         </ul>
                         <p>
-                            Ei ATS is not for every student, but being in the League of Logic means you&apos;re closer than
-                            most.
+                            Ei ATS is not for every student, but being in the League of Logic means you&apos;re closer
+                            than most.
                         </p>
                     </div>
                 </div>
@@ -206,7 +208,9 @@ const Page = () => {
                 <h3>Our exposure partners</h3>
                 {partnersData.map((partner, index) => (
                     <div key={index} className={`partner-row ${partner.imagePosition === 'right' ? 'reverse' : ''}`}>
-                        <div className="image-placeholder" />
+                        <div className="image">
+                            <Image width={300} height={300} alt="rewards img" src={partner.image} />
+                        </div>
                         <p className="partner-text">{partner.text}</p>
                     </div>
                 ))}

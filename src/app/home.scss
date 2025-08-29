@@ -6,6 +6,7 @@
     .features,
     .practice-cta,
     .invitation,
+    .info-section,
     .register,
     .acknowledgement {
         padding-inline: clamp(1rem, 3.5vw, 3rem) !important;
@@ -54,9 +55,31 @@
     }
 
     .stats-container {
-        margin-inline: auto;
-        max-width: 900px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 3rem;
+        padding: 1rem 3rem;
+        background: #000;
+        flex-wrap: wrap;
         margin-bottom: 2rem;
+
+        > div {
+            color: #fff;
+            padding: 1rem 1.5rem;
+            font-size: var(--fz-sm);
+            border-radius: 20px;
+            background: rgba(149, 149, 149, 0.2);
+            text-align: center;
+            flex: 1 1 180px;
+            height: 100%;
+            box-shadow: -2px 0px 3px rgba(255, 255, 255, 0.35), 2px 0px 3px rgba(255, 255, 255, 0.35);
+            transition: transform 0.2s ease;
+
+            &:hover {
+                transform: translateY(-4px);
+            }
+        }
     }
 
     .potential {
@@ -96,7 +119,6 @@
     }
 
     .features {
-        background: #f9f9f9;
         padding: 3rem 0;
         text-align: center;
 
@@ -153,6 +175,7 @@
     .invitation {
         text-align: center;
         padding: 3rem 1.5rem 0;
+        margin-bottom: 4rem;
 
         h3 {
             color: #ab2024;
@@ -192,49 +215,20 @@
         }
     }
 
-    .matters-container {
-        padding: 4rem 2rem;
+    .info-section {
+        h2 {
+            text-align: center;
+            font-size: clamp(var(--fz-lg), 8vw, var(--fz-xl));
+            color: #ab2024;
+            margin-bottom: 1rem;
+        }
 
-        .container {
-            margin: 0 auto;
-
-            .section-title {
-                text-align: center;
-                font-size: clamp(var(--fz-lg), 7vw, var(--fz-xl));
-                color: #ab2024;
-                margin-bottom: 2rem;
-            }
-
-            span,
-            p {
-                font-size: var(--fz-sm);
-                color: #3e3e3e;
-                margin-bottom: 1rem;
-                font-weight: 510;
-            }
-
-            .benefits {
-                list-style: none;
-                margin-bottom: 1rem;
-
-                li {
-                    gap: 0.3rem;
-                    font-size: var(--fz-sm);
-                    color: #3e3e3e;
-                    font-weight: 510;
-
-                    .icon {
-                        color: #3e3e3e;
-                        font-weight: bold;
-                        flex-shrink: 0;
-                        font-size: 1rem;
-                    }
-                }
-            }
-
-            .closing {
-                margin-bottom: 0;
-            }
+        p {
+            text-align: left;
+            margin: 0 auto 4rem;
+            color: #3e3e3e;
+            font-weight: 510;
+            width: 80%;
         }
     }
 
@@ -348,6 +342,11 @@
         }
     }
 
+    .stats-container {
+        gap: 1rem !important;
+        padding: 1rem !important;
+    }
+
     .potential {
         .potential-wrapper {
             flex-direction: column;
@@ -374,7 +373,9 @@
         }
     }
 
-    .matters-container {
-        padding-inline: 1rem !important;
+    .info-section {
+        p {
+            width: 95% !important;
+        }
     }
 }
