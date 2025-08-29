@@ -7,13 +7,7 @@ const Footer = () => {
     return (
         <footer className="footer">
             <div className="footer-top">
-                <Image
-                    width={60}
-                    height={60}
-                    src="/images/logo2.png"
-                    alt="Ei Logo"
-                    className="footer-logo"
-                />
+                <Image width={60} height={60} src="/images/logo2.png" alt="Ei Logo" className="footer-logo" />
                 <div>
                     <Link href="/">League of Logic</Link>
                     <Link href="/quiz/mock/register">Practice Test</Link>
@@ -21,11 +15,17 @@ const Footer = () => {
                 </div>
                 <div>
                     <Link href="/contact">Contact Us</Link>
-                    <Link href="https://ct.ei-usa.com/faq">About Ei</Link>
-                    <Link href="https://ei.study/">FAQ</Link>
+                    <a href="https://ei.study" target="_blank" rel="noopener noreferrer">
+                        About Ei
+                    </a>
+                    <Link href="/quiz/contest/welcome">FAQ</Link>
                 </div>
                 <div>
-                    <a href="https://www.facebook.com/profile.php?id=61566872191409" target="_blank" rel="noopener noreferrer">
+                    <a
+                        href="https://www.facebook.com/profile.php?id=61566872191409"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
                         Facebook
                     </a>
                     <a href="https://x.com/eistudy1" target="_blank" rel="noopener noreferrer">
@@ -37,7 +37,11 @@ const Footer = () => {
                     <a href="https://www.youtube.com/eivideos" target="_blank" rel="noopener noreferrer">
                         YouTube
                     </a>
-                    <a href="https://www.linkedin.com/company/eistudy/posts/?feedView=all" target="_blank" rel="noopener noreferrer">
+                    <a
+                        href="https://www.linkedin.com/company/eistudy/posts/?feedView=all"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
                         LinkedIn
                     </a>
                 </div>
