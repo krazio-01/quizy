@@ -10,8 +10,6 @@ export async function GET() {
             '-password -confirmPassword -createdAt -updatedAt -hasReceivedWelcomeEmail -__v'
         );
 
-        console.log('md-user: ', user);
-
         if (!user) return NextResponse.json({ message: 'user not found' }, { status: 404 });
 
         return NextResponse.json(user);
