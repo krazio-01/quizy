@@ -60,6 +60,12 @@
         }
     }
 
+    @media screen and (min-width: 600px) and (max-width: 1024px) {
+        & {
+            min-height: 70svh !important;
+        }
+    }
+
     @media screen and (max-width: 599px) {
         & {
             .score-status {

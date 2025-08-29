@@ -319,6 +319,14 @@
         }
     }
 
+    @media screen and (min-width: 600px) and (max-width: 1024px) {
+        .banner {
+            h1 {
+                padding-top: 1.5rem;
+            }
+        }
+    }
+
     @media screen and (max-width: 599px) {
         & {
             .banner {

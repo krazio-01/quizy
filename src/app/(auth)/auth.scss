@@ -498,6 +498,12 @@
         margin-top: 5px;
     }
 
+    @media screen and (min-width: 600px) and (max-width: 1024px) {
+        .step-form {
+            width: 100% !important;
+        }
+    }
+
     @media screen and (max-width: 599px) {
         & {
             max-width: 100% !important;
@@ -629,10 +635,16 @@
         }
     }
 
+    @media screen and (min-width: 600px) and (max-width: 1024px) {
+        .forgot-password-card {
+            max-width: 80% !important;
+        }
+    }
+
     @media screen and (max-width: 599px) {
         & {
             .forgot-password-card {
-                max-width: 90%;
+                max-width: 90% !important;
             }
         }
     }
@@ -718,10 +730,16 @@
         }
     }
 
+    @media screen and (min-width: 600px) and (max-width: 1024px) {
+        .reset-card {
+            max-width: 80% !important;
+        }
+    }
+
     @media screen and (max-width: 599px) {
         & {
             .reset-card {
-                max-width: 100%;
+                max-width: 100% !important;
             }
         }
     }

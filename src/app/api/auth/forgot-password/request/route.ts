@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import sendEmail from '@/utils/sendMail';
 import path from 'path';
 import fs from 'fs';
+import { validateEmail } from '@/utils/helperFn';
 
 export async function POST(request: NextRequest) {
     await connectToDB();
@@ -13,6 +14,8 @@ export async function POST(request: NextRequest) {
         const { email } = await request.json();
 
         if (!email) return NextResponse.json({ message: 'Email is required' }, { status: 400 });
+
+        if (!validateEmail(email)) return NextResponse.json({ message: 'Please enter valid email' }, { status: 400 });
 
         const user = await User.findOne({ email });
         if (!user) return NextResponse.json({ message: 'User not found' }, { status: 404 });

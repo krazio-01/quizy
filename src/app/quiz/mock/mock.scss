@@ -96,8 +96,6 @@
         }
     }
 
-    
-
     %quiz-button-base {
         display: block;
         margin-inline: auto;
@@ -172,6 +170,12 @@
                 background-color: #ccc;
                 cursor: not-allowed;
             }
+        }
+    }
+
+    @media screen and (min-width: 600px) and (max-width: 1024px) {
+        & {
+            min-height: 70svh !important;
         }
     }
 
