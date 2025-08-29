@@ -167,6 +167,8 @@ const ProfilePage = () => {
             { text: `${user?.firstName} ${user?.lastName}`, x: 310, y: height - 215 },
             { text: user?.email, x: 310, y: height - 233 },
             { text: user?.email, x: 50, y: height - 233 },
+            { text: user?.city, x: 50, y: height - 250 },
+            { text: user?.city, x: 310, y: height - 250 },
             { text: user?.phone, x: 77, y: height - 280 },
             { text: user?.phone, x: 350, y: height - 272 },
             { text: user?.school, x: 107, y: height - 290 },
@@ -180,7 +182,7 @@ const ProfilePage = () => {
             { text: paidAmount, x: 538, y: height - 350 },
             { text: paidAmount, x: 538, y: height - 373 },
             { text: paidAmountInWords, x: 48, y: height - 382 },
-            { text: paymentInfoDB.billing.transactionId, x: 48, y: height - 405 },
+            { text: paymentInfoDB?.billing?.transactionId, x: 48, y: height - 405 },
         ];
 
         fields.forEach(({ text, x, y }) => drawText(text, x, y));
