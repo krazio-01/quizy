@@ -3,6 +3,7 @@ import connectDB from '../../../../utils/dbConnect';
 import MockQuizModel from '../../../../models/MockQuizModel';
 import UserModel from '../../../../models/UserModel';
 import { calculateAge } from '@/utils/helperFn';
+import { validateEmail } from '@/utils/helperFn';
 
 const gradeAgeLimits: Record<string, [number, number]> = {
     'Grade 3-4': [8, 10],
@@ -19,6 +20,8 @@ export async function POST(req: NextRequest) {
 
         if (!name || !email || !grade)
             return NextResponse.json({ message: 'Please Fill All Fields First' }, { status: 400 });
+
+        if (!validateEmail(email)) return NextResponse.json({ message: 'Please enter valid email' }, { status: 400 });
 
         const user = await UserModel.findOne({ email });
 

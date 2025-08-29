@@ -121,7 +121,7 @@ const Step3 = ({
 
         if (normalized === 'cambridge') return Array.from({ length: 11 }, (_, i) => `Year ${i + 1}`);
 
-        return Array.from({ length: 12 }, (_, i) => `Grade ${i + 1}`);
+        return Array.from({ length: 8 }, (_, i) => `Grade ${i + 3}`);
     };
 
     const truncateText = (text: string, maxLength: number) => {

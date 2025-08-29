@@ -26,7 +26,7 @@ export async function middleware(request) {
     if (!token && isProtectedPath) return NextResponse.redirect(new URL('/login', request.url));
 
     if (token && (pathname === '/login' || pathname === '/register'))
-        return NextResponse.redirect(new URL('/profile', request.url));
+        return NextResponse.redirect(new URL('/', request.url));
 
     return NextResponse.next();
 }
