@@ -119,7 +119,7 @@ const Step3 = ({
     const getGradeOptions = () => {
         const normalized = board.toLowerCase();
 
-        if (normalized === 'cambridge') return Array.from({ length: 11 }, (_, i) => `Year ${i + 1}`);
+        if (normalized === 'cambridge') return Array.from({ length: 8 }, (_, i) => `Year ${i + 4}`);
 
         return Array.from({ length: 8 }, (_, i) => `Grade ${i + 3}`);
     };
