@@ -43,9 +43,13 @@ const ProfilePage = () => {
             setLoading(true);
             const { data: paymentInfoDB } = await axios.get<PaymentDetails>('/api/user/payment');
 
-            const { data: paymentInfoPayglocal } = await axios.get(`/api/payment/status`, {
-                params: { transactionId: paymentInfoDB.billing.transactionId },
-            });
+            let paymentInfoPayglocal = null;
+            if (paymentInfoDB?.billing?.transactionId) {
+                const response = await axios.get(`/api/payment/status`, {
+                    params: { transactionId: paymentInfoDB?.billing?.transactionId },
+                });
+                paymentInfoPayglocal = response?.data;
+            }
 
             const { data: user } = await axios.get('/api/user/details');
 
@@ -57,6 +61,7 @@ const ProfilePage = () => {
                 email: user?.email,
             });
         } catch (err) {
+            console.error('md-err: ', err);
             toast.error('Failed to fetch user details');
         } finally {
             setLoading(false);
@@ -123,6 +128,8 @@ const ProfilePage = () => {
     };
 
     const handleDownloadInvoice = async () => {
+        if (paymentInfoDB.billing.status !== 'success') return toast.error('No payment Found');
+
         const url = '/pdf/sampleInvoice.pdf';
         const existingPdfBytes = await fetch(url).then((res) => res.arrayBuffer());
 
@@ -353,7 +360,7 @@ const ProfilePage = () => {
                     <div className="billing">
                         <h4>Billing</h4>
 
-                        {!paymentInfoDB.billing ? (
+                        {paymentInfoDB?.billing.status !== 'success' ? (
                             <div className="billing__empty">No billing information available.</div>
                         ) : (
                             <div className="billing__card">
@@ -361,29 +368,29 @@ const ProfilePage = () => {
                                     <span>Description</span>
                                     <span>HSN/SAC</span>
                                     <span>Qty</span>
-                                    <span>Rate ({paymentInfoPayglocal.data.Currency})</span>
+                                    <span>Rate ({paymentInfoPayglocal?.data?.Currency})</span>
                                     <span>IGST</span>
                                     <span>Amount</span>
                                 </div>
 
                                 <div className="billing__row">
-                                    <span>{paymentInfoDB.billing.description}</span>
-                                    <span>{paymentInfoDB.billing.hsnSac}</span>
-                                    <span>{paymentInfoDB.billing.qty}</span>
-                                    <span>{paymentInfoDB.billing.rate}</span>
+                                    <span>{paymentInfoDB?.billing?.description}</span>
+                                    <span>{paymentInfoDB?.billing?.hsnSac}</span>
+                                    <span>{paymentInfoDB?.billing?.qty}</span>
+                                    <span>{paymentInfoDB?.billing?.rate}</span>
                                     <span>
-                                        {paymentInfoDB.billing.igst} ({paymentInfoDB.billing.igstAmount})
+                                        {paymentInfoDB?.billing?.igst} ({paymentInfoDB?.billing?.igstAmount})
                                     </span>
-                                    <span>{paymentInfoDB.billing.paidAmount}</span>
+                                    <span>{paymentInfoDB?.billing?.paidAmount}</span>
                                 </div>
                             </div>
                         )}
 
-                        {paymentInfoDB.billing && (
-                            <div className={`status ${paymentInfoDB.billing.status === 'success' ? 'paid' : 'failed'}`}>
+                        {paymentInfoDB?.billing && (
+                            <div className={`status ${paymentInfoDB?.billing?.status === 'success' ? 'paid' : 'failed'}`}>
                                 Fees Status{' '}
                                 <span>
-                                    {paymentInfoDB.billing.status === 'success' ? (
+                                    {paymentInfoDB?.billing?.status === 'success' ? (
                                         <MdCheckCircle />
                                     ) : (
                                         <MdOutlineCancel />
