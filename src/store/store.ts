@@ -12,6 +12,11 @@ interface AppStates {
 
     isRegisteredUser: boolean;
     setIsRegisteredUser: (val: boolean) => void;
+
+    routeAccess: Record<string, boolean>;
+    allowRoute: (path: string) => void;
+    clearRouteAccess: (path: string) => void;
+    resetRouteAccess: () => void;
 }
 
 const useAppStore = create<AppStates>((set) => ({
@@ -26,6 +31,19 @@ const useAppStore = create<AppStates>((set) => ({
 
     isRegisteredUser: false,
     setIsRegisteredUser: (isRegisteredUser: boolean) => set({ isRegisteredUser }),
+
+    routeAccess: {},
+    allowRoute: (path: string) =>
+        set((state) => ({
+            routeAccess: { ...state.routeAccess, [path]: true },
+        })),
+    clearRouteAccess: (path: string) =>
+        set((state) => {
+            const newAccess = { ...state.routeAccess };
+            delete newAccess[path];
+            return { routeAccess: newAccess };
+        }),
+    resetRouteAccess: () => set({ routeAccess: {} }),
 }));
 
 export default useAppStore;
