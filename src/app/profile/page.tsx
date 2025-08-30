@@ -272,7 +272,7 @@ const ProfilePage = () => {
                 </nav>
 
                 <div className="links-container">
-                    <Link href='/quiz/contest/welcome'>FAQs</Link>
+                    <Link href='/quiz/contest/info'>FAQs</Link>
                 </div>
             </aside>
 

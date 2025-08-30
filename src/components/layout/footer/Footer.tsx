@@ -18,7 +18,7 @@ const Footer = () => {
                     <a href="https://ei.study" target="_blank" rel="noopener noreferrer">
                         About Ei
                     </a>
-                    <Link href="/quiz/contest/welcome">FAQ</Link>
+                    <Link href="/quiz/contest/info">FAQ</Link>
                 </div>
                 <div>
                     <a

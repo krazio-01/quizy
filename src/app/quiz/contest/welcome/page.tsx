@@ -1,102 +1,102 @@
+"use client";
+import { useState } from "react";
+import axios from "axios";
+import { toast } from "sonner";
 import './welcome.scss';
 
-const faqs = [
+const preferences = [
     {
-        question: 'Q - What is the League of Logic competition?',
-        answer: 'The League of Logic is a global competition open to students in grades 3-10 from all curriculums.',
+        id: "robotics",
+        title: "I'd Like To Explore Robotics Classes / Camps",
+        desc: "Engaging, Hands-On Robotics Programs By Robofun Lab Designed To Build Real-World STEM Skills.",
     },
     {
-        question: 'Q - How will the competition be conducted?',
-        answer: 'The competition will be proctored, and results will be announced for each participating grade.',
+        id: "genwise",
+        title: "I'm Interested In GenWise Online Courses",
+        desc: "Curated Experiences That Challenge And Nurture Gifted Learners. We'll Send You Detailed Information Soon.",
     },
     {
-        question: 'Q - How will winners be selected?',
-        answer: 'Winners will be chosen based on their performance in the competition.',
+        id: "ats",
+        title: "I'd Like To Know More About The ASSET Talent Search (ATS)",
+        desc: "Learn How Your Child Can Qualify For India's Premier Platform For Academically Talented Students.",
     },
     {
-        question: 'Q - How can I contact or clear doubts about the competition?',
-        answer: 'For any inquiries or doubts, you can send an email to competition@ei.study.',
-    },
-    {
-        question: 'Q - Is there a video guide for registration?',
-        answer: 'Yes, there is a registration guideline video available. You can watch it on this link under "Learn the Registration process."',
-    },
-    {
-        question: 'Q - What technology is required to participate?',
-        answer: 'To participate, you will need a laptop, a stable internet connection (Wi-Fi), and a working camera on your desktop or laptop.',
-    },
-    {
-        question: 'Q - How will awards be delivered to participants?',
-        answer: "Awards will be sent either directly to the selected school or to the individual's address. Ensure that you provide the correct email address and phone number for delivery.",
-    },
-    {
-        question: 'Q - How long is the duration of the exam?',
-        answer: 'The exam duration is 60 minutes.',
-    },
-    {
-        question: 'Q - When is the exam date for the League of Logic competition?',
-        answer: 'The exam is scheduled for October 11th and 12th, 2025.',
-    },
-    {
-        question: 'Q - What is the registration fee, and how does it work for different countries?',
-        answer: 'The registration fee is 75 AED, and it will appear in the currency equivalent to your country of registration.',
-    },
-    {
-        question: 'Q - Are practice papers available for participants?',
-        answer: 'Yes, practice papers are available for all users, and registered users can access extra questions based on their registered grade.',
-    },
-    {
-        question: 'Q - How can parents support their children in the competition?',
-        answer: 'Parents can help by ensuring their children have the necessary technology and equipment required for the competition.',
+        id: "competitions",
+        title: "Keep Me Informed About Future Competitions By Educational Initiatives (Ei)",
+        desc: "Stay Updated On Upcoming Logic, Math, And Critical Thinking Contests Your Child May Love.",
     },
 ];
 
-const Page = () => {
+export default function PreferenceForm() {
+    const [selected, setSelected] = useState<string[]>([]);
+    const [loading, setLoading] = useState(false);
+
+    const togglePreference = (id: string) => {
+        setSelected((prev) =>
+            prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
+        );
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+
+        try {
+            const email = localStorage.getItem('userEmail');
+            const res = await axios.post("/api/user/updatePreferences", {
+                email,
+                preferences: selected,
+            });
+
+            toast.success("Preferences saved successfully!");
+        } catch (err: any) {
+            toast.error(err.response?.data?.error || "Failed to save preferences.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
-        <div className="welcome-container">
-            <div className="banner">
-                <video autoPlay muted loop playsInline className="welcome-video">
-                    <source src="/videos/contestWelcome.mp4" type="video/mp4" />
+        <div className="preferences-wrapper">
+            <div className="banner-section">
+                <video autoPlay muted loop playsInline>
+                    <source src="/videos/homepageBanner.mp4" type="video/mp4" />
                 </video>
-                <h1>Welcome to the League of Logic.</h1>
+
+                <div className="content">
+                    <h3>You&apos;re almost  In!</h3>
+                    <p>Take your  first step toward brilliance!</p>
+                </div>
             </div>
 
-            <section className="info-section">
-                <h3>Important Information</h3>
-                <p>
-                    <strong>Test Date -</strong>
-                </p>
-                <p>
-                    <strong>Time -</strong>
-                </p>
-                <p>
-                    <strong>System Requirements -</strong>
-                </p>
-            </section>
+            <div className="preferences-section-wrapper">
+                <h3>Tell us your preference </h3>
+                <p>We&apos;d love to know what excites you most! Select your preferences below so we can share the right opportunities, programs, and updates with you.</p>
 
-            <section className="faq-section">
-                <h3>FAQ</h3>
-                {faqs.map((faq, index) => (
-                    <div key={index} className="faq-item">
-                        <div className="faq-question">
-                            <strong>{faq.question}</strong>
-                        </div>
-                        <div className="faq-answer">{faq.answer}</div>
-                    </div>
-                ))}
-            </section>
+                <form onSubmit={handleSubmit} className="preference-section">
+                    {preferences.map((item) => (
+                        <label key={item.id}>
+                            <input
+                                type="checkbox"
+                                value={item.id}
+                                checked={selected.includes(item.id)}
+                                onChange={() => togglePreference(item.id)}
+                            />
+                            <div>
+                                <strong>{item.title}</strong>
+                                <p>{item.desc}</p>
+                            </div>
+                        </label>
+                    ))}
 
-            <section className="contact-section">
-                <h3>Contact Us</h3>
-                <div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-            </section>
+                    <button
+                        type="submit"
+                        disabled={loading}
+                    >
+                        {loading ? "Saving..." : "Submit"}
+                    </button>
+                </form>
+            </div>
         </div>
     );
-};
-
-export default Page;
+}

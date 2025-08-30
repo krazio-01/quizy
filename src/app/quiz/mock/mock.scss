@@ -167,8 +167,10 @@
             }
 
             &:disabled {
-                background-color: #ccc;
+                background-color: #e5e7eb;
+                color: #999;
                 cursor: not-allowed;
+                border: 2px solid #e5e7eb;
             }
         }
     }

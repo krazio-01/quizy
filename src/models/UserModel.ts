@@ -20,6 +20,7 @@ export interface IUser {
     isVerified: boolean;
 
     hasReceivedWelcomeEmail: boolean;
+    preferences: string[];
 
     forgotPasswordToken?: string;
     forgotPasswordTokenExpiry?: number;
@@ -53,6 +54,7 @@ const UserSchema: Schema<IUserDocument> = new Schema<IUserDocument>(
         isVerified: { type: Boolean, default: false },
 
         hasReceivedWelcomeEmail: { type: Boolean, default: false },
+        preferences: { type: [String], default: [] },
 
         forgotPasswordToken: { type: String },
         forgotPasswordTokenExpiry: { type: Number },
