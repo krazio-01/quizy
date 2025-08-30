@@ -35,11 +35,11 @@ const faqs = [
     },
     {
         question: 'Q - When is the exam date for the League of Logic competition?',
-        answer: 'The exam is scheduled for December 10th and 11th, 2023.',
+        answer: 'The exam is scheduled for October 11th and 12th, 2025.',
     },
     {
         question: 'Q - What is the registration fee, and how does it work for different countries?',
-        answer: 'The registration fee is 49 AED, and it will appear in the currency equivalent to your country of registration.',
+        answer: 'The registration fee is 75 AED, and it will appear in the currency equivalent to your country of registration.',
     },
     {
         question: 'Q - Are practice papers available for participants?',
