@@ -28,12 +28,10 @@ const ProfilePage = () => {
     const [paymentInfoPayglocal, setPaymentInfoPayglocal] = useState(null);
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [updating, setUpdating] = useState(false);
     const [uploading, setUploading] = useState(false);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const [editMode, setEditMode] = useState<{ field: string | null }>({ field: null });
     const [formData, setFormData] = useState<{ name: string; email: string }>({
         name: '',
         email: '',
@@ -71,33 +69,6 @@ const ProfilePage = () => {
     useEffect(() => {
         fetchAccountDetails();
     }, [fetchAccountDetails]);
-
-    const handleSave = async () => {
-        if (!paymentInfoDB) return;
-        try {
-            setUpdating(true);
-
-            const [firstName, ...rest] = formData.name.trim().split(' ');
-            const lastName = rest.join(' ');
-
-            const res = await axios.post('/api/user/update', {
-                userId: user?._id,
-                firstName,
-                lastName,
-                email: formData.email,
-            });
-
-            if (res.status === 200) {
-                toast.success('Profile updated successfully');
-                await fetchAccountDetails();
-                setEditMode({ field: null });
-            }
-        } catch (error) {
-            toast.error(error.response?.data?.error || 'Failed to update profile');
-        } finally {
-            setUpdating(false);
-        }
-    };
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files?.[0] || !paymentInfoDB) return;
@@ -313,56 +284,15 @@ const ProfilePage = () => {
                     <div className="field">
                         <div>
                             <span className="label">Name</span>
-                            {editMode.field === 'name' ? (
-                                <input
-                                    value={formData.name}
-                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                />
-                            ) : (
-                                <span className="value">{formData.name}</span>
-                            )}
+                            <span className="value">{formData.name}</span>
                         </div>
-                        {editMode.field === 'name' ? (
-                            <button className="edit-btn" onClick={handleSave} disabled={updating}>
-                                {updating ? 'Saving...' : 'Save'}
-                            </button>
-                        ) : (
-                            <button
-                                style={{ display: 'none' }}
-                                className="edit-btn"
-                                onClick={() => setEditMode({ field: 'name' })}
-                            >
-                                Edit
-                            </button>
-                        )}
                     </div>
 
                     <div className="field">
                         <div>
                             <span className="label">Email</span>
-                            {editMode.field === 'email' ? (
-                                <input
-                                    type="email"
-                                    value={formData.email}
-                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                />
-                            ) : (
-                                <span className="value">{user?.email}</span>
-                            )}
+                            <span className="value">{user?.email}</span>
                         </div>
-                        {editMode.field === 'email' ? (
-                            <button className="edit-btn" onClick={handleSave} disabled={updating}>
-                                {updating ? 'Saving...' : 'Save'}
-                            </button>
-                        ) : (
-                            <button
-                                style={{ display: 'none' }}
-                                className="edit-btn"
-                                onClick={() => setEditMode({ field: 'email' })}
-                            >
-                                Edit
-                            </button>
-                        )}
                     </div>
 
                     <div className="billing">
