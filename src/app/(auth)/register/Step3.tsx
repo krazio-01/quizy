@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect, useCallback } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
+import { FiRotateCcw } from 'react-icons/fi';
 import ccs from 'countrycitystatejson';
 import { Boards } from './boards';
 import schoolList from './schoolList_ISO.json';
@@ -25,6 +26,7 @@ const Step3 = ({
     const [country, setCountry] = useState('');
     const [cities, setCities] = useState<string[]>([]);
     const [city, setCity] = useState('');
+    const [customCity, setCustomCity] = useState('');
     const [schools, setSchools] = useState<School[]>([]);
     const [school, setSchool] = useState('');
     const [customSchool, setCustomSchool] = useState('');
@@ -54,6 +56,7 @@ const Step3 = ({
                 'Umm Al-Quwain',
                 'Ras Al Khaimah',
                 'Fujairah',
+                'Other (Please specify)',
             ]);
             return;
         }
@@ -64,8 +67,10 @@ const Step3 = ({
         states?.forEach((state: string) => {
             ccs.getCities(country, state)?.forEach((c: string) => citySet.add(c));
         });
+        const cityList = Array.from(citySet).sort();
+        cityList.push('Other (Please specify)');
 
-        setCities(Array.from(citySet).sort());
+        setCities(cityList);
     }, [country]);
 
     const fetchSchools = useCallback(async (countryCode: string, cityName: string) => {
@@ -93,7 +98,6 @@ const Step3 = ({
             setSchools(localSchools);
             setSchool('');
             setCustomSchool('');
-
         } catch (error) {
             console.error('Error fetching schools:', error);
             setSchoolError('Failed to load schools. Please try again.');
@@ -135,7 +139,7 @@ const Step3 = ({
 
     const isValid =
         country &&
-        city &&
+        (city === 'Other (Please specify)' ? customCity : city) &&
         (school === 'Other (Please specify)' ? customSchool : school) &&
         (board === 'Other' ? customBoard : board) &&
         grade;
@@ -146,7 +150,7 @@ const Step3 = ({
         if (isValid) {
             onNext({
                 country,
-                city,
+                city: city === 'Other (Please specify)' ? customCity : city,
                 school: school === 'Other (Please specify)' ? customSchool : school,
                 board: board === 'Other' ? customBoard : board,
                 grade,
@@ -173,22 +177,48 @@ const Step3 = ({
 
             <div className="form-group">
                 <label htmlFor="city">City</label>
+                <span>Select the &apos;Other&apos; option if you don&apos;t find your city in the list.</span>
                 <div className="select-wrapper">
-                    <select
-                        id="city"
-                        value={city}
-                        onChange={(e) => setCity(e.target.value)}
-                        required
-                        disabled={cities.length === 0}
-                    >
-                        <option value="">Choose your city</option>
-                        {cities.map((c) => (
-                            <option key={c} value={c}>
-                                {c}
-                            </option>
-                        ))}
-                    </select>
-                    <FaChevronDown className="dropdown-icon" size={14} />
+                    {city === 'Other (Please specify)' ? (
+                        <div className="input-wrapper">
+                            <input
+                                type="text"
+                                placeholder="Enter your city name"
+                                value={customCity}
+                                onChange={(e) => setCustomCity(e.target.value)}
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="rollback-btn"
+                                onClick={() => {
+                                    setCity('');
+                                    setCustomCity('');
+                                }}
+                            >
+                                <FiRotateCcw /> Back
+                            </button>
+                        </div>
+                    ) : (
+                        <>
+                            <select
+                                id="city"
+                                value={city}
+                                onChange={(e) => setCity(e.target.value)}
+                                required
+                                disabled={cities.length === 0}
+                            >
+                                <option value="">Choose your city</option>
+                                {cities.map((c) => (
+                                    <option key={c} value={c}>
+                                        {c}
+                                    </option>
+                                ))}
+                                <option value="Other (Please specify)">Other (Please specify)</option>
+                            </select>
+                            <FaChevronDown className="dropdown-icon" size={14} />
+                        </>
+                    )}
                 </div>
             </div>
 
@@ -197,13 +227,25 @@ const Step3 = ({
                 <span>Select the &apos;Other&apos; option if you don&apos;t find your school in the list.</span>
                 <div className="select-wrapper">
                     {school === 'Other (Please specify)' ? (
-                        <input
-                            type="text"
-                            placeholder="Enter your school name"
-                            value={customSchool}
-                            onChange={(e) => setCustomSchool(e.target.value)}
-                            required
-                        />
+                        <div className="input-wrapper">
+                            <input
+                                type="text"
+                                placeholder="Enter your school name"
+                                value={customSchool}
+                                onChange={(e) => setCustomSchool(e.target.value)}
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="rollback-btn"
+                                onClick={() => {
+                                    setSchool('');
+                                    setCustomSchool('');
+                                }}
+                            >
+                                <FiRotateCcw /> Back
+                            </button>
+                        </div>
                     ) : (
                         <>
                             <select
@@ -232,13 +274,25 @@ const Step3 = ({
                 <span>Select the &apos;Other&apos; option if you don&apos;t find your board in the list.</span>
                 <div className="select-wrapper">
                     {board === 'Other' ? (
-                        <input
-                            type="text"
-                            placeholder="Enter your board name"
-                            value={customBoard}
-                            onChange={(e) => setCustomBoard(e.target.value)}
-                            required
-                        />
+                        <div className="input-wrapper">
+                            <input
+                                type="text"
+                                placeholder="Enter your board name"
+                                value={customBoard}
+                                onChange={(e) => setCustomBoard(e.target.value)}
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="rollback-btn"
+                                onClick={() => {
+                                    setBoard('');
+                                    setCustomBoard('');
+                                }}
+                            >
+                                <FiRotateCcw /> Back
+                            </button>
+                        </div>
                     ) : (
                         <>
                             <select id="board" value={board} onChange={(e) => setBoard(e.target.value)} required>
