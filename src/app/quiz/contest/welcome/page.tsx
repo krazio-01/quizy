@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "sonner";
 import './welcome.scss';
@@ -31,6 +32,8 @@ export default function PreferenceForm() {
     const [selected, setSelected] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
 
+    const router = useRouter();
+
     const togglePreference = (id: string) => {
         setSelected((prev) =>
             prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
@@ -49,6 +52,7 @@ export default function PreferenceForm() {
             });
 
             toast.success("Preferences saved successfully!");
+            router.replace('/');
         } catch (err: any) {
             toast.error(err.response?.data?.error || "Failed to save preferences.");
         } finally {
