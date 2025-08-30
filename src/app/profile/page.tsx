@@ -7,6 +7,7 @@ import { FiDownload } from 'react-icons/fi';
 import { FiChevronRight } from 'react-icons/fi';
 import { toast } from 'sonner';
 import './profile.scss';
+import Link from 'next/link';
 
 interface PaymentDetails {
     billing: {
@@ -126,7 +127,7 @@ const ProfilePage = () => {
     };
 
     const handleDownloadInvoice = async () => {
-        if (paymentInfoDB.billing.status !== 'success') return toast.error('No payment Found');
+        if (paymentInfoDB?.billing?.status !== 'success') return toast.error('No payment Found');
 
         const url = '/pdf/sampleInvoice.pdf';
         const existingPdfBytes = await fetch(url).then((res) => res.arrayBuffer());
@@ -257,6 +258,11 @@ const ProfilePage = () => {
                             <FiDownload /> Test Guidelines
                         </button>
                     </a>
+                    <a download>
+                        <button>
+                            <FiDownload /> Sample Questions
+                        </button>
+                    </a>
                     <button onClick={handleDownloadInvoice}>
                         <FiDownload /> Invoice
                     </button>
@@ -264,6 +270,10 @@ const ProfilePage = () => {
                         <FiDownload /> Certificate
                     </button>
                 </nav>
+
+                <div className="links-container">
+                    <Link href='/quiz/contest/welcome'>FAQs</Link>
+                </div>
             </aside>
 
             <main className="content">
@@ -358,7 +368,7 @@ const ProfilePage = () => {
                     <div className="billing">
                         <h4>Billing</h4>
 
-                        {paymentInfoDB?.billing.status !== 'success' ? (
+                        {paymentInfoDB?.billing?.status !== 'success' ? (
                             <div className="billing__empty">No billing information available.</div>
                         ) : (
                             <div className="billing__card">
