@@ -3,11 +3,11 @@ import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import useAppStore from '@/store/store';
-import './mockSuccess.scss';
 import RewardsSection from '@/components/layout/rewards/RewardsSection';
+import './mockSuccess.scss';
 
 const Page = () => {
-    const { scoreString } = useAppStore();
+    const { scoreString, isRegisteredUser } = useAppStore();
     const router = useRouter();
 
     useEffect(() => {
@@ -32,7 +32,7 @@ const Page = () => {
                         Ready to see where you truly stand in the League of Logic?
                     </p>
 
-                    <Link href="/register">Register</Link>
+                    {!isRegisteredUser && <Link href="/register">Register</Link>}
                 </div>
             </div>
 

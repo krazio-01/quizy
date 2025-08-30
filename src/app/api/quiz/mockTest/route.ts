@@ -12,6 +12,21 @@ const gradeAgeLimits: Record<string, [number, number]> = {
     'Grade 9-10': [14, 16],
 };
 
+function yearToGrade(year: number): string | null {
+    if (year >= 4 && year <= 11) return `grade${year - 1}`;
+    return null;
+}
+
+function normalizeGrade(value: string): string | null {
+    if (!value) return null;
+
+    if (value.startsWith('year')) {
+        const yearNum = parseInt(value.replace('year', ''), 10);
+        return yearToGrade(yearNum);
+    }
+    return value;
+}
+
 export async function POST(req: NextRequest) {
     try {
         await connectDB();
@@ -25,9 +40,11 @@ export async function POST(req: NextRequest) {
 
         const user = await UserModel.findOne({ email });
 
-        if (user && user.dob && gradeAgeLimits[grade]) {
-            const userAge = calculateAge(user.dob);
-            const [minAge, maxAge] = gradeAgeLimits[grade];
+        const normalizedGrade = normalizeGrade(grade);
+
+        if (user.dob && normalizedGrade && gradeAgeLimits[normalizedGrade]) {
+            const userAge = calculateAge(new Date(user.dob));
+            const [minAge, maxAge] = gradeAgeLimits[normalizedGrade];
 
             if (userAge < minAge || userAge > maxAge) {
                 return NextResponse.json(
@@ -51,10 +68,10 @@ export async function POST(req: NextRequest) {
             existing.attemptCount = existing.attempts.length;
             await existing.save();
 
-            return NextResponse.json({ message: 'Best Of Luck!', data: existing }, { status: 200 });
+            return NextResponse.json({ isExistingUser: user ? true : false, status: 200 });
         }
 
-        const newRecord = await MockQuizModel.create({
+        await MockQuizModel.create({
             name,
             email,
             grade,
@@ -62,7 +79,7 @@ export async function POST(req: NextRequest) {
             attemptCount: 1,
         });
 
-        return NextResponse.json({ message: 'Quiz Started!', data: newRecord }, { status: 201 });
+        return NextResponse.json({ isExistingUser: user ? true : false }, { status: 201 });
     } catch (err: any) {
         if (err.code === 11000)
             return NextResponse.json({ message: 'Duplicate entry for this grade and email' }, { status: 409 });

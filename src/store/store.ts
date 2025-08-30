@@ -9,6 +9,9 @@ interface AppStates {
 
     step: number;
     setStep: (step: number) => void;
+
+    isRegisteredUser: boolean;
+    setIsRegisteredUser: (val: boolean) => void;
 }
 
 const useAppStore = create<AppStates>((set) => ({
@@ -20,6 +23,9 @@ const useAppStore = create<AppStates>((set) => ({
 
     step: 1,
     setStep: (step: number) => set({ step }),
+
+    isRegisteredUser: false,
+    setIsRegisteredUser: (isRegisteredUser: boolean) => set({ isRegisteredUser }),
 }));
 
 export default useAppStore;

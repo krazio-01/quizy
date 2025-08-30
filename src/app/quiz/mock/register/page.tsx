@@ -19,7 +19,7 @@ const Page = () => {
     const [loading, setLoading] = useState(false);
     const [form, setForm] = useState({ name: '', email: '' });
 
-    const { setSelectedGrade } = useAppStore();
+    const { setSelectedGrade, setIsRegisteredUser } = useAppStore();
 
     const router = useRouter();
 
@@ -39,8 +39,9 @@ const Page = () => {
         };
 
         try {
-            await axios.post('/api/quiz/mockTest', payload);
-            setSelectedGrade(selectedGrade)
+            const { data } = await axios.post('/api/quiz/mockTest', payload);
+            setSelectedGrade(selectedGrade);
+            setIsRegisteredUser(data?.isExistingUser);
             router.push('/quiz/mock/rules');
         } catch (error: any) {
             const message = error.response?.data?.message || 'Something went wrong';
