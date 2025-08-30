@@ -7,13 +7,13 @@ const sendEmail = async (userEmail, subject, text, html) => {
             port: process.env.EMAIL_PORT,
             secure: process.env.SECURE,
             auth: {
-                user: process.env.USER,
+                user: process.env.EMAIL_USER,
                 pass: process.env.PASSWORD,
             },
         });
 
         const mail_configs = {
-            from: `"League Of Logic" <${process.env.USER}>`,
+            from: `"League Of Logic" <${process.env.EMAIL_USER}>`,
             to: userEmail,
             subject: subject,
             text: text,
