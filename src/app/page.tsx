@@ -86,7 +86,7 @@ const HomePage = () => {
             </section>
 
             <section className="stats-container">
-                <div>120+ countries</div>
+                <div>120+ <br/> countries</div>
                 <div>Recognition <br />Certificates &amp; medals</div>
                 <div>Growth &amp; Rewards <br />Career Boost &amp; Prizes</div>
                 <div>Test date: <br />11-12th Oct</div>
