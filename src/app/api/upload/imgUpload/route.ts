@@ -14,7 +14,7 @@ export async function POST(request) {
                 .upload_stream(
                     {
                         resource_type: 'auto',
-                        upload_preset: 'AetherBot',
+                        upload_preset: 'EI_study',
                         quality: 70,
                     },
                     async (error, result) => {
