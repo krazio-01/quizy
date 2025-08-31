@@ -12,6 +12,7 @@ export interface Step2Props {
     otpSent: boolean;
     email: string;
     fieldErrors: { [key: string]: string };
+    getUserInfo: () => void;
 }
 
 const maskEmail = (email: string) => {
@@ -37,9 +38,12 @@ const Step2 = ({
     resendOtpLoading,
     otpSent,
     email,
-    fieldErrors
+    fieldErrors,
+    getUserInfo,
 }: Step2Props) => {
     const [otpValues, setOtpValues] = useState(Array(6).fill(''));
+    const [changeEmailLoading, setChangeEmailLoading] = useState(false);
+
     const otpRefs = useRef<Array<HTMLInputElement | null>>([]);
 
     useEffect(() => {
@@ -87,6 +91,19 @@ const Step2 = ({
         onResendOtp();
     };
 
+    const handleChangeEmail = async () => {
+        try {
+            setChangeEmailLoading(true);
+            await getUserInfo();
+            onBack();
+        } catch (error) {
+            console.error('Change email failed:', error);
+            toast.error('Failed to fetch user info. Please try again.');
+        } finally {
+            setChangeEmailLoading(false);
+        }
+    };
+
     return (
         <div className="step-form otp-form">
             <h3>One time password</h3>
@@ -95,7 +112,7 @@ const Step2 = ({
                 inbox.
             </p>
 
-            <div className='otp-input-wrapper'>
+            <div className="otp-input-wrapper">
                 <div className="otp-box">
                     {otpValues.map((value, i) => (
                         <input
@@ -118,9 +135,17 @@ const Step2 = ({
             <button className="next-btn" onClick={handleVerify} disabled={loading}>
                 {loading ? 'Verifying...' : 'Verify'}
             </button>
-            <button className="resend" onClick={handleResendOtp} disabled={resendOtpLoading}>
-                {resendOtpLoading ? 'Resending...' : 'Resend OTP'}
-            </button>
+            <div className="bottom-action-wrapper">
+                <button className="resend" onClick={handleResendOtp} disabled={resendOtpLoading}>
+                    {resendOtpLoading ? 'Resending...' : 'Resend OTP'}
+                </button>
+                <span>
+                    Not sure email is correct?
+                    <button className="change-email" onClick={handleChangeEmail} disabled={changeEmailLoading}>
+                        {changeEmailLoading ? 'Please wait...' : 'Change email'}
+                    </button>
+                </span>
+            </div>
         </div>
     );
 };

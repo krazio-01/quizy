@@ -9,41 +9,41 @@ const contactData = [
         country: "India",
         address:
             "The First Building, Corporate House A2, 1st Floor, Nyay Marg, Vastrapur, Ahmedabad",
-        phone: "+91-7946011589",
+        phone: "+97144396233 / +13323318436",
         email: "competition@ei.study",
     },
     {
         country: "India",
         address:
             "The CUBE - Karle Town Center, 100 Ft, Nagavara, Bengaluru",
-        phone: "+91-80-4925 2828",
+        phone: "+97144396233 / +13323318436",
         email: "competition@ei.study",
     },
     {
         country: "South Africa",
         address:
             "2 Ncondo Place, Ridgeside Umhlanga Ridge, Durban 4320, South Africa",
-        phone: "+27827859718",
+        phone: "+97144396233 / +13323318436",
         email: "competition@ei.study",
     },
     {
         country: "UAE",
         address:
             "Sage Educational Consultants, Office 110, 1st floor, Building 6, Dubai Outsource City",
-        phone: "+971 56 333 7645",
+        phone: "+97144396233 / +13323318436",
         email: "competition@ei.study",
     },
     {
         country: "USA",
         address: "3819 N 3rd St., Ste E-104, Phoenix, Arizona - 85012",
-        phone: "+13323318436",
+        phone: "+97144396233 / +13323318436",
         email: "competition@ei.study",
     },
     {
         country: "Kingdom of Saudi Arabia",
         address:
             "Office 225, Business Plaza, East Tower, Sharifiyah district, Madinah Road Jeddah",
-        phone: "+971 44396233 / +13323318436",
+        phone: "+97144396233 / +13323318436",
         email: "competition@ei.study",
     },
 ];

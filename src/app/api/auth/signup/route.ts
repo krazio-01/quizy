@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     await connectToDB();
 
     try {
-        const { firstName, lastName, dob, email, password, confirmPassword, phone } = await request.json();
+        const { firstName, lastName, dob, email, password, confirmPassword, phone, userId } = await request.json();
 
         const missingFields = [];
         if (!firstName) missingFields.push('firstName');
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
         if (ageInYears <= 8 || ageInYears >= 18)
             return NextResponse.json({ message: 'Age must be between 8 and 18 years' }, { status: 400 });
 
-        if (password !== confirmPassword)
+        if (password !== confirmPassword && !userId)
             return NextResponse.json({ message: 'Passwords do not match' }, { status: 400 });
 
         if (!validateEmail(email)) return NextResponse.json({ message: 'Invalid email format' }, { status: 400 });
@@ -69,27 +69,39 @@ export async function POST(request: NextRequest) {
         }
 
         const userExists = await User.findOne({ email });
-        if (userExists) return NextResponse.json({ message: 'This account already registered' }, { status: 400 });
+        if (userExists && userExists.isVerified)
+            return NextResponse.json({ message: 'This account already registered' }, { status: 400 });
 
-        // Hash password
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
+        let newUser = null;
 
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
         const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
 
-        // generate unique verifyation token
-        const newUser = new User({
-            firstName,
-            lastName,
-            dob,
-            email,
-            password: hashedPassword,
-            phone,
-            otp,
-            otpExpiry,
-            isVerified: false,
-        });
+        if (password === '*********' && confirmPassword === '*********' && userId) {
+            newUser = await User.findById(userId);
+
+            newUser.email = email;
+            newUser.isVerified = false;
+            newUser.otp = otp;
+            newUser.otpExpiry = otpExpiry;
+        } else {
+            // Hash password
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(password, salt);
+
+            // generate unique verifyation token
+            newUser = new User({
+                firstName,
+                lastName,
+                dob,
+                email,
+                password: hashedPassword,
+                phone,
+                otp,
+                otpExpiry,
+                isVerified: false,
+            });
+        }
 
         const user = await newUser.save();
 

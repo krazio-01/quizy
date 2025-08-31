@@ -1,8 +1,8 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import useAppStore from '@/store/store';
 import { toast } from 'sonner';
-import axios from 'axios';
+import axios from '@/utils/axios';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
@@ -15,6 +15,7 @@ const Page = () => {
     const [loading, setLoading] = useState(false);
     const [otpSent, setOtpSent] = useState(false);
     const [resendOtpLoading, setResendOtpLoading] = useState(false);
+    const [userId, setUserId] = useState(null);
     const [formData, setFormData] = useState({
         schoolDetails: {
             country: '',
@@ -35,12 +36,6 @@ const Page = () => {
     });
     const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
 
-    useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        const stepParam = params.get('step');
-        if (stepParam === '3') setStep(3);
-    }, [setStep]);
-
     const nextStep = () => setStep(step + 1);
     const prevStep = () => setStep(step - 1);
 
@@ -53,7 +48,10 @@ const Page = () => {
             setLoading(true);
             setFieldErrors({});
 
-            await axios.post('/api/auth/signup', personalData);
+            await axios.post('/api/auth/signup', {
+                ...personalData,
+                userId,
+            });
             setOtpSent(true);
             localStorage.setItem('userEmail', personalData.email);
             localStorage.setItem('phone', personalData.phone);
@@ -108,7 +106,10 @@ const Page = () => {
     const handleResend = async () => {
         setResendOtpLoading(true);
         try {
-            await axios.post('/api/auth/resendOtp', { email: formData.personalDetails.email });
+            const email = formData.personalDetails.email
+                ? formData.personalDetails.email
+                : localStorage.getItem('userEmail');
+            await axios.post('/api/auth/resendOtp', { email });
             toast.success('A new OTP has been sent to your email.');
         } catch (err: any) {
             toast.error(err.response?.data?.message || 'Something went wrong');
@@ -165,6 +166,38 @@ const Page = () => {
         }
     };
 
+    const getUserInfo = async () => {
+        try {
+            const email = localStorage.getItem('userEmail');
+
+            const response = await axios.get('/api/user/details', {
+                params: { email },
+            });
+
+            if (response.status === 200) {
+                setUserId(response?.data._id);
+                setFormData((prev) => ({
+                    ...prev,
+                    personalDetails: {
+                        ...prev.personalDetails,
+                        firstName: response?.data.firstName || '',
+                        lastName: response?.data.lastName || '',
+                        dob: response?.data.dob || '',
+                        email: response?.data.email || '',
+                        password: '*********',
+                        confirmPassword: '*********',
+                        phone: response?.data.phone || '',
+                    },
+                }));
+            } else {
+                toast.error(response?.data.message || 'Could not fetch user details');
+            }
+        } catch (error: any) {
+            console.error('User info error: ', error);
+            toast.error(error.response?.data?.message || 'Failed to fetch user details');
+        }
+    };
+
     return (
         <div className="auth-container">
             <div className="progress-wrapper">
@@ -182,10 +215,14 @@ const Page = () => {
                         setFormData((prev) => ({ ...prev, personalDetails: data }));
                         await handleRegistration(data);
                     }}
-                    onBack={prevStep}
                     loading={loading}
                     fieldErrors={fieldErrors}
                     clearFieldError={clearFieldError}
+                    initialData={{
+                        ...formData.personalDetails,
+                        dob: formData.personalDetails.dob ? new Date(formData.personalDetails.dob) : null,
+                    }}
+                    editingEmail={step === 1 && !!formData.personalDetails.email}
                 />
             )}
 
@@ -199,9 +236,14 @@ const Page = () => {
                     onResendOtp={handleResend}
                     loading={loading}
                     resendOtpLoading={resendOtpLoading}
-                    email={formData.personalDetails.email}
+                    email={
+                        formData.personalDetails.email
+                            ? formData.personalDetails.email
+                            : localStorage.getItem('userEmail')
+                    }
                     otpSent={otpSent}
                     fieldErrors={fieldErrors}
+                    getUserInfo={getUserInfo}
                 />
             )}
 

@@ -1,13 +1,13 @@
 'use client';
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { MdCheckCircle, MdOutlineCancel } from 'react-icons/md';
-import axios from 'axios';
+import axios from '@/utils/axios';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import { FiDownload } from 'react-icons/fi';
 import { FiChevronRight } from 'react-icons/fi';
 import { toast } from 'sonner';
-import './profile.scss';
 import Link from 'next/link';
+import './profile.scss';
 
 interface PaymentDetails {
     billing: {
@@ -29,6 +29,7 @@ const ProfilePage = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [uploading, setUploading] = useState(false);
+    const [paymentLoading, setPaymentLoading] = useState(false);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -82,8 +83,8 @@ const ProfilePage = () => {
             const uploadRes = await axios.post('/api/upload/imgUpload', formData);
             const imgUrl = uploadRes.data.imgUrl;
 
-            await axios.post('/api/user/update', {
-                userId: user?._id,
+            await axios.post('/api/user/updateUser', {
+                email: user.email,
                 avatar: imgUrl,
             });
 
@@ -122,12 +123,12 @@ const ProfilePage = () => {
         const paidAmount = paymentInfoDB?.billing?.paidAmount || 0;
         const paidAmountInWords = `${paymentInfoPayglocal?.data?.Currency} ${numberToWords(paidAmount)} only`;
 
-        const invoiceDate = new Date().toLocaleString("en-GB", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
+        const invoiceDate = new Date().toLocaleString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
         });
 
         const generateInvoiceNumber = () => {
@@ -173,32 +174,46 @@ const ProfilePage = () => {
     };
 
     function numberToWords(num: number): string {
-        if (num === 0) return "zero";
+        if (num === 0) return 'zero';
 
         const belowTwenty = [
-            "", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
-            "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
-            "sixteen", "seventeen", "eighteen", "nineteen"
+            '',
+            'one',
+            'two',
+            'three',
+            'four',
+            'five',
+            'six',
+            'seven',
+            'eight',
+            'nine',
+            'ten',
+            'eleven',
+            'twelve',
+            'thirteen',
+            'fourteen',
+            'fifteen',
+            'sixteen',
+            'seventeen',
+            'eighteen',
+            'nineteen',
         ];
-        const tens = [
-            "", "", "twenty", "thirty", "forty", "fifty",
-            "sixty", "seventy", "eighty", "ninety"
-        ];
-        const thousands = ["", "thousand", "million", "billion"];
+        const tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+        const thousands = ['', 'thousand', 'million', 'billion'];
 
         const helper = (n: number): string => {
-            if (n === 0) return "";
-            if (n < 20) return belowTwenty[n] + " ";
-            if (n < 100) return tens[Math.floor(n / 10)] + " " + helper(n % 10);
-            if (n < 1000) return belowTwenty[Math.floor(n / 100)] + " hundred " + helper(n % 100);
-            return "";
+            if (n === 0) return '';
+            if (n < 20) return belowTwenty[n] + ' ';
+            if (n < 100) return tens[Math.floor(n / 10)] + ' ' + helper(n % 10);
+            if (n < 1000) return belowTwenty[Math.floor(n / 100)] + ' hundred ' + helper(n % 100);
+            return '';
         };
 
         let i = 0;
-        let words = "";
+        let words = '';
         while (num > 0) {
             if (num % 1000 !== 0) {
-                words = helper(num % 1000) + thousands[i] + " " + words;
+                words = helper(num % 1000) + thousands[i] + ' ' + words;
             }
             num = Math.floor(num / 1000);
             i++;
@@ -206,6 +221,29 @@ const ProfilePage = () => {
 
         return words.trim();
     }
+
+    const handlePayment = async () => {
+        try {
+            setPaymentLoading(true);
+
+            const paymentData = {
+                customerEmail: user?.email,
+                customerPhone: user?.phone,
+                metadata: {
+                    registrationData: formData,
+                },
+            };
+
+            const { data } = await axios.post('/api/payment/initiate', paymentData);
+
+            if (data.success) window.location.href = data.paymentUrl;
+            else toast.error(data.message || 'Payment initiation failed');
+        } catch (error) {
+            console.error('Payment error: ', error);
+        } finally {
+            setPaymentLoading(false);
+        }
+    };
 
     if (loading) return <div className="profile-page loading">Loading...</div>;
     if (!paymentInfoDB) return <div className="profile-page error">No user data available</div>;
@@ -243,7 +281,7 @@ const ProfilePage = () => {
                 </nav>
 
                 <div className="links-container">
-                    <Link href='/quiz/contest/info'>FAQs</Link>
+                    <Link href="/quiz/contest/info">FAQs</Link>
                 </div>
             </aside>
 
@@ -324,18 +362,33 @@ const ProfilePage = () => {
                             </div>
                         )}
 
-                        {paymentInfoDB?.billing && (
-                            <div className={`status ${paymentInfoDB?.billing?.status === 'success' ? 'paid' : 'failed'}`}>
-                                Fees Status{' '}
-                                <span>
-                                    {paymentInfoDB?.billing?.status === 'success' ? (
-                                        <MdCheckCircle />
-                                    ) : (
-                                        <MdOutlineCancel />
+                        <div className="bottom-wrapper">
+                            {paymentInfoDB?.billing && (
+                                <>
+                                    <div
+                                        className={`status ${paymentInfoDB.billing.status === 'success' ? 'paid' : 'failed'
+                                            }`}
+                                    >
+                                        Fees Status{' '}
+                                        <span>
+                                            {paymentInfoDB.billing.status === 'success' ? (
+                                                <MdCheckCircle />
+                                            ) : (
+                                                <MdOutlineCancel />
+                                            )}
+                                        </span>
+                                    </div>
+
+                                    {paymentInfoDB.billing.status !== 'success' && (
+                                        <div className="pay-now-container">
+                                            <button disabled={paymentLoading} onClick={handlePayment}>
+                                                Pay Now
+                                            </button>
+                                        </div>
                                     )}
-                                </span>
-                            </div>
-                        )}
+                                </>
+                            )}
+                        </div>
                     </div>
                 </section>
             </main>

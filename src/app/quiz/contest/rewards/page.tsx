@@ -10,13 +10,13 @@ const partnersData = [
         image: '/images/rewards1.png',
     },
     {
-        text: 'GenWise is a learning community that brings together some of India’s finest educators to mentor curious, motivated students. With a focus on critical thinking, exploration, and lifelong learning, GenWise creates programs that go beyond school to nurture intellectual growth and real-world problem-solving. And for League of Logic toppers, there’s a special reward: a free Masterclass with GenWise—because great thinking deserves great mentoring.',
+        text: "GenWise is a learning community that brings together some of India's finest educators to mentor curious, motivated students. With a focus on critical thinking, exploration, and lifelong learning, GenWise creates programs that go beyond school to nurture intellectual growth and real-world problem-solving. And for League of Logic toppers, there's a special reward: a free Masterclass with GenWise—because great thinking deserves great mentoring.",
         imagePosition: 'right',
         image: '/images/rewards2.png',
     },
 ];
 
-const Page = () => {
+const Page = async () => {
     return (
         <div className="rewards-container">
             <div className="banner">
@@ -66,7 +66,8 @@ const Page = () => {
 
                     <div className="report-content">
                         <div className="report-image">
-                            <video loop src="/videos/report.mp4" />
+                            <video loop src="/videos/rewardsReportDesktop.mp4" className='desktop-video' />
+                            <video loop src="/videos/report.mp4" className='mobile-video' />
                         </div>
 
                         <div className="report-text">

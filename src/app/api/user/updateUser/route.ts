@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     await connectToDB();
 
     try {
-        const { email, country, city, school, board, grade } = await request.json();
+        const { email, country, city, school, board, grade, avatar } = await request.json();
 
         const user = await User.findOne({ email });
         if (!user) return NextResponse.json({ field: 'email', message: 'User not found' }, { status: 404 });
@@ -59,11 +59,12 @@ export async function POST(request: NextRequest) {
         }
 
         // Update fields
-        user.country = country;
-        user.city = city;
-        user.school = school;
-        user.board = board;
-        user.grade = grade;
+        if (country) user.country = country;
+        if (city) user.city = city;
+        if (school) user.school = school;
+        if (board) user.board = board;
+        if (grade) user.grade = grade;
+        if (avatar) user.avatar = avatar;
 
         await user.save();
 

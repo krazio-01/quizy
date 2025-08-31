@@ -294,32 +294,57 @@
                     padding: 1rem 0;
                 }
 
-                .status {
+                .bottom-wrapper {
                     display: flex;
                     align-items: center;
-                    justify-content: center;
-                    font-size: var(--fz-sm);
-                    font-weight: 590;
-                    color: #3e3e3e;
-                    width: fit-content;
-                    padding: 0.5rem;
-                    border-radius: 10px;
-                    font-weight: 700;
+                    gap: 2rem;
 
-                    &.paid {
-                        outline: 1px solid #44B61E;
-                        color: #44B61E;
-                    }
-
-                    &.failed {
-                        outline: 1px solid #EA292E;
-                        color: #EA292E;
-                    }
-
-                    span {
-                        margin-left: 0.3rem;
-                        font-weight: 700;
+                    .status {
                         display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: var(--fz-sm);
+                        font-weight: 590;
+                        color: #3e3e3e;
+                        width: fit-content;
+                        padding: 0.5rem;
+                        border-radius: 10px;
+                        font-weight: 700;
+
+                        &.paid {
+                            outline: 1px solid #44b61e;
+                            color: #44b61e;
+                        }
+
+                        &.failed {
+                            outline: 1px solid #ea292e;
+                            color: #ea292e;
+                        }
+
+                        span {
+                            margin-left: 0.3rem;
+                            font-weight: 700;
+                            display: flex;
+                        }
+                    }
+
+                    .pay-now-container {
+                        button {
+                            background: #ab2024;
+                            color: #fff;
+                            border-radius: 10px;
+                            border: none;
+                            outline: none;
+                            padding: 0.5rem 1rem;
+                            font-size: var(--fz-sm);
+                            cursor: pointer;
+
+                            &:disabled {
+                                background-color: #f5f5f5;
+                                color: #999;
+                                cursor: not-allowed;
+                            }
+                        }
                     }
                 }
             }

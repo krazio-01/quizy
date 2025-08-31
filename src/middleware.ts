@@ -10,18 +10,38 @@ const PUBLIC_PATHS = new Set([
     '/forgot-password/request',
 ]);
 
-const PROTECTED_PATHS = new Set(['/profile']);
+const PROTECTED_PATH_PREFIXES = ['/profile'];
+
+const AUTH_API_EXCLUSIONS = ['signup', 'forgot-password', 'resendOtp', 'verifyOtp'];
+const API_EXCLUSIONS = ['payment/webhook', 'payment/callback'];
 
 export async function middleware(request) {
-    const token = await getToken({ req: request });
     const { pathname, searchParams } = request.nextUrl;
-    const tokenParams = searchParams.get('token');
+
+    if (pathname.startsWith('/api/auth')) {
+        const hasExclusion = AUTH_API_EXCLUSIONS.some((exclusion) => pathname.includes(exclusion));
+        if (!hasExclusion) return NextResponse.next();
+    }
+
+    if (pathname.startsWith('/api/') && !API_EXCLUSIONS.some((exclusion) => pathname.includes(exclusion))) {
+        const apiToken = request.headers.get('x-api-token');
+        if (apiToken !== process.env.NEXT_PUBLIC_API_TOKEN) {
+            return new NextResponse(JSON.stringify({ error: 'Unauthorized request' }), {
+                status: 401,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
+        return NextResponse.next();
+    }
+
+    if (pathname.startsWith('/forgot-password/change')) {
+        if (!searchParams.get('token')) return NextResponse.redirect(new URL('/', request.url));
+    }
+
+    const token = await getToken({ req: request });
 
     const isPublicPath = PUBLIC_PATHS.has(pathname);
-    const isProtectedPath = [...PROTECTED_PATHS].some((protectedPath) => pathname.startsWith(protectedPath));
-
-    if (pathname.startsWith('/forgot-password/change') && !tokenParams)
-        return NextResponse.redirect(new URL('/', request.url));
+    const isProtectedPath = PROTECTED_PATH_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 
     if (!token && isProtectedPath) return NextResponse.redirect(new URL('/login', request.url));
 
@@ -40,5 +60,6 @@ export const config = {
         '/forgot-password/request',
         '/forgot-password/change',
         '/profile',
+        '/api/:path*',
     ],
 };

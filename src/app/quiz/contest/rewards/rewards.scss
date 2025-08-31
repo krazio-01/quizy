@@ -109,12 +109,14 @@
 
         video {
             width: 100%;
-            max-height: 400px;
             height: auto;
-            // aspect-ratio: 8 / 7;
             object-fit: cover;
             margin-bottom: 1rem;
             display: block;
+        }
+
+        .mobile-video {
+            display: none;
         }
 
         .report-text {
@@ -221,7 +223,7 @@
 
         .subtitle {
             font-size: var(--fz-md);
-            color: #000;
+            color: #3e3e3e;
 
             &.space {
                 margin-bottom: 1rem;
@@ -247,8 +249,8 @@
 
                 .icon {
                     border-radius: 50%;
-                    width: 120px;
-                    height: 120px;
+                    width: 90px;
+                    height: 90px;
                     margin: 0 auto 1rem;
 
                     img {
@@ -259,9 +261,9 @@
                 }
 
                 h3 {
-                    font-size: var(--fz-md);
-                    color: #000;
+                    color: #3e3e3e;
                     margin-inline: auto;
+                    font-size: var(--fz-sm);
                     max-width: 80%;
                 }
             }
@@ -273,7 +275,8 @@
 
             p {
                 margin-bottom: 1rem;
-                color: #000;
+                color: #3e3e3e;
+                font-size: var(--fz-sm);
                 font-weight: 590;
             }
         }
@@ -336,6 +339,23 @@
             .banner {
                 h1 {
                     max-width: 85% !important;
+                }
+            }
+
+            .extra-rewards {
+                .rewards-grid {
+                    grid-template-columns: 1fr;
+                    gap: 1.5rem;
+                }
+            }
+
+            .personalized-report {
+                .desktop-video {
+                    display: none !important;
+                }
+
+                .mobile-video {
+                    display: block !important;
                 }
             }
 

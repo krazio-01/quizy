@@ -48,7 +48,7 @@ const Footer = () => {
             </div>
 
             <div className="footer-bottom">
-                <span>Copyright &copy; 2022 Ei.</span>
+                <span>Copyright &copy; 2025 Ei.</span>
                 <span>
                     <Link href="/terms-and-conditions">Terms of use</Link> |{' '}
                     <Link href="/privacy-policy">Privacy Policy</Link> |{' '}

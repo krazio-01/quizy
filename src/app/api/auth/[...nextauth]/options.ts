@@ -60,8 +60,10 @@ export const authOptions: AuthOptions = {
                 if (!user.isVerified) {
                     throw new Error(
                         JSON.stringify({
-                            field: 'email',
+                            field: null,
                             message: 'Please verify your email',
+                            email: user.email,
+                            phone: user.phone,
                         })
                     );
                 }

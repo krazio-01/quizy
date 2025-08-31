@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import axios from '@/utils/axios';
 import { toast } from 'sonner';
 import '../../auth.scss';
 

@@ -1,12 +1,13 @@
 @use 'sass:color';
 
-.practice-cta {
+.practice-cta-wrapper {
     position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
     aspect-ratio: 16 / 2.5;
+    padding-inline: clamp(1rem, 3.5vw, 3rem) !important;
 
     video {
         position: absolute;
@@ -48,12 +49,19 @@
     }
 
     @media screen and (max-width: 599px) {
-        & {
-            padding: 2rem 0;
+        padding: 2rem 1rem;
+        flex-direction: column !important;
+        align-items: start !important;
 
-            p {
-                margin-bottom: 2rem;
-            }
+        p {
+            font-size: var(--fz-md) !important;
+            text-align: left !important;
+            margin-bottom: 2rem;
+        }
+
+        .cta-btn {
+            padding: 0.3rem 1.2rem;
+            font-size: var(--fz-sm);
         }
     }
 }

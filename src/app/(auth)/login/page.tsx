@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { toast } from 'sonner';
+import useAppStore from '@/store/store';
 import '../auth.scss';
 
 const LoginPage = () => {
@@ -11,6 +12,8 @@ const LoginPage = () => {
     const [loading, setLoading] = useState(false);
     const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string; general?: string }>({});
     const passwordRef = useRef<HTMLInputElement>(null);
+
+    const setStep = useAppStore((state) => state.setStep);
 
     const router = useRouter();
 
@@ -29,12 +32,20 @@ const LoginPage = () => {
                 const parsedError = JSON.parse(result.error);
 
                 if (!parsedError.field) {
-                    if (parsedError.message === 'Please Complete Your Profile To Log In.') {
-                        localStorage.setItem('userEmail', parsedError?.email);
-                        localStorage.setItem('phone', parsedError?.phone);
-                        router.push('/register?step=3');
+                    const { message, email, phone } = parsedError;
+
+                    if (email) localStorage.setItem('userEmail', email);
+                    if (phone) localStorage.setItem('phone', phone);
+
+                    if (message.includes('Please verify your email')) {
+                        setStep(2);
+                        router.push('/register');
+                    } else if (message === 'Please Complete Your Profile To Log In.') {
+                        setStep(3);
+                        router.push('/register');
                     }
-                    toast.error(parsedError.message);
+
+                    toast.error(message);
                     return;
                 }
 

@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import axios from '@/utils/axios';
 import { toast } from 'sonner';
 import './welcome.scss';
 
@@ -51,7 +51,7 @@ export default function PreferenceForm() {
             });
 
             toast.success('Preferences saved successfully!');
-            router.replace('/');
+            router.replace('/quiz/contest/info');
         } catch (err: any) {
             toast.error(err.response?.data?.error || 'Failed to save preferences.');
         } finally {

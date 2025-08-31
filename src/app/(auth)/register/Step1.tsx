@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { toast } from 'sonner';
-import axios from 'axios';
+import axios from '@/utils/axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ConfirmDialog from '@/components/UI/ConfirmDialog/ConfirmDialog';
@@ -10,16 +10,10 @@ import '../auth.scss';
 
 interface Step2Props {
     onNext: (data: any) => void;
-    onBack: () => void;
     loading: boolean;
     fieldErrors: { [key: string]: string };
     clearFieldError: (fieldName: string) => void;
-}
-
-const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2Props) => {
-    const [termsAccepted, setTermsAccepted] = useState(false);
-    const [confirmOpen, setConfirmOpen] = useState(false);
-    const [formData, setFormData] = useState<{
+    initialData?: {
         firstName: string;
         lastName: string;
         dob: Date | null;
@@ -27,7 +21,14 @@ const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2P
         password: string;
         confirmPassword: string;
         phone: string;
-    }>({
+    };
+    editingEmail?: boolean;
+}
+
+const Step1 = ({ onNext, loading, fieldErrors, clearFieldError, initialData, editingEmail = false }: Step2Props) => {
+    const [termsAccepted, setTermsAccepted] = useState(false);
+    const [confirmOpen, setConfirmOpen] = useState(false);
+    const [formData, setFormData] = useState(initialData || {
         firstName: '',
         lastName: '',
         dob: null,
@@ -38,9 +39,16 @@ const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2P
     });
 
     useEffect(() => {
+        if (initialData) setFormData(initialData);
+    }, [initialData]);
+
+    useEffect(() => {
         const fetchCountryCode = async () => {
             try {
-                const { data } = await axios.get('https://ipapi.co/json/');
+                const res = await fetch("https://ipapi.co/json/");
+                if (!res.ok) throw new Error("Failed to fetch country code");
+
+                const data = await res.json();
                 if (data?.country_calling_code) {
                     setFormData((prev) => ({
                         ...prev,
@@ -48,11 +56,11 @@ const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2P
                     }));
                 }
             } catch (error) {
-                console.error('Error fetching country code:', error);
+                console.error("Error fetching country code:", error);
             }
         };
 
-        fetchCountryCode();
+        if (!editingEmail) fetchCountryCode();
     }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,12 +91,13 @@ const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2P
                 <div className="form-group">
                     <label htmlFor="firstName">Name*</label>
                     <input
-                        placeholder="John"
+                        placeholder="Enter first name"
                         id="firstName"
                         name="firstName"
                         value={formData.firstName}
                         onChange={handleChange}
                         required
+                        disabled={editingEmail}
                         className={fieldErrors.firstName ? 'error' : ''}
                     />
                     {fieldErrors.firstName && <p className="error-message">{fieldErrors.firstName}</p>}
@@ -97,12 +106,13 @@ const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2P
                 <div className="form-group">
                     <label htmlFor="lastName">Last name*</label>
                     <input
-                        placeholder="Smith"
+                        placeholder="Enter last name"
                         id="lastName"
                         name="lastName"
                         value={formData.lastName}
                         onChange={handleChange}
                         required
+                        disabled={editingEmail}
                         className={fieldErrors.lastName ? 'error' : ''}
                     />
                     {fieldErrors.lastName && <p className="error-message">{fieldErrors.lastName}</p>}
@@ -123,6 +133,7 @@ const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2P
                         showYearDropdown
                         scrollableYearDropdown
                         yearDropdownItemNumber={100}
+                        disabled={editingEmail}
                         className={`${fieldErrors.dob ? 'error' : ''} custom-datepicker-input`}
                         calendarClassName="custom-datepicker-calendar"
                     />
@@ -158,6 +169,7 @@ const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2P
                         value={formData.password}
                         onChange={handleChange}
                         required
+                        disabled={editingEmail}
                         className={fieldErrors.password ? 'error' : ''}
                     />
                     {fieldErrors.password && <p className="error-message">{fieldErrors.password}</p>}
@@ -172,6 +184,7 @@ const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2P
                         value={formData.confirmPassword}
                         onChange={handleChange}
                         required
+                        disabled={editingEmail}
                         className={fieldErrors.confirmPassword ? 'error' : ''}
                     />
                     {fieldErrors.confirmPassword && <p className="error-message">{fieldErrors.confirmPassword}</p>}
@@ -186,6 +199,7 @@ const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2P
                         value={formData.phone}
                         onChange={handleChange}
                         required
+                        disabled={editingEmail}
                         className={fieldErrors.phone ? 'error' : ''}
                     />
                     {fieldErrors.phone && <p className="error-message">{fieldErrors.phone}</p>}
@@ -207,9 +221,6 @@ const Step1 = ({ onNext, onBack, loading, fieldErrors, clearFieldError }: Step2P
                 </p>
 
                 <div className="form-buttons">
-                    {/* <button type="button" className="back-btn" onClick={onBack}>
-                    Back
-                </button> */}
                     <button type="button" className="next-btn" onClick={handleNext} disabled={loading}>
                         {loading ? 'Registering...' : 'Next'}
                     </button>

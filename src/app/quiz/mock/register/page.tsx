@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import StatsBar from '@/components/UI/StatsBar/StatsBar';
 import { toast } from 'sonner';
-import axios from 'axios';
+import axios from '@/utils/axios';
 import useAppStore from '@/store/store';
+import { useSession } from 'next-auth/react';
 import './registerQuiz.scss';
 
 const grades = [
@@ -22,6 +23,8 @@ const Page = () => {
     const { setSelectedGrade, setIsRegisteredUser } = useAppStore();
 
     const router = useRouter();
+
+    const { data: session } = useSession();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -64,16 +67,16 @@ const Page = () => {
                         <p className="subtitle">Ready to test your skills?</p>
                         <p className="label">Select Your Grade</p>
                     </div>
+                </div>
 
-                    <div className="grade-selector-container">
-                        <StatsBar
-                            statsArray={grades}
-                            selectedValue={selectedGrade}
-                            onSelect={setGrade}
-                            gap="clamp(1rem, 3vw, 3rem)"
-                            cardWidth="85px"
-                        />
-                    </div>
+                <div className="grade-selector-container">
+                    <StatsBar
+                        statsArray={grades}
+                        selectedValue={selectedGrade}
+                        onSelect={setGrade}
+                        gap="clamp(0.5rem, 3vw, 3rem)"
+                        cardWidth="100px"
+                    />
                 </div>
 
                 <form onSubmit={handleSubmit} className="quiz-form">
@@ -86,10 +89,11 @@ const Page = () => {
                         <input
                             id="name"
                             name="name"
-                            value={form.name}
+                            value={session?.user?.name || form.name}
                             onChange={handleChange}
-                            placeholder="Dave North"
+                            placeholder="Enter your name"
                             required
+                            disabled={!!session?.user}
                         />
                     </div>
 
@@ -99,14 +103,15 @@ const Page = () => {
                             id="email"
                             name="email"
                             type="email"
-                            value={form.email}
+                            value={session?.user?.email || form.email}
                             onChange={handleChange}
-                            placeholder="User@email.com"
+                            placeholder="Enter your email"
                             required
+                            disabled={!!session?.user}
                         />
                     </div>
 
-                    <button type="submit" className="start-btn" disabled={loading} onClick={handleSubmit}>
+                    <button type="submit" className="start-btn" disabled={loading}>
                         {loading ? 'Starting...' : 'Start Quiz'}
                     </button>
                 </form>

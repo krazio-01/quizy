@@ -49,12 +49,12 @@
                 margin-bottom: 2.5rem;
                 color: #3e3e3e;
             }
+        }
 
-            .grade-selector-container {
-                width: 100%;
-                max-width: 900px;
-                margin-inline: auto;
-            }
+        .grade-selector-container {
+            width: 100%;
+            max-width: 750px;
+            margin-inline: auto;
         }
 
         .quiz-form {
@@ -89,8 +89,17 @@
                     border-radius: 8px;
                     font-size: 1rem;
                     background-color: #f2f2f2;
+
                     &::placeholder {
                         color: #9e9e9e;
+                    }
+
+                    &:disabled {
+                        background-color: #f5f5f5;
+                        color: #666;
+                        cursor: not-allowed;
+                        user-select: none;
+                        pointer-events: none;
                     }
                 }
             }
@@ -126,6 +135,8 @@
         & {
             > div {
                 .hero-content-wrapper {
+                    padding-top: 2rem !important;
+
                     .grade-selector-container {
                         max-width: 100% !important;
                     }
@@ -134,6 +145,10 @@
 
             .quiz-form {
                 max-width: 90% !important;
+
+                .start-btn {
+                    padding: 0.5rem 1.5rem !important;
+                }
             }
         }
     }
