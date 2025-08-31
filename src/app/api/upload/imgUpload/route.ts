@@ -25,8 +25,6 @@ export async function POST(request) {
                 .end(fileBuffer);
         });
 
-        console.log('Image uploaded to Cloudinary:', result);
-
         return NextResponse.json({ imgUrl: result.secure_url }, { status: 200 });
     } catch (error) {
         return NextResponse.json({ message: error.message }, { status: 500 });
