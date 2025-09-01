@@ -387,16 +387,15 @@
             align-items: start;
             justify-content: center;
             font-size: var(--fz-sm);
-            
-            .resend,
-            .change-email {
+
+            .resend {
                 outline: none;
                 border: none;
                 background: transparent;
                 width: fit-content;
                 margin-bottom: 1.5rem;
                 cursor: pointer;
-                
+
                 &:hover {
                     text-decoration: underline;
                 }
@@ -409,6 +408,26 @@
 
             .change-email {
                 margin-left: 1rem;
+                width: fit-content;
+                background-color: #b0181e;
+                border: none;
+                padding: 10px 20px;
+                color: white;
+                font-weight: 600;
+                border-radius: 8px;
+                margin-bottom: 1rem;
+                cursor: pointer;
+                transition: background 0.3s;
+
+                &:hover {
+                    background-color: #921417;
+                }
+
+                &:disabled {
+                    background-color: #ccc;
+                    cursor: not-allowed;
+                    border: none;
+                }
             }
         }
 

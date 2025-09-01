@@ -10,6 +10,7 @@ export interface Step2Props {
     loading: boolean;
     resendOtpLoading: boolean;
     otpSent: boolean;
+    setOtpSent: React.Dispatch<React.SetStateAction<boolean>>;
     email: string;
     fieldErrors: { [key: string]: string };
     getUserInfo: () => void;
@@ -37,6 +38,7 @@ const Step2 = ({
     loading,
     resendOtpLoading,
     otpSent,
+    setOtpSent,
     email,
     fieldErrors,
     getUserInfo,
@@ -94,6 +96,7 @@ const Step2 = ({
     const handleChangeEmail = async () => {
         try {
             setChangeEmailLoading(true);
+            setOtpSent(true);
             await getUserInfo();
             onBack();
         } catch (error) {

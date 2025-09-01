@@ -242,6 +242,7 @@ const Page = () => {
                             : localStorage.getItem('userEmail')
                     }
                     otpSent={otpSent}
+                    setOtpSent={setOtpSent}
                     fieldErrors={fieldErrors}
                     getUserInfo={getUserInfo}
                 />
