@@ -1,11 +1,14 @@
-.terms-container {
+.refund-container {
     margin-inline: auto;
     padding: 2rem clamp(1rem, 4vw, 3rem);
 
-    .acknowledgement {
-        font-size: 0.95rem;
+    > h2 {
         color: #ab2024;
-        margin-top: 1rem;
-        font-weight: 500;
+        font-size: var(--fz-lg);
+        margin-bottom: 2rem;
+    }
+
+    > section:nth-of-type(8) p {
+        font-weight: 700;
     }
 }

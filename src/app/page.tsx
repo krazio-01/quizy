@@ -72,8 +72,7 @@ const HomePage = () => {
                     <div>
                         <MotionDiv initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }}>
                             <p>
-                                Join the League of Logic by Ei ASSET - a global challenge igniting logic, curiosity, and
-                                critical thinking!
+                                Join the League of Logic by Ei ASSET CT a global challenge igniting logic, curiosity, and critical thinking!
                             </p>
                         </MotionDiv>
                         <h1>
@@ -86,10 +85,10 @@ const HomePage = () => {
             </section>
 
             <section className="stats-container">
-                <div>120+ <br/> countries</div>
-                <div>Recognition <br />Certificates &amp; medals</div>
-                <div>Growth &amp; Rewards <br />Career Boost &amp; Prizes</div>
-                <div>Test date: <br />11-12th Oct</div>
+                <div>120+ <br /> countries</div>
+                <div>Recognition, rewards <br /> and certificates</div>
+                <div>Sharpen logic and <br /> problem-solving</div>
+                <div>Test date: <br /> 11 -12th Oct 25</div>
             </section>
 
             <section className="potential">
@@ -98,7 +97,7 @@ const HomePage = () => {
                         <source src="/videos/Kids.mp4" type="video/mp4" />
                     </video>
                     <div className="text">
-                        <h2>Are they ready to think outside the box?</h2>
+                        <h2>Think. Solve. Thrive.</h2>
                         <p>
                             The League of Logic is a global online competition that helps students in Grades 3 to 10
                             build essential skills for life — critical thinking, logical reasoning, and problem-solving
@@ -117,7 +116,7 @@ const HomePage = () => {
             </section>
 
             <section className="features">
-                <h3>What we&apos;re here for</h3>
+                <h3>Why join The League of Logic?</h3>
                 <p>To spark curiosity, build logic, and empower young minds to thrive.</p>
                 <div className="feature-grid">
                     {feature.map((item, index) => (
@@ -210,8 +209,18 @@ const HomePage = () => {
 
             <section className="register">
                 <h3>How to Register?</h3>
-                <div className="video-placeholder">
-                    <div className="video-box"></div>
+                <div className="video-wrapper">
+                    <div className="video-box">
+                        <iframe
+                            width="100%"
+                            height="420"
+                            src="https://www.youtube.com/embed/boczNji11GI?start=7"
+                            title="YouTube video player"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen
+                        ></iframe>
+                    </div>
                 </div>
             </section>
 

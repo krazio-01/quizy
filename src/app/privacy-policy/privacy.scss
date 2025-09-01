@@ -1,4 +1,4 @@
-.terms-container {
+.privacy-container {
     margin-inline: auto;
     padding: 2rem clamp(1rem, 4vw, 3rem);
 
@@ -9,9 +9,9 @@
     }
 
     .acknowledgement {
-        font-size: 0.95rem;
+        font-size: var(--fz-lg);
         color: #ab2024;
-        margin-top: 1rem;
+        margin: 1rem 0 1rem;
         font-weight: 500;
     }
 }

@@ -4,7 +4,7 @@ import './privacy.scss';
 
 const Page = () => {
     return (
-        <div className="terms-container">
+        <div className="privacy-container">
             <h2>Registration and Refund Information</h2>
             {privacyPolicySections.map((section, index) => (
                 <LegalSection key={index} {...section} />
@@ -12,7 +12,7 @@ const Page = () => {
 
             <p className="acknowledgement">
                 <strong>
-                    By using the Site, you acknowledge that you have read and understood our Privacy Policy.
+                    By using our website and participating in the League of Logic competition, you consent to the practices described in this Privacy Policy.
                 </strong>
             </p>
 

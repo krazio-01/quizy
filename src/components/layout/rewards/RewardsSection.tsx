@@ -14,12 +14,14 @@ const RewardsSection = ({ title, showLink = false }) => {
                         <div className="reward-content">
                             <div>
                                 <h3>AED 500 Amazon Vouchers for all Class Toppers</h3>
-                                <p>
+                                <p className='marker'>
                                     All class toppers will receive AED 500 Amazon vouchers, or the equivalent in their
                                     local currency, as a reward for their exceptional performance. This celebrates their
-                                    dedication, hard work, and effort in the test. The vouchers can be used to explore a
-                                    wide range of products and resources, giving students the freedom to choose
-                                    something that inspires their learning journey.
+                                    dedication, hard work, and effort in the test.
+                                </p>
+                                <p>
+                                    The vouchers can be used to explore a wide range of products and resources, giving
+                                    students the freedom to choose something that inspires their learning journey.
                                 </p>
                             </div>
                         </div>

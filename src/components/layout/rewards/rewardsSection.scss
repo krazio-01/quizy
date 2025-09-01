@@ -34,8 +34,7 @@
             }
 
             img {
-                // width: 147%;
-                width: 100%;
+                width: 40%;
                 height: 100%;
                 object-fit: cover;
             }
@@ -45,8 +44,11 @@
                 flex-direction: column;
                 justify-content: space-between;
                 padding: 0 1.5rem;
-                // max-width: 70%;
                 max-width: 60%;
+
+                .marker {
+                    margin-bottom: 0.5rem;
+                }
 
                 h3,
                 p {
@@ -60,8 +62,7 @@
                 }
 
                 .subtext {
-                    font-size: var(--fz-sm);
-                    color: #3e3e3e;
+                    color: #000;
                     margin-bottom: 0.8rem;
                 }
 

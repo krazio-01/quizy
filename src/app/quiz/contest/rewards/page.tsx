@@ -5,12 +5,17 @@ import './rewards.scss';
 
 const partnersData = [
     {
-        text: 'As our key UAE partner, Sage leads programs like Ei ASSET, Ei Mindspark, and the League of Logic, nurturing critical thinking and problem-solving skills. This year, rewards for top performers are even more exciting. League of Logic toppers receive fully sponsored access to hands-on Robotics Courses, applying their logical thinking in real-world innovation through design and building.All participants can also enjoy a special discounted rate with their participation certificate, accessing learning that inspires creativity, technical skills, and practical problem-solving.',
+        text: [
+            'As our key UAE partner, Sage leads programs like Ei ASSET, Ei Mindspark, and the League of Logic, nurturing critical thinking and problem-solving skills. This year, rewards for top performers are even more exciting. League of Logic toppers receive fully sponsored access to hands-on Robotics Courses, applying their logical thinking in real-world innovation through design and building.',
+            'All participants can also enjoy a special discounted rate with their participation certificate, accessing learning that inspires creativity, technical skills, and practical problem-solving.',
+        ],
         imagePosition: 'left',
         image: '/images/rewards1.png',
     },
     {
-        text: "GenWise is a learning community that brings together some of India's finest educators to mentor curious, motivated students. With a focus on critical thinking, exploration, and lifelong learning, GenWise creates programs that go beyond school to nurture intellectual growth and real-world problem-solving. And for League of Logic toppers, there's a special reward: a free Masterclass with GenWise—because great thinking deserves great mentoring.",
+        text: [
+            "GenWise is a leading learning community that connects students with some of India's finest educators, offering programs that nurture critical thinking, creativity, and real-world problem-solving. For students in Grades 3-4, AI Explorers: Patterns, Rules and Play introduces foundational AI concepts through playful learning. Grades 5-6 can dive into AI Tinkerers: Algorithm Adventures, exploring algorithms and computational thinking through hands-on challenges. Older students in Grades 7-10 can participate in GenAI Essentials for Teens, developing skills to think, create, and build with AI. These programs go beyond the classroom to inspire curiosity, innovation, and lifelong learning.",
+        ],
         imagePosition: 'right',
         image: '/images/rewards2.png',
     },
@@ -32,7 +37,7 @@ const Page = async () => {
             </div>
 
             <div className="rewards-wrapper">
-                <RewardsSection title="Top Rewards for Group Toppers" />
+                <RewardsSection title="Top Rewards" />
             </div>
 
             <section className="extra-rewards">
@@ -66,8 +71,8 @@ const Page = async () => {
 
                     <div className="report-content">
                         <div className="report-image">
-                            <video loop src="/videos/rewardsReportDesktop.mp4" className='desktop-video' />
-                            <video loop src="/videos/report.mp4" className='mobile-video' />
+                            <video loop src="/videos/rewardsReportDesktop.mp4" className="desktop-video" />
+                            <video loop src="/videos/report.mp4" className="mobile-video" />
                         </div>
 
                         <div className="report-text">
@@ -155,14 +160,19 @@ const Page = async () => {
             <CTASection buttonText="Register Now" link="/register" videoSrc="/videos/homepageBanner2.mp4" />
 
             <section className="whatif-section">
-                <h2 className="title">What if I don&apos;t win?</h2>
+                <h2 className="title">What if my child doesn&apos;t win?</h2>
                 <p className="subtitle space">
-                    Great question. But here&apos;s the thing — in the League of Logic, every participant walks away
-                    wiser than they came in. Because this isn&apos;t just about medals and marks, it&apos;s about
-                    unlocking the power of thinking. Let&apos;s be honest — AED 75 can be gone in a flash. On a
-                    fast-food meal. On screen time.
+                    In the League of Logic, there are no losers. Every child who participates leaves with something far
+                    more valuable than medals or ranks — sharper thinking, stronger confidence, and a mindset built to
+                    thrive in school and in life.
                 </p>
-                <p className="subtitle">But what if instead, it bought your child:</p>
+                <p>
+                    <strong>Think about it:</strong> How often do children spend hours online with little to show for
+                    it? For the cost of a single fast-food meal or an evening of screen time, your child can invest in
+                    an experience that boosts their brain, strengthens their confidence, and prepares them for
+                    challenges well beyond the classroom.
+                </p>
+                <p className="subtitle">In the League of Logic, every child wins in ways that matter most.</p>
 
                 <div className="benefits">
                     <div className="benefit-card">
@@ -189,18 +199,8 @@ const Page = async () => {
 
                 <div className="closing">
                     <p>
-                        Even if your child doesn&apos;t top the charts, they&apos;ll walk away thinking sharper. And
-                        that&apos;s more valuable than any rank or reward.
-                    </p>
-                    <p>
-                        Because what we&apos;re really building isn&apos;t just test-takers. We&apos;re building
-                        resilient, reflective, real-world thinkers. The kind who stay curious no matter what challenge
-                        comes next.
-                    </p>
-                    <p>So the real answer to the question? If your child doesn&apos;t win… They still win.</p>
-                    <p>
-                        Join the League of Logic. Watch your child grow in confidence, capability and curiosity. <br />
-                        We&apos;ll take care of the rest.
+                        Join the League of Logic today — and give your child the gift of confidence, capability, and
+                        curiosity.
                     </p>
                 </div>
             </section>
@@ -212,7 +212,15 @@ const Page = async () => {
                         <div className="image">
                             <Image width={300} height={300} alt="rewards img" src={partner.image} />
                         </div>
-                        <p className="partner-text">{partner.text}</p>
+                        <p className="partner-text">
+                            {partner.text.map((part, i) => (
+                                <span key={i}>
+                                    {part}
+                                    {i < partner.text.length - 1 && <br />}
+                                    {i < partner.text.length - 1 && <br />}
+                                </span>
+                            ))}
+                        </p>
                     </div>
                 ))}
             </section>

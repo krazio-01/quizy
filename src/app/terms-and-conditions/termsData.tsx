@@ -12,7 +12,7 @@ export const termsSections = [
             {
                 subtitle: '2.1 Registration and Fees',
                 content:
-                    "To participate in the League of Logic competition, you must register on the Site and pay the registration fee, which is 49 AED (United Arab Emirates Dirhams) or an equivalent amount as per your country's currency.",
+                    "To participate in the League of Logic competition, you must register on the Site and pay the registration fee, which is 75 AED (United Arab Emirates Dirhams) or an equivalent amount as per your country's currency.",
             },
             {
                 subtitle: '2.2 Payment',
@@ -70,8 +70,8 @@ export const termsSections = [
                 subtitle: '6.1 Privacy Policy',
                 content: (
                     <>
-                        User information is collected and used in accordance with our&nbsp;
-                        <Link href="/privacy-policy">Privacy Policy</Link>.
+                        User information is collected and used in accordance with our Privacy Policy&nbsp;
+                        <Link href="/privacy-policy">here</Link>.
                     </>
                 ),
             },

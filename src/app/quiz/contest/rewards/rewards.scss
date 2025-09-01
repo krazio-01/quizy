@@ -8,7 +8,7 @@
     .banner {
         position: relative;
         text-align: center;
-        aspect-ratio: 16 / 7;
+        aspect-ratio: 16 / 9;
         margin-bottom: 3rem;
         overflow: hidden;
 
@@ -25,7 +25,7 @@
         h1 {
             position: relative;
             margin-inline: auto;
-            padding-top: clamp(1rem, 10vw, 6rem);
+            padding-top: clamp(1rem, 11vw, 10rem);
             font-size: clamp(var(--fz-lg), 8vw, var(--fz-2xl));
             color: #ab2024;
             max-width: 40%;
@@ -38,7 +38,7 @@
         margin-bottom: 4rem;
 
         h2 {
-            font-size: var(--fz-lg);
+            font-size: clamp(var(--fz-lg), 7vw, var(--fz-xl));
             color: #ab2024;
             margin-bottom: 2rem;
         }
@@ -61,14 +61,14 @@
                 }
 
                 h4 {
-                    font-size: var(--fz-md);
+                    font-size: var(--fz-lg);
                     font-weight: 600;
                     color: #ab2024;
                     margin-bottom: 0.5rem;
                 }
 
                 p {
-                    font-size: var(--fz-sm);
+                    font-size: var(--fz-md);
                     color: #3e3e3e;
                     font-weight: 700;
                 }
@@ -124,14 +124,12 @@
                 margin-bottom: 1.5rem;
 
                 h4 {
-                    font-size: var(--fz-sm);
                     font-weight: 700;
                     margin-bottom: 0.3rem;
                     color: #3e3e3e;
                 }
 
                 p {
-                    font-size: var(--fz-sm);
                     color: #3e3e3e;
                     line-height: 1.4;
                 }
@@ -195,7 +193,7 @@
                 }
 
                 p {
-                    font-size: var(--fz-sm);
+                    font-size: var(--fz-md);
                     color: #000;
                 }
 
@@ -203,7 +201,7 @@
                     margin: 0 0 0 1.5rem;
 
                     li {
-                        font-size: var(--fz-sm);
+                        font-size: var(--fz-md);
                         list-style: disc;
                         margin-bottom: 0.4rem;
                     }
@@ -224,6 +222,11 @@
         .subtitle {
             font-size: var(--fz-md);
             color: #3e3e3e;
+
+            &:nth-of-type(3) {
+                margin-top: 1rem;
+                color: #ab2024;
+            }
 
             &.space {
                 margin-bottom: 1rem;
@@ -274,9 +277,10 @@
             font-size: 1.1rem;
 
             p {
+                text-align: center;
                 margin-bottom: 1rem;
-                color: #3e3e3e;
-                font-size: var(--fz-sm);
+                color: #ab2024;
+                font-size: var(--fz-md);
                 font-weight: 590;
             }
         }
@@ -311,7 +315,7 @@
             .partner-text {
                 flex: 1;
                 width: 60%;
-                font-size: var(--fz-sm);
+                font-size: var(--fz-md);
                 font-weight: 590;
                 color: #3e3e3e;
             }

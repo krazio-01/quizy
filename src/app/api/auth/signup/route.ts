@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
         if (ageInYears <= 8 || ageInYears >= 18)
             return NextResponse.json({ message: 'Age must be between 8 and 18 years' }, { status: 400 });
 
-        if (password !== confirmPassword && !userId)
+        if ((password !== confirmPassword) && !userId)
             return NextResponse.json({ message: 'Passwords do not match' }, { status: 400 });
 
         if (!validateEmail(email)) return NextResponse.json({ message: 'Invalid email format' }, { status: 400 });
@@ -81,6 +81,7 @@ export async function POST(request: NextRequest) {
             newUser = await User.findById(userId);
 
             newUser.email = email;
+            newUser.phone = phone;
             newUser.isVerified = false;
             newUser.otp = otp;
             newUser.otpExpiry = otpExpiry;

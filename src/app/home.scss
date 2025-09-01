@@ -13,7 +13,7 @@
 
     .hero {
         position: relative;
-        min-height: clamp(30svh, 40vw, 70svh);
+        aspect-ratio: 16 / 7;
         text-align: center;
         overflow: hidden;
 
@@ -25,7 +25,7 @@
             height: 100%;
             object-fit: cover;
             object-position: center center;
-            transform: scale(1.4) translateY(-12%);
+            transform: scale(1.35) translateY(-13%);
             z-index: 1;
         }
 
@@ -87,7 +87,7 @@
     }
 
     .potential {
-        padding: 2rem 0;
+        padding: 4rem 0 3rem;
 
         .potential-wrapper {
             display: flex;
@@ -246,15 +246,15 @@
             margin-bottom: 1rem;
         }
 
-        .video-placeholder {
+        .video-wrapper {
             display: flex;
+            align-items: center;
             justify-content: center;
 
             .video-box {
-                width: 90%;
-                max-width: 640px;
-                height: 360px;
-                background-color: #000;
+                width: 100%;
+                height: 100%;
+                max-width: 700px;
             }
         }
     }
@@ -327,6 +327,8 @@
 // mobile media queries
 @media (max-width: 599px) {
     .hero {
+        aspect-ratio: 6 / 7 !important;
+
         .hero-content {
             margin-top: 3rem !important;
 

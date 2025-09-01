@@ -14,10 +14,10 @@ const LoginPage = () => {
     const passwordRef = useRef<HTMLInputElement>(null);
 
     const setStep = useAppStore((state) => state.setStep);
-
     const router = useRouter();
 
-    const handleLogin = async () => {
+    const handleLogin = async (e?: React.FormEvent) => {
+        e?.preventDefault();
         setLoading(true);
         setFieldErrors({});
 
@@ -46,6 +46,7 @@ const LoginPage = () => {
                     }
 
                     toast.error(message);
+                    setLoading(false);
                     return;
                 }
 
@@ -56,7 +57,6 @@ const LoginPage = () => {
                             updatedErrors[f] = parsedError.message;
                         });
                     } else updatedErrors[parsedError.field] = parsedError.message;
-
                     return updatedErrors;
                 });
             } catch {
@@ -79,7 +79,7 @@ const LoginPage = () => {
                 <h1 className="login-title">Welcome Back!</h1>
                 <p className="login-subtitle">Log in to continue your learning journey.</p>
 
-                <div className="login-form">
+                <form className="login-form" onSubmit={handleLogin}>
                     <div className="input-container">
                         <label htmlFor="email">Email*</label>
                         <input
@@ -110,14 +110,14 @@ const LoginPage = () => {
                         <Link href="/forgot-password/request">Forgot your password? Reset it here</Link>
                     </p>
 
-                    <button className="login-button" onClick={handleLogin} disabled={loading}>
+                    <button type="submit" className="login-button" disabled={loading}>
                         {loading ? 'Logging in...' : 'Login'}
                     </button>
 
                     <p className="signup-message">
                         Don&apos;t have an account? <Link href="/register">{'[Sign up now]'}</Link>
                     </p>
-                </div>
+                </form>
             </div>
         </div>
     );

@@ -199,7 +199,6 @@ const Step1 = ({ onNext, loading, fieldErrors, clearFieldError, initialData, edi
                         value={formData.phone}
                         onChange={handleChange}
                         required
-                        disabled={editingEmail}
                         className={fieldErrors.phone ? 'error' : ''}
                     />
                     {fieldErrors.phone && <p className="error-message">{fieldErrors.phone}</p>}

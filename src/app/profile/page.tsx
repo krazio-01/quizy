@@ -101,6 +101,9 @@ const ProfilePage = () => {
     const handleDownloadInvoice = async () => {
         if (paymentInfoDB?.billing?.status !== 'success') return toast.error('No payment Found');
 
+        if (user?.country?.toUpperCase() === 'IN')
+            return toast.error('Invoice generation is not available for users from India currently');
+
         const url = '/pdf/sampleInvoice.pdf';
         const existingPdfBytes = await fetch(url).then((res) => res.arrayBuffer());
 
@@ -262,12 +265,12 @@ const ProfilePage = () => {
                     <FiChevronRight className="chevron-icon" />
                 </div>
                 <nav className="menu">
-                    <a href="/pdf/League of Logic - Guide.pdf" download>
+                    <a href="/pdf/guideline.pdf" download>
                         <button>
                             <FiDownload /> Test Guidelines
                         </button>
                     </a>
-                    <a download>
+                    <a href="/pdf/CT Practice questions.pdf" download>
                         <button>
                             <FiDownload /> Sample Questions
                         </button>
