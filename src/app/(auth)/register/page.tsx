@@ -222,7 +222,7 @@ const Page = () => {
                         ...formData.personalDetails,
                         dob: formData.personalDetails.dob ? new Date(formData.personalDetails.dob) : null,
                     }}
-                    editingEmail={step === 1 && !!formData.personalDetails.email}
+                    editingEmail={otpSent && !!formData.personalDetails.email}
                 />
             )}
 
