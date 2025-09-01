@@ -336,6 +336,32 @@ const ProfilePage = () => {
                         </div>
                     </div>
 
+                    <div className="field">
+                        <div>
+                            <span className="label">DOB</span>
+                            <span className="value">
+                                {user?.dob
+                                    ? new Date(user.dob).toLocaleDateString('en-GB', {
+                                          day: '2-digit',
+                                          month: '2-digit',
+                                          year: 'numeric',
+                                      })
+                                    : ''}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="field">
+                        <div>
+                            <span className="label">Grade</span>
+                            <span className="value">
+                                {user?.grade
+                                    ? user.grade.charAt(0).toUpperCase() + user.grade.slice(1).replace(/(\d+)/, ' $1')
+                                    : ''}
+                            </span>
+                        </div>
+                    </div>
+
                     <div className="billing">
                         <h4>Billing</h4>
 
@@ -369,8 +395,9 @@ const ProfilePage = () => {
                             {paymentInfoDB?.billing && (
                                 <>
                                     <div
-                                        className={`status ${paymentInfoDB.billing.status === 'success' ? 'paid' : 'failed'
-                                            }`}
+                                        className={`status ${
+                                            paymentInfoDB.billing.status === 'success' ? 'paid' : 'failed'
+                                        }`}
                                     >
                                         Fees Status{' '}
                                         <span>
