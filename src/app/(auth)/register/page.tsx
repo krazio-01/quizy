@@ -88,9 +88,10 @@ const Page = () => {
             setLoading(true);
             setFieldErrors({});
             const { personalDetails } = formData;
+            const email = personalDetails.email || localStorage.getItem('userEmail');
 
             await axios.post('/api/auth/verifyOtp', {
-                email: personalDetails.email,
+                email,
                 otp,
             });
 
@@ -106,9 +107,8 @@ const Page = () => {
     const handleResend = async () => {
         setResendOtpLoading(true);
         try {
-            const email = formData.personalDetails.email
-                ? formData.personalDetails.email
-                : localStorage.getItem('userEmail');
+            const { personalDetails } = formData;
+            const email = personalDetails.email || localStorage.getItem('userEmail');
             await axios.post('/api/auth/resendOtp', { email });
             toast.success('A new OTP has been sent to your email.');
         } catch (err: any) {
