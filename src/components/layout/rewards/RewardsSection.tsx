@@ -36,20 +36,19 @@ const RewardsSection = ({ title, showLink = false, secondRewardTitle = '', secon
                                 {secondRewardTitle !== '' ? (
                                     <h3>{secondRewardTitle}</h3>
                                 ) : (
-                                    <h3>
-                                        2 Week in person Robotic Camps worth AED 1300 in December for Group Toppers!
-                                    </h3>
+                                    <h3>2 Weeks Robotic Camps worth AED 1300 in for all Class Toppers!</h3>
                                 )}
                                 {secondRewardContent !== '' ? (
                                     <p className="subtext">{secondRewardContent}</p>
                                 ) : (
                                     <p className="subtext">
-                                        An exciting opportunity for the top performers of the League of Logic Four lucky
-                                        Group toppers will win courses worth 1300 AED! These engaging courses provide a
-                                        hands-on learning space where kids can dive into the world of robots, coding,
-                                        and STEM through age-appropriate activities. Students will have the opportunity
-                                        to program robots, design circuits, and solve fun challenges while building
-                                        creativity, problem-solving, and logical thinking skills.
+                                        An exciting opportunity for the top performers of the League of Logic! Class
+                                        toppers Grade 3-10 will win courses worth 1300 AED! These engaging courses
+                                        provides an in-person hands-on learning space where kids can dive into the world
+                                        of robots, coding, and STEM through age-appropriate activities. Students will
+                                        have the opportunity to program robots, design circuits, and solve fun
+                                        challenges while building creativity, problem-solving, and logical thinking
+                                        skills. This camp is scheduled in December 2025.
                                     </p>
                                 )}
                             </div>

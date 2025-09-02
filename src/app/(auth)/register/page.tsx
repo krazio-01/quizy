@@ -52,6 +52,7 @@ const Page = () => {
                 ...personalData,
                 userId,
             });
+            toast.success('Details submitted successfully.');
             setOtpSent(true);
             localStorage.setItem('userEmail', personalData.email);
             localStorage.setItem('phone', personalData.phone);

@@ -8,19 +8,20 @@ export async function POST(req: NextRequest) {
         const orderId = url.searchParams.get('orderId') || 'N/A';
         const gid = url.searchParams.get('gid') || 'N/A';
         const status = url.searchParams.get('status') || 'pending';
+        const baseUrl = process.env.FRONTEND_URL;
         const error = url.searchParams.get('error') || '';
 
         let statusText = 'Payment Status';
         let message = '';
         let statusClass = 'unknown';
-        let redirectUrl = '/'
+        let redirectUrl = `${baseUrl}`;
 
         switch (status) {
             case 'SENT_FOR_CAPTURE':
                 statusText = 'Payment Successful';
                 message = 'Your payment has been processed successfully.';
                 statusClass = 'success';
-                redirectUrl = '/quiz/contest/welcome';
+                redirectUrl = `${baseUrl}/quiz/contest/welcome`;
                 break;
             case 'ABANDONED':
                 statusText = 'Payment Failed';

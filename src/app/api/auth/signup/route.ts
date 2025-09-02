@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
         }
 
         const userExists = await User.findOne({ email });
-        if (userExists && userExists.isVerified)
+        if (userExists && !userId)
             return NextResponse.json({ message: 'This account already registered' }, { status: 400 });
 
         let newUser = null;

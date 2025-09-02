@@ -76,26 +76,6 @@
         }
     }
 
-    .contact-section {
-        h3 {
-            color: #ab2024;
-            font-size: var(--fz-md);
-            margin-bottom: 0.5rem;
-        }
-
-        > div {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-
-            div {
-                width: 70px;
-                height: 70px;
-                background-color: #d9d9d9;
-            }
-        }
-    }
-
     @media screen and (max-width: 599px) {
         & {
             .banner {

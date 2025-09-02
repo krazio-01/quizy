@@ -10,21 +10,25 @@ const preferences = [
         id: 'robotics',
         title: "I'd Like To Explore Robotics Classes / Camps",
         desc: 'Engaging, Hands-On Robotics Programs By Robofun Lab Designed To Build Real-World STEM Skills.',
+        link: { text: 'know more', url: 'https://robofunlab.com/' },
     },
     {
         id: 'genwise',
         title: "I'm Interested In GenWise Online Courses",
         desc: "Curated Experiences That Challenge And Nurture Gifted Learners. We'll Send You Detailed Information Soon.",
+        link: { text: 'know more', url: 'https://giftedworld.org/scourses/' },
     },
     {
         id: 'ats',
         title: "I'd Like To Know More About The ASSET Talent Search (ATS)",
         desc: "Learn How Your Child Can Qualify For India's Premier Platform For Academically Talented Students.",
+        link: { text: 'know more', url: 'https://ei.study/ei-asset-talent-search/' },
     },
     {
         id: 'competitions',
         title: 'Keep Me Informed About Future Competitions By Educational Initiatives (Ei)',
         desc: 'Stay Updated On Upcoming Logic, Math, And Critical Thinking Contests Your Child May Love.',
+        link: { text: 'know more', url: 'https://www.ei.study' },
     },
 ];
 
@@ -65,7 +69,7 @@ export default function PreferenceForm() {
         else setHydrated(true);
     }, [router]);
 
-    if (!hydrated) return <div className='empty-div'></div>;
+    if (!hydrated) return <div className="empty-div"></div>;
 
     return (
         <div className="preferences-wrapper">
@@ -98,7 +102,19 @@ export default function PreferenceForm() {
                             />
                             <div>
                                 <strong>{item.title}</strong>
-                                <p>{item.desc}</p>
+                                <p>
+                                    {item.desc}{' '}
+                                    {item.link && (
+                                        <a
+                                            href={item.link.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="know-more"
+                                        >
+                                            {item.link.text}
+                                        </a>
+                                    )}
+                                </p>
                             </div>
                         </label>
                     ))}

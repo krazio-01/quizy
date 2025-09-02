@@ -42,8 +42,8 @@ export async function POST(req: NextRequest) {
 
         const normalizedGrade = normalizeGrade(grade);
 
-        if (user.dob && normalizedGrade && gradeAgeLimits[normalizedGrade]) {
-            const userAge = calculateAge(new Date(user.dob));
+        if (user?.dob && normalizedGrade && gradeAgeLimits[normalizedGrade]) {
+            const userAge = calculateAge(new Date(user?.dob));
             const [minAge, maxAge] = gradeAgeLimits[normalizedGrade];
 
             if (userAge < minAge || userAge > maxAge) {
@@ -81,6 +81,7 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ isExistingUser: user ? true : false }, { status: 201 });
     } catch (err: any) {
+        console.error('\n\nmd-Error in /api/quiz/mockTest:', err);
         if (err.code === 11000)
             return NextResponse.json({ message: 'Duplicate entry for this grade and email' }, { status: 409 });
         return NextResponse.json({ message: 'Server error' }, { status: 500 });

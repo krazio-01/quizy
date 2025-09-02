@@ -1,6 +1,4 @@
-import React from 'react';
 import Image from 'next/image';
-import StatsBar from '@/components/UI/StatsBar/StatsBar';
 import MotionDiv from '@/components/Animated/MotionDiv';
 import CTASection from '@/components/layout/CTASection/CTASection';
 import RewardsSection from '@/components/layout/rewards/RewardsSection';
@@ -13,13 +11,6 @@ const Cards = ({ title, description, icon }: { title: string; description: strin
         <p>{description}</p>
     </div>
 );
-
-const stats = [
-    { label: 'Active Students', value: '50K+' },
-    { label: 'Countries', value: '120+' },
-    { label: 'Challenges Solved', value: '1M+' },
-    { label: 'Prize Pool', value: '$100K' },
-];
 
 const feature = [
     {
@@ -88,7 +79,7 @@ const HomePage = () => {
                 <div>120+ <br /> countries</div>
                 <div>Recognition, rewards <br /> and certificates</div>
                 <div>Sharpen logic and <br /> problem-solving</div>
-                <div>Test date: <br /> 11 -12th Oct 25</div>
+                <div>Test date: <br /> 24th - 25th Oct 25</div>
             </section>
 
             <section className="potential">
@@ -208,7 +199,7 @@ const HomePage = () => {
             <RewardsSection title="Rewards" showLink={true} />
 
             <section className="register">
-                <h3>How to Register?</h3>
+                <h3>Prepare your child for a future where logical reasoning reigns supreme</h3>
                 <div className="video-wrapper">
                     <div className="video-box">
                         <iframe

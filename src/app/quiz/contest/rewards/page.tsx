@@ -37,11 +37,7 @@ const Page = async () => {
             </div>
 
             <div className="rewards-wrapper">
-                <RewardsSection
-                    title="Top Rewards"
-                    secondRewardTitle="2 Weeks Robotic Camps worth AED 1300 in for all Class Toppers!"
-                    secondRewardContent="An exciting opportunity for the top performers of the League of Logic!​ Class toppers Grade 3-10 will win courses worth 1300 AED! These engaging courses provides an in-person hands-on learning space where kids can dive into the world of robots, coding, and STEM through age-appropriate activities. Students will have the opportunity to program robots, design circuits, and solve fun challenges while building creativity, problem-solving, and logical thinking skills. This camp is scheduled in December 2025. "
-                />
+                <RewardsSection title="Top Rewards" />
             </div>
 
             <section className="extra-rewards">
@@ -131,8 +127,8 @@ const Page = async () => {
                             <video autoPlay loop src="/videos/mic.mp4" />
                         </div>
                         <p>
-                            Your name goes up on our Hall of Honour and social media because the world should see when
-                            brilliance happens.
+                            A moment of national recognition and pride for all toppers on our social media and
+                            newsletters.
                         </p>
                     </div>
                 </div>
@@ -210,7 +206,7 @@ const Page = async () => {
             </section>
 
             <section className="exposure-partners-container">
-                <h3>Our exposure partners</h3>
+                <h3>Our exposure programs</h3>
                 {partnersData.map((partner, index) => (
                     <div key={index} className={`partner-row ${partner.imagePosition === 'right' ? 'reverse' : ''}`}>
                         <div className="image">

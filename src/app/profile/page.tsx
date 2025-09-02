@@ -176,8 +176,8 @@ const ProfilePage = () => {
         link.click();
     };
 
-    function numberToWords(num: number): string {
-        if (num === 0) return 'zero';
+    function numberToWords(amount: number): string {
+        if (amount === 0) return 'zero';
 
         const belowTwenty = [
             '',
@@ -212,16 +212,25 @@ const ProfilePage = () => {
             return '';
         };
 
-        let i = 0;
-        let words = '';
-        while (num > 0) {
-            if (num % 1000 !== 0) {
-                words = helper(num % 1000) + thousands[i] + ' ' + words;
+        const convertInteger = (num: number) => {
+            let i = 0;
+            let words = '';
+            while (num > 0) {
+                if (num % 1000 !== 0) {
+                    words = helper(num % 1000) + thousands[i] + ' ' + words;
+                }
+                num = Math.floor(num / 1000);
+                i++;
             }
-            num = Math.floor(num / 1000);
-            i++;
-        }
+            return words.trim();
+        };
 
+        const [integer, decimal] = amount.toString().split('.');
+        let words = convertInteger(parseInt(integer));
+        if (decimal) {
+            const decimalNum = parseInt(decimal.padEnd(2, '0').slice(0, 2));
+            if (decimalNum > 0) words += ' and ' + convertInteger(decimalNum);
+        }
         return words.trim();
     }
 
@@ -265,12 +274,12 @@ const ProfilePage = () => {
                     <FiChevronRight className="chevron-icon" />
                 </div>
                 <nav className="menu">
-                    <a href="/pdf/guideline.pdf" download>
+                    <a href="/pdf/guidelines_LOL.pdf" download>
                         <button>
                             <FiDownload /> Test Guidelines
                         </button>
                     </a>
-                    <a href="/pdf/CT Practice questions.pdf" download>
+                    <a href="/pdf/Practice questions_LOL.pdf" download>
                         <button>
                             <FiDownload /> Sample Questions
                         </button>
@@ -341,11 +350,11 @@ const ProfilePage = () => {
                             <span className="label">DOB</span>
                             <span className="value">
                                 {user?.dob
-                                    ? new Date(user.dob).toLocaleDateString('en-GB', {
-                                          day: '2-digit',
-                                          month: '2-digit',
-                                          year: 'numeric',
-                                      })
+                                    ? new Date(user?.dob).toLocaleDateString('en-GB', {
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric',
+                                    })
                                     : ''}
                             </span>
                         </div>
@@ -356,7 +365,7 @@ const ProfilePage = () => {
                             <span className="label">Grade</span>
                             <span className="value">
                                 {user?.grade
-                                    ? user.grade.charAt(0).toUpperCase() + user.grade.slice(1).replace(/(\d+)/, ' $1')
+                                    ? user?.grade.charAt(0).toUpperCase() + user.grade.slice(1).replace(/(\d+)/, ' $1')
                                     : ''}
                             </span>
                         </div>
@@ -395,9 +404,8 @@ const ProfilePage = () => {
                             {paymentInfoDB?.billing && (
                                 <>
                                     <div
-                                        className={`status ${
-                                            paymentInfoDB.billing.status === 'success' ? 'paid' : 'failed'
-                                        }`}
+                                        className={`status ${paymentInfoDB.billing.status === 'success' ? 'paid' : 'failed'
+                                            }`}
                                     >
                                         Fees Status{' '}
                                         <span>

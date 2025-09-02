@@ -13,6 +13,109 @@ interface School {
     type?: string;
 }
 
+export const countryCities: Record<string, string[]> = {
+    AE: ['Abu Dhabi', 'Dubai', 'Sharjah', 'Ajman', 'Umm Al-Quwain', 'Ras Al Khaimah', 'Fujairah'],
+    BH: ['Manama'],
+    QA: ['Doha'],
+    SA: [
+        'Riyadh',
+        'Jeddah',
+        'Khamis Mushayt',
+        'Abqaiq',
+        'Makkah',
+        'Al Khobar',
+        'Medina',
+        'Yanbu',
+        'Al Madinah',
+        'Dhahran',
+        "Ha'il",
+        'Al-Ahsa',
+        'Hofuf',
+        'Taif',
+        'Buraydah',
+        'Buraidah',
+        'Tabuk',
+        'Al Jubail',
+        'Jubail',
+        'Abha',
+        'King Khalid Military City',
+        'King Abdullah Economic City',
+        'Udhailiyah',
+        'Al Hasa',
+    ],
+    KW: [
+        'Kuwait City',
+        'Fahaheel',
+        'Hawalli',
+        'Fintas',
+        'Al Ahmadi',
+        'Al Jahra',
+        'Jabriya',
+        'Salwa',
+        'Adan',
+        'Jleeb Al Shuyoukh',
+        'Shuwaikh',
+        'Mangaf',
+        'Mahboula',
+        'Salmiya',
+    ],
+    OM: [
+        'Muscat',
+        'Salalah',
+        'Sohar',
+        'Hay Al Sharooq',
+        'Buraimi',
+        'Nizwa',
+        'Muladha',
+        'Sur',
+        'Ibri',
+        'Ibra',
+        'Jalan',
+        'Rustaq',
+        'Khasab',
+        'Al Buraimi',
+        'Masirah',
+        'Thumrait',
+        'Saham',
+        'Bousher',
+    ],
+    ZA: [
+        "Eastern Cape",
+        "Free State",
+        "Gauteng",
+        "Kwa Zulu-Natal",
+        "KwaZulu-Natal",
+        "Limpopo",
+        "Mpumalanga",
+        "North Cape",
+        "North West",
+        "North west",
+        "Western Cape"
+    ],
+    KE: [
+        'Nairobi',
+        'Kisumu',
+        'Mombasa',
+        'Nanyuki',
+        'Thika',
+        'Limuru',
+        'Eldoret',
+        'Kisii',
+        'Nakuru',
+        'Kalimoni',
+        'Kilifi',
+        'Malindi',
+        'Nyeri',
+        'Kajiado',
+        'Kiambu',
+        'Gilgil',
+        'Ruiru',
+        'Kijabe',
+        'Molo',
+        'Diani',
+    ],
+};
+
 const Step3 = ({
     onNext,
     loading,
@@ -47,17 +150,8 @@ const Step3 = ({
             return;
         }
 
-        if (country === 'AE') {
-            setCities([
-                'Abu Dhabi',
-                'Dubai',
-                'Sharjah',
-                'Ajman',
-                'Umm Al-Quwain',
-                'Ras Al Khaimah',
-                'Fujairah',
-                'Other (Please specify)',
-            ]);
+        if (countryCities[country]) {
+            setCities([...countryCities[country]]);
             return;
         }
 
@@ -68,7 +162,6 @@ const Step3 = ({
             ccs.getCities(country, state)?.forEach((c: string) => citySet.add(c));
         });
         const cityList = Array.from(citySet).sort();
-        cityList.push('Other (Please specify)');
 
         setCities(cityList);
     }, [country]);

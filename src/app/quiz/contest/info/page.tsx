@@ -35,7 +35,7 @@ const faqs = [
     },
     {
         question: 'Q - When is the exam date for the League of Logic competition?',
-        answer: 'The exam is scheduled for October 11th and 12th, 2025.',
+        answer: 'The exam is scheduled for October 24th and 25th, 2025.',
     },
     {
         question: 'Q - What is the registration fee, and how does it work for different countries?',
@@ -84,16 +84,6 @@ const Page = () => {
                         <div className="faq-answer">{faq.answer}</div>
                     </div>
                 ))}
-            </section>
-
-            <section className="contact-section">
-                <h3>Contact Us</h3>
-                <div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
             </section>
         </div>
     );

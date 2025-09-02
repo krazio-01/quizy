@@ -148,6 +148,16 @@
                     border: 2px solid #e5e7eb;
                 }
             }
+
+            .know-more {
+                color: #ab2024;
+                font-weight: bold;
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
         }
     }
 
