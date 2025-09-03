@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import axios from '@/utils/axios';
 import useAppStore from '@/store/store';
 import { useSession } from 'next-auth/react';
+import Form from 'next/form';
 import './registerQuiz.scss';
 
 const grades = [
@@ -26,34 +27,20 @@ const Page = () => {
 
     const { data: session } = useSession();
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
+    const handleSubmit = (formData: FormData) => {
+        const name = formData.get('name')?.toString().trim() || '';
+        const email = formData.get('email')?.toString().trim().toLowerCase() || '';
+        const grade = formData.get('grade')?.toString() || '';
         setLoading(true);
-        const payload = {
-            name: session?.user?.name || form.name.trim(),
-            email: session?.user?.email || form.email.trim().toLowerCase(),
-            grade: selectedGrade,
-        };
 
-        try {
-            const { data } = await axios.post('/api/quiz/mockTest', payload);
-            setSelectedGrade(selectedGrade);
-            setIsRegisteredUser(data?.isExistingUser);
-            router.push('/quiz/mock/rules');
-            console.log("data: ", data);
-            console.log('selectedGrade inside register route: ', selectedGrade);
-        } catch (error: any) {
-            const message = error.response?.data?.message || 'Something went wrong';
-            toast.error(message);
-        } finally {
-            setLoading(false);
-        }
+        axios.post('/api/quiz/mockTest', { name, email, grade })
+            .then(({ data }) => {
+                setSelectedGrade(grade);
+                setIsRegisteredUser(data.isExistingUser);
+                setLoading(false);
+                router.push('/quiz/mock/rules');
+            })
+            .catch((err) => toast.error(err.response?.data?.message || 'Something went wrong'));
     };
 
     return (
@@ -81,18 +68,17 @@ const Page = () => {
                     />
                 </div>
 
-                <form onSubmit={handleSubmit} className="quiz-form">
+                <Form action={handleSubmit} className="quiz-form">
                     <p className="form-caption">
                         Let&apos;s get started! Just tell us your name and email so we can tailor the experience for you.
                     </p>
 
+                    <input type="hidden" name="grade" value={selectedGrade} />
+
                     <div className="form-group">
                         <label htmlFor="name">Name*</label>
                         <input
-                            id="name"
                             name="name"
-                            value={session?.user?.name || form.name}
-                            onChange={handleChange}
                             placeholder="Enter your name"
                             required
                             disabled={!!session?.user}
@@ -102,11 +88,8 @@ const Page = () => {
                     <div className="form-group">
                         <label htmlFor="email">Email*</label>
                         <input
-                            id="email"
                             name="email"
                             type="email"
-                            value={session?.user?.email || form.email}
-                            onChange={handleChange}
                             placeholder="Enter your email"
                             required
                             disabled={!!session?.user}
@@ -116,7 +99,7 @@ const Page = () => {
                     <button type="submit" className="start-btn" disabled={loading}>
                         {loading ? 'Starting...' : 'Start Quiz'}
                     </button>
-                </form>
+                </Form>
             </div>
         </div>
     );
