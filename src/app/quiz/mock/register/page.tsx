@@ -5,7 +5,7 @@ import StatsBar from '@/components/UI/StatsBar/StatsBar';
 import { toast } from 'sonner';
 import axios from '@/utils/axios';
 import useAppStore from '@/store/store';
-// import { useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import './registerQuiz.scss';
 
 const grades = [
@@ -24,7 +24,7 @@ const Page = () => {
 
     const router = useRouter();
 
-    // const { data: session } = useSession();
+    const { data: session } = useSession();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -33,11 +33,12 @@ const Page = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        e.stopPropagation();
 
         setLoading(true);
         const payload = {
-            name: form.name.trim(),
-            email: form.email.trim().toLowerCase(),
+            name: session?.user?.name || form.name.trim(),
+            email: session?.user?.email || form.email.trim().toLowerCase(),
             grade: selectedGrade,
         };
 
@@ -89,10 +90,11 @@ const Page = () => {
                         <input
                             id="name"
                             name="name"
-                            value={form.name}
+                            value={session?.user?.name || form.name}
                             onChange={handleChange}
                             placeholder="Enter your name"
                             required
+                            disabled={!!session?.user}
                         />
                     </div>
 
@@ -102,10 +104,11 @@ const Page = () => {
                             id="email"
                             name="email"
                             type="email"
-                            value={form.email}
+                            value={session?.user?.email || form.email}
                             onChange={handleChange}
                             placeholder="Enter your email"
                             required
+                            disabled={!!session?.user}
                         />
                     </div>
 
