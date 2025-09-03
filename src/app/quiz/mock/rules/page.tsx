@@ -13,7 +13,6 @@ const Page = () => {
 
     useEffect(() => {
         if (!selectedGrade?.trim()) {
-            console.log('test-inside if: ', selectedGrade);
             router.replace('/');
             return;
         }
