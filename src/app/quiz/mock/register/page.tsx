@@ -46,6 +46,8 @@ const Page = () => {
             setSelectedGrade(selectedGrade);
             setIsRegisteredUser(data?.isExistingUser);
             router.push('/quiz/mock/rules');
+            console.log("data: ", data);
+            console.log('selectedGrade inside register route: ', selectedGrade);
         } catch (error: any) {
             const message = error.response?.data?.message || 'Something went wrong';
             toast.error(message);
