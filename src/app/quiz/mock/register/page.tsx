@@ -2,10 +2,10 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import StatsBar from '@/components/UI/StatsBar/StatsBar';
-import { toast } from 'sonner';
-import axios from '@/utils/axios';
+// import { toast } from 'sonner';
+// import axios from '@/utils/axios';
 import useAppStore from '@/store/store';
-import { useSession } from 'next-auth/react';
+// import { useSession } from 'next-auth/react';
 import './registerQuiz.scss';
 
 const grades = [
@@ -24,36 +24,43 @@ const QuizRegister = () => {
 
     const router = useRouter();
 
-    const { data: session } = useSession();
+    // const { data: session } = useSession();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    // const handleSubmit = async (e: React.FormEvent) => {
+    //     e.preventDefault();
+    //     e.stopPropagation();
+
+    //     setLoading(true);
+    //     const payload = {
+    //         name: session?.user?.name || form.name.trim(),
+    //         email: session?.user?.email || form.email.trim().toLowerCase(),
+    //         grade: selectedGrade,
+    //     };
+
+    //     try {
+    //         const { data } = await axios.post('/api/quiz/mockTest', payload);
+    //         setSelectedGrade(selectedGrade);
+    //         setIsRegisteredUser(data?.isExistingUser);
+    //         router.push('/quiz/mock/rules');
+    //     } catch (error: any) {
+    //         const message = error.response?.data?.message || 'Something went wrong';
+    //         toast.error(message);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        e.stopPropagation();
-
-        setLoading(true);
-        const payload = {
-            name: session?.user?.name || form.name.trim(),
-            email: session?.user?.email || form.email.trim().toLowerCase(),
-            grade: selectedGrade,
-        };
-
-        try {
-            const { data } = await axios.post('/api/quiz/mockTest', payload);
-            setSelectedGrade(selectedGrade);
-            setIsRegisteredUser(data?.isExistingUser);
-            router.push('/quiz/mock/rules');
-        } catch (error: any) {
-            const message = error.response?.data?.message || 'Something went wrong';
-            toast.error(message);
-        } finally {
-            setLoading(false);
-        }
-    };
+        
+        setSelectedGrade(selectedGrade);
+        router.push('/quiz/mock/rules');
+    }
 
     return (
         <div className="practice-quiz-container">
@@ -90,11 +97,10 @@ const QuizRegister = () => {
                         <input
                             id="name"
                             name="name"
-                            value={session?.user?.name || form.name}
+                            value={form.name}
                             onChange={handleChange}
                             placeholder="Enter your name"
                             required
-                            disabled={!!session?.user}
                         />
                     </div>
 
@@ -104,11 +110,10 @@ const QuizRegister = () => {
                             id="email"
                             name="email"
                             type="email"
-                            value={session?.user?.email || form.email}
+                            value={form.email}
                             onChange={handleChange}
                             placeholder="Enter your email"
                             required
-                            disabled={!!session?.user}
                         />
                     </div>
 
