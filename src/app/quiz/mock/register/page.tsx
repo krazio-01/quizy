@@ -31,9 +31,7 @@ const Page = () => {
         setForm((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
+    const handleSubmit = async () => {
         setLoading(true);
         const payload = {
             name: session?.user?.name || form.name.trim(),
