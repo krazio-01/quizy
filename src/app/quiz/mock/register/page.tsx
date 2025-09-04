@@ -36,8 +36,8 @@ const Page = () => {
 
         setLoading(true);
         const payload = {
-            name: form.name.trim(),
-            email: form.email.trim().toLowerCase(),
+            name: session?.user?.name || form.name.trim(),
+            email: session?.user?.email || form.email.trim().toLowerCase(),
             grade: selectedGrade,
         };
 
