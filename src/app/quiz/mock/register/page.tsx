@@ -1,12 +1,10 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-// import StatsBar from '@/components/UI/StatsBar/StatsBar';
 import useAppStore from '@/store/store';
 import './registerQuiz.scss';
 
 const QuizRegister = () => {
-    // const [selectedGrade, setGrade] = useState<string>('Grade 5-6');
     const [form, setForm] = useState({ name: '', email: '' });
 
     const { setSelectedGrade } = useAppStore();
@@ -29,7 +27,7 @@ const QuizRegister = () => {
         <div className="practice-quiz-container">
             <div>
                 <div className='hero-content-wrapper'>
-                    <video autoPlay muted loop playsInline className="quizRegister-video">
+                    <video className="quizRegister-video">
                         <source src="/videos/quizbanner1.mp4" type="video/mp4" />
                     </video>
 
@@ -38,16 +36,6 @@ const QuizRegister = () => {
                         <p className="subtitle">Ready to test your skills?</p>
                         <p className="label">Select Your Grade</p>
                     </div>
-                </div>
-
-                <div className="grade-selector-container">
-                    {/* <StatsBar
-                        statsArray={grades}
-                        selectedValue={selectedGrade}
-                        onSelect={setGrade}
-                        gap="clamp(0.5rem, 3vw, 3rem)"
-                        cardWidth="100px"
-                    /> */}
                 </div>
 
                 <form onSubmit={handleSubmit} className="quiz-form">
@@ -63,7 +51,6 @@ const QuizRegister = () => {
                             value={form.name}
                             onChange={handleChange}
                             placeholder="Enter your name"
-                            required
                         />
                     </div>
 
@@ -76,7 +63,6 @@ const QuizRegister = () => {
                             value={form.email}
                             onChange={handleChange}
                             placeholder="Enter your email"
-                            required
                         />
                     </div>
 
