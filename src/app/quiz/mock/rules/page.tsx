@@ -12,10 +12,10 @@ const Page = () => {
     const router = useRouter();
 
     useEffect(() => {
-        if (!selectedGrade?.trim()) {
-            router.replace('/');
-            return;
-        }
+        // if (!selectedGrade?.trim()) {
+        //     router.replace('/');
+        //     return;
+        // }
 
         const handleBeforeUnload = (e: BeforeUnloadEvent) => {
             e.preventDefault();

@@ -8,6 +8,9 @@ export async function POST(req: NextRequest) {
 
         const { email, preferences } = await req.json();
 
+        console.log('\n\nmd-email: ', email);
+        console.log('md-preferences: ', preferences);
+
         if (!email || !Array.isArray(preferences))
             return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
 
