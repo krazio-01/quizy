@@ -246,6 +246,8 @@ const ProfilePage = () => {
                 },
             };
 
+            localStorage.setItem('userEmail', user?.email);
+
             const { data } = await axios.post('/api/payment/initiate', paymentData);
 
             if (data.success) window.location.href = data.paymentUrl;

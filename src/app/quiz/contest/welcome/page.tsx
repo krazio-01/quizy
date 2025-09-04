@@ -60,6 +60,7 @@ export default function PreferenceForm() {
             toast.error(err.response?.data?.error || 'Failed to save preferences.');
         } finally {
             setLoading(false);
+            localStorage.removeItem('userEmail');
         }
     };
 

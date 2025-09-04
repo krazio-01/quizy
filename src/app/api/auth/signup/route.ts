@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const phoneRegex = /^\+\d{1,4}[\s-]?\d{10}$/;
+        const phoneRegex = /^\+\d{1,4}[\s-]?\d{6,15}$/;
         if (!phoneRegex.test(phone.trim())) {
             return NextResponse.json(
                 {

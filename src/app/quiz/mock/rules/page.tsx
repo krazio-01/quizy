@@ -24,7 +24,7 @@ const Page = () => {
 
         window.addEventListener('beforeunload', handleBeforeUnload);
         return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-    }, [selectedGrade, router]);
+    }, []);
 
     if (!selectedGrade?.trim()) return <div className="returning-state" />;
 
