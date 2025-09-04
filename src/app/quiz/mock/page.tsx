@@ -159,6 +159,7 @@ const Quiz = () => {
                             const correctCount = answerStatuses.filter((s) => s === 'correct').length;
                             const score = `${correctCount}/${totalQuestions}`;
                             setScoreString(score);
+                            sessionStorage.setItem('quizScore', score);
 
                             toast.success(`Quiz Completed! Your score: ${score}`);
                             router.push('/quiz/mock/complete');
