@@ -79,7 +79,7 @@ const Page = () => {
                     />
                 </div>
 
-                <form onSubmit={handleSubmit} className="quiz-form">
+                <div className="quiz-form">
                     <p className="form-caption">
                         Let&apos;s get started! Just tell us your name and email so we can tailor the experience for you.
                     </p>
@@ -111,10 +111,10 @@ const Page = () => {
                         />
                     </div>
 
-                    <button type="submit" className="start-btn" disabled={loading}>
+                    <button  onClick={handleSubmit} className="start-btn" disabled={loading}>
                         {loading ? 'Starting...' : 'Start Quiz'}
                     </button>
-                </form>
+                </div>
             </div>
         </div>
     );
