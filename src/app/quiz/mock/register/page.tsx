@@ -8,7 +8,6 @@ const QuizRegister = () => {
     const [form, setForm] = useState({ name: '', email: '' });
 
     const { setSelectedGrade } = useAppStore();
-
     const router = useRouter();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,17 +15,20 @@ const QuizRegister = () => {
         setForm((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleStartQuiz = async () => {
+        if (!form.name.trim() || !form.email.trim()) {
+            alert("Please enter your name and email");
+            return;
+        }
 
         setSelectedGrade('Grade 5-6');
         router.push('/quiz/mock/rules');
-    }
+    };
 
     return (
         <div className="practice-quiz-container">
             <div>
-                <div className='hero-content-wrapper'>
+                <div className="hero-content-wrapper">
                     <video className="quizRegister-video">
                         <source src="/videos/quizbanner1.mp4" type="video/mp4" />
                     </video>
@@ -38,7 +40,7 @@ const QuizRegister = () => {
                     </div>
                 </div>
 
-                <form onSubmit={handleSubmit} className="quiz-form">
+                <div className="quiz-form">
                     <p className="form-caption">
                         Let&apos;s get started! Just tell us your name and email so we can tailor the experience for you.
                     </p>
@@ -66,10 +68,14 @@ const QuizRegister = () => {
                         />
                     </div>
 
-                    <button type="submit" className="start-btn">
+                    <button
+                        type="button"
+                        className="start-btn"
+                        onClick={handleStartQuiz}
+                    >
                         Start Quiz
                     </button>
-                </form>
+                </div>
             </div>
         </div>
     );

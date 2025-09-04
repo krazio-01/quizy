@@ -21,7 +21,11 @@ interface AppStates {
 
 const useAppStore = create<AppStates>((set) => ({
     selectedGrade: '',
-    setSelectedGrade: (grade: string) => set({ selectedGrade: grade }),
+    // setSelectedGrade: (grade: string) => set({ selectedGrade: grade }),
+    setSelectedGrade: (grade: string) => {
+        console.log('Setting grade:', grade);
+        set({ selectedGrade: grade });
+    },
 
     scoreString: '0/0',
     setScoreString: (score) => set({ scoreString: score }),
