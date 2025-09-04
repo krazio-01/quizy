@@ -68,7 +68,7 @@ const LoginPage = () => {
                 localStorage.removeItem('phone');
             }
             toast.success('Login successful');
-            router.push('/');
+            router.push('/profile');
         }
         setLoading(false);
     };
