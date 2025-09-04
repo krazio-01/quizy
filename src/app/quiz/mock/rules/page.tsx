@@ -8,12 +8,11 @@ import './rules.scss';
 
 const Page = () => {
     const { selectedGrade } = useAppStore();
-    const [grade] = selectedGrade ? [selectedGrade] : [sessionStorage.getItem('selectedGrade')];
 
     const router = useRouter();
 
     useEffect(() => {
-        if (!grade?.trim()) {
+        if (!selectedGrade?.trim()) {
             router.replace('/');
             return;
         }
@@ -25,9 +24,9 @@ const Page = () => {
 
         window.addEventListener('beforeunload', handleBeforeUnload);
         return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-    }, [grade]);
+    }, [selectedGrade]);
 
-    if (!grade?.trim()) return <div className="returning-state" />;
+    if (!selectedGrade?.trim()) return <div className="returning-state" />;
 
     return (
         <div className="quiz-instructions-container">
