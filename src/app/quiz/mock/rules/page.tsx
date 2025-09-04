@@ -12,7 +12,8 @@ const Page = () => {
     const router = useRouter();
 
     useEffect(() => {
-        if (!selectedGrade?.trim()) {
+        console.log({ selectedGrade });
+        if (!selectedGrade) {
             router.replace('/');
             return;
         }
@@ -24,7 +25,7 @@ const Page = () => {
 
         window.addEventListener('beforeunload', handleBeforeUnload);
         return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-    }, [selectedGrade]);
+    }, []);
 
     if (!selectedGrade?.trim()) return <div className="returning-state" />;
 
