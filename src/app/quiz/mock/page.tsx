@@ -11,7 +11,8 @@ const Quiz = () => {
     const router = useRouter();
 
     useEffect(() => {
-        if (!selectedGrade?.trim()) {
+        const grade = sessionStorage.getItem('selectedGrade');
+        if (!grade?.trim()) {
             router.replace('/');
             return;
         }
@@ -21,8 +22,8 @@ const Quiz = () => {
             e.returnValue = '';
         };
 
-        window.addEventListener('beforeunload', handleBeforeUnload);
-        return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+        // window.addEventListener('beforeunload', handleBeforeUnload);
+        // return () => window.removeEventListener('beforeunload', handleBeforeUnload);
     }, [selectedGrade, router]);
 
     const gradeKey = selectedGrade.replace('Grade ', '').trim();
