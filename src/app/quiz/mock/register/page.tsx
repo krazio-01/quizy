@@ -36,8 +36,8 @@ const Page = () => {
         try {
             const { data } = await axios.post('/api/quiz/mockTest', payload);
             setSelectedGrade(selectedGrade);
-            sessionStorage.setItem('selectedGrade', selectedGrade);
             setIsRegisteredUser(data?.isExistingUser);
+            sessionStorage.setItem('selectedGrade', selectedGrade);
             router.push('/quiz/mock/rules');
         } catch (error: any) {
             const message = error.response?.data?.message || 'Something went wrong';

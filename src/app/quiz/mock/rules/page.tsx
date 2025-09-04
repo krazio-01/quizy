@@ -12,8 +12,8 @@ const Page = () => {
     const router = useRouter();
 
     useEffect(() => {
-        console.log({ selectedGrade });
-        if (!selectedGrade) {
+        const grade = sessionStorage.getItem('selectedGrade');
+        if (!grade) {
             router.replace('/');
             return;
         }
@@ -27,7 +27,7 @@ const Page = () => {
         return () => window.removeEventListener('beforeunload', handleBeforeUnload);
     }, []);
 
-    if (!selectedGrade?.trim()) return <div className="returning-state" />;
+    // if (!selectedGrade?.trim()) return <div className="returning-state" />;
 
     return (
         <div className="quiz-instructions-container">
