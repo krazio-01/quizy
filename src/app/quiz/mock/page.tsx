@@ -11,8 +11,8 @@ const Quiz = () => {
     const router = useRouter();
 
     useEffect(() => {
-        const grade = sessionStorage.getItem('selectedGrade');
-        if (!grade?.trim()) {
+        // const grade = sessionStorage.getItem('selectedGrade');
+        if (!selectedGrade?.trim()) {
             router.replace('/');
             return;
         }
