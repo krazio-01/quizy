@@ -15,7 +15,7 @@ const grades = [
     { value: 'Grade 9-10', label: '' },
 ];
 
-const Page = () => {
+const QuizRegister = () => {
     const [selectedGrade, setGrade] = useState<string>('Grade 5-6');
     const [loading, setLoading] = useState(false);
     const [form, setForm] = useState({ name: '', email: '' });
@@ -121,4 +121,4 @@ const Page = () => {
     );
 };
 
-export default Page;
+export default QuizRegister;
