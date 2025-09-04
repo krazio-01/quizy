@@ -14,6 +14,7 @@ const Page = () => {
         if (scoreString === '0/0') {
             router.push('/quiz/mock/register');
         }
+        sessionStorage.removeItem('selectedGrade');
     }, [scoreString, router]);
 
     if (!scoreString || scoreString === '0/0') return <div className='no-score' />
