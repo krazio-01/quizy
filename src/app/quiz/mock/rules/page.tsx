@@ -17,14 +17,6 @@ const Page = () => {
             router.replace('/');
             return;
         }
-
-        // const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-        //     e.preventDefault();
-        //     e.returnValue = '';
-        // };
-
-        // window.addEventListener('beforeunload', handleBeforeUnload);
-        // return () => window.removeEventListener('beforeunload', handleBeforeUnload);
     }, []);
 
     if (!selectedGrade?.trim()) return <div className="returning-state" />;
