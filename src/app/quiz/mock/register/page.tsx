@@ -18,24 +18,18 @@ const grades = [
 const Page = () => {
     const [selectedGrade, setGrade] = useState<string>('Grade 5-6');
     const [loading, setLoading] = useState(false);
-    const [form, setForm] = useState({ name: '', email: '' });
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
 
     const { setSelectedGrade, setIsRegisteredUser } = useAppStore();
-
     const router = useRouter();
-
     const { data: session } = useSession();
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
-    };
 
     const handleSubmit = async () => {
         setLoading(true);
         const payload = {
-            name: session?.user?.name || form.name.trim(),
-            email: session?.user?.email || form.email.trim().toLowerCase(),
+            name: session?.user?.name || name.trim(),
+            email: session?.user?.email || email.trim().toLowerCase(),
             grade: selectedGrade,
         };
 
@@ -55,7 +49,7 @@ const Page = () => {
     return (
         <div className="practice-quiz-container">
             <div>
-                <div className='hero-content-wrapper'>
+                <div className="hero-content-wrapper">
                     <video autoPlay muted loop playsInline className="quizRegister-video">
                         <source src="/videos/quizbanner1.mp4" type="video/mp4" />
                     </video>
@@ -87,8 +81,8 @@ const Page = () => {
                         <input
                             id="name"
                             name="name"
-                            value={session?.user?.name || form.name}
-                            onChange={handleChange}
+                            value={session?.user?.name || name}
+                            onChange={(e) => setName(e.target.value)}
                             placeholder="Enter your name"
                             required
                             disabled={!!session?.user}
@@ -101,15 +95,15 @@ const Page = () => {
                             id="email"
                             name="email"
                             type="email"
-                            value={session?.user?.email || form.email}
-                            onChange={handleChange}
+                            value={session?.user?.email || email}
+                            onChange={(e) => setEmail(e.target.value)}
                             placeholder="Enter your email"
                             required
                             disabled={!!session?.user}
                         />
                     </div>
 
-                    <button  onClick={handleSubmit} className="start-btn" disabled={loading}>
+                    <button onClick={handleSubmit} className="start-btn" disabled={loading}>
                         {loading ? 'Starting...' : 'Start Quiz'}
                     </button>
                 </div>
