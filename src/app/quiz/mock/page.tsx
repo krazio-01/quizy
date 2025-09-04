@@ -16,10 +16,10 @@ const Quiz = () => {
             router.replace('/');
             return;
         }
-        
-        return () => {
-            sessionStorage.removeItem('selectedGrade');
-        }
+
+        // return () => {
+        //     sessionStorage.removeItem('selectedGrade');
+        // }
     }, [selectedGrade, router]);
 
     const gradeKey = selectedGrade.replace('Grade ', '').trim();
