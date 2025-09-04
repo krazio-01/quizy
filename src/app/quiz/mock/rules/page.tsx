@@ -23,8 +23,8 @@ const Page = () => {
             e.returnValue = '';
         };
 
-        window.addEventListener('beforeunload', handleBeforeUnload);
-        return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+        // window.addEventListener('beforeunload', handleBeforeUnload);
+        // return () => window.removeEventListener('beforeunload', handleBeforeUnload);
     }, []);
 
     // if (!selectedGrade?.trim()) return <div className="returning-state" />;
