@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 interface AppStates {
     selectedGrade: string;
@@ -19,31 +20,39 @@ interface AppStates {
     resetRouteAccess: () => void;
 }
 
-const useAppStore = create<AppStates>((set) => ({
-    selectedGrade: '',
-    setSelectedGrade: (grade: string) => set({ selectedGrade: grade }),
+const useAppStore = create<AppStates>()(
+    persist(
+        (set) => ({
+            selectedGrade: '',
+            setSelectedGrade: (grade: string) => set({ selectedGrade: grade }),
 
-    scoreString: '0/0',
-    setScoreString: (score) => set({ scoreString: score }),
+            scoreString: '0/0',
+            setScoreString: (score) => set({ scoreString: score }),
 
-    step: 1,
-    setStep: (step: number) => set({ step }),
+            step: 1,
+            setStep: (step: number) => set({ step }),
 
-    isRegisteredUser: false,
-    setIsRegisteredUser: (isRegisteredUser: boolean) => set({ isRegisteredUser }),
+            isRegisteredUser: false,
+            setIsRegisteredUser: (isRegisteredUser: boolean) => set({ isRegisteredUser }),
 
-    routeAccess: {},
-    allowRoute: (path: string) =>
-        set((state) => ({
-            routeAccess: { ...state.routeAccess, [path]: true },
-        })),
-    clearRouteAccess: (path: string) =>
-        set((state) => {
-            const newAccess = { ...state.routeAccess };
-            delete newAccess[path];
-            return { routeAccess: newAccess };
+            routeAccess: {},
+            allowRoute: (path: string) =>
+                set((state) => ({
+                    routeAccess: { ...state.routeAccess, [path]: true },
+                })),
+            clearRouteAccess: (path: string) =>
+                set((state) => {
+                    const newAccess = { ...state.routeAccess };
+                    delete newAccess[path];
+                    return { routeAccess: newAccess };
+                }),
+            resetRouteAccess: () => set({ routeAccess: {} }),
         }),
-    resetRouteAccess: () => set({ routeAccess: {} }),
-}));
+        {
+            name: 'app-storage',
+            partialize: (state) => ({ selectedGrade: state.selectedGrade }),
+        }
+    )
+);
 
 export default useAppStore;
