@@ -9,9 +9,10 @@ import '../auth.scss';
 
 const LoginPage = () => {
     const emailRef = useRef<HTMLInputElement>(null);
+    const passwordRef = useRef<HTMLInputElement>(null);
+
     const [loading, setLoading] = useState(false);
     const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string; general?: string }>({});
-    const passwordRef = useRef<HTMLInputElement>(null);
 
     const setStep = useAppStore((state) => state.setStep);
     const router = useRouter();
@@ -21,10 +22,22 @@ const LoginPage = () => {
         setLoading(true);
         setFieldErrors({});
 
+        if (!(window as any).grecaptcha) {
+            toast.error("Captcha not loaded. Please refresh and try again.");
+            setLoading(false);
+            return;
+        }
+
+        const token = await (window as any).grecaptcha.execute(
+            process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
+            { action: "login" }
+        );
+
         const result = await signIn('credentials', {
             redirect: false,
             identifier: emailRef.current?.value,
             password: passwordRef.current?.value,
+            captcha: token,
         });
 
         if (result?.error) {

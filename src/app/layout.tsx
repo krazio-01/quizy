@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import "./globals.scss";
 import Header from "@/components/layout/header/Header";
 import { Toaster } from "sonner";
 import Footer from "@/components/layout/footer/Footer";
 import NextAuthProvider from "@/providers/SessionProvider";
+import Script from "next/script";
+import "./globals.scss";
 
 export const metadata: Metadata = {
     title: "League Of Logic",
@@ -30,6 +31,11 @@ export default function RootLayout({
                     />
                     <Footer />
                 </NextAuthProvider>
+
+                <Script
+                    src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
+                    strategy="lazyOnload"
+                />
             </body>
         </html>
     );

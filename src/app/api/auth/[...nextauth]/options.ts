@@ -1,9 +1,18 @@
-import { Account, Profile, Session, User, DefaultSession, DefaultUser, AuthOptions, SessionStrategy } from 'next-auth';
+import { Account, Profile, Session, DefaultSession, DefaultUser, AuthOptions, SessionStrategy } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import bcrypt from 'bcrypt';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import connectToDB from '../../../../utils/dbConnect';
 import UserModel from '../../../../models/UserModel';
+
+async function verifyCaptcha(token: string) {
+    const res = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`,
+    });
+    return await res.json();
+}
 
 declare module 'next-auth' {
     interface Session {
@@ -31,21 +40,32 @@ export const authOptions: AuthOptions = {
             credentials: {
                 identifier: { label: 'Email', type: 'email' },
                 password: { label: 'Password', type: 'password' },
+                captcha: { label: 'Captcha', type: 'text' },
             },
             async authorize(credentials) {
-                if (!credentials?.identifier || !credentials?.password) {
+                if (!credentials?.identifier || !credentials?.password || !credentials?.captcha) {
                     throw new Error(
                         JSON.stringify({
-                            field: !credentials.identifier ? 'email' : 'password',
+                            field: !credentials.identifier ? 'email' : !credentials.password ? 'password' : 'captcha',
                             message: 'Please fill all fields',
+                        })
+                    );
+                }
+
+                const captchaRes = await verifyCaptcha(credentials.captcha);
+                console.log('md-captchaRes: ', captchaRes);
+                if (!captchaRes.success || captchaRes.score < 0.5) {
+                    throw new Error(
+                        JSON.stringify({
+                            field: 'captcha',
+                            message: 'Captcha verification failed',
                         })
                     );
                 }
 
                 await connectToDB();
 
-                const userDoc = await UserModel.findOne({ email: credentials?.identifier });
-
+                const userDoc = await UserModel.findOne({ email: credentials.identifier });
                 if (!userDoc) {
                     throw new Error(
                         JSON.stringify({
@@ -100,20 +120,16 @@ export const authOptions: AuthOptions = {
         }),
     ],
     callbacks: {
-        async signIn({ account, profile }: { account: Account | null; profile?: Profile | undefined }) {
-            if (account?.provider === 'credentials') {
-                return true;
-            }
-
+        async signIn({ account }: { account: Account | null; profile?: Profile }) {
+            if (account?.provider === 'credentials') return true;
             return false;
         },
-        async jwt({ token, user }: { token: JWT; user?: User }) {
+        async jwt({ token, user }: { token: JWT; user?: any }) {
             if (user) token._id = user._id?.toString();
             return token;
         },
         async session({ session, token }: { session: Session; token: JWT }) {
             await connectToDB();
-
             if (token) {
                 const sessionUser = await UserModel.findById(token._id).lean();
                 if (sessionUser) {
