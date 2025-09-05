@@ -97,6 +97,7 @@ const Page = () => {
             });
 
             toast.success('Your account is verified!');
+            localStorage.removeItem('app-storage');
             nextStep();
         } catch (error: any) {
             setFieldErrors({ otp: error.response?.data?.message || 'Invalid OTP' });
@@ -127,6 +128,7 @@ const Page = () => {
 
             const response = await axios.post('/api/user/updateUser', { email, ...schoolDetails });
             toast.success('Profile updated successfully!');
+            localStorage.removeItem('app-storage');
 
             if (response.status === 200) await handlePayment();
         } catch (error: any) {

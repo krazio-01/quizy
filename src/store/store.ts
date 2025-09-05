@@ -50,7 +50,11 @@ const useAppStore = create<AppStates>()(
         }),
         {
             name: 'app-storage',
-            partialize: (state) => ({ selectedGrade: state.selectedGrade }),
+            partialize: (state) => ({
+                selectedGrade: state.selectedGrade,
+                step: state.step,
+                isRegisteredUser: state.isRegisteredUser,
+            }),
         }
     )
 );
