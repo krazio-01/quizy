@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
             .replace(/{{otp}}/g, user.otp);
 
         // send verification mail to the user
-        subject = 'Account Verification';
+        subject = 'Verify Your Email Address with League of Logic';
         html = verificationContent;
         await sendEmail(to, subject, null, html);
 

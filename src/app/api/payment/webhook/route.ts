@@ -110,59 +110,55 @@ async function updatePaymentStatus({ orderId, status, transactionId }: UpdatePay
 }
 
 function getPaymentTemplateData(status: string, payment: any, user: any, transactionId: string | null) {
-    let statusClass = 'unknown';
     let statusText = 'Unknown Status';
     let message = 'We were unable to determine your payment status.';
-    let containerColor = '#ffd382';
-    const containerStyle = `style="background-color: ${containerColor}`;
+    let extraNote = '';
+
+    const [value, currency] = payment?.amount.split(' ');
 
     switch (status?.toUpperCase()) {
         case 'SUCCESS':
         case 'SENT_FOR_CAPTURE':
-            statusClass = 'success';
-            statusText = 'Payment Successful';
-            message = `Your payment of ₹${parseFloat(payment.amount).toFixed(2)} has been processed successfully.`;
-            containerColor = '#28a745';
-            break;
-
-        case 'ABANDONED':
-            statusClass = 'failed';
-            statusText = 'Payment Failed';
-            message = 'Unfortunately, your payment could not be processed. Please try again.';
-            containerColor = '#dc3545';
-            break;
-
-        case 'SYSTEM_ERROR':
-            statusClass = 'error';
-            statusText = 'Payment Error';
-            message = 'An unexpected error occurred while processing your payment.';
-            containerColor = '#ffc107';
+            statusText = 'Payment Confirmation';
+            message = `We are pleased to inform you that your payment of ${currency}${parseFloat(value).toFixed(
+                2
+            )} has been successfully processed.`;
+            extraNote =
+                'You can now log in with your credentials to download your invoice, practice papers, test guidelines, and more from your dashboard.';
             break;
 
         case 'CUSTOMER_CANCELLED':
-            statusClass = 'cancelled';
-            statusText = 'Payment Cancelled';
-            message = 'You have cancelled the payment. No amount has been deducted.';
-            containerColor = '#6c757d';
+            statusText = 'Payment Cancellation Notification';
+            message = 'Your payment has been successfully cancelled, and no amount has been deducted.';
+            extraNote =
+                'Thank you for choosing us. If you wish to proceed with your payment again, you can easily do so by logging into your account and completing the transaction directly from your USER Dashboard using your login credentials.';
             break;
 
-        default:
-            statusClass = 'unknown';
-            statusText = 'Unknown Status';
-            message = 'We were unable to verify your payment status. Please contact support.';
-            containerColor = '#17a2b8';
+        case 'ABANDONED':
+        case 'FAILED':
+            statusText = 'Payment Unsuccessful - Action Required';
+            message = `We regret to inform you that your recent payment attempt of ${currency}${parseFloat(
+                value
+            ).toFixed(2)} was unsuccessful.`;
+            extraNote =
+                'Unfortunately, the payment did not go through, and no amount has been deducted from your account. Please log in and try again.';
+            break;
+
+        case 'SYSTEM_ERROR':
+            statusText = 'Payment Unsuccessful - Action Required';
+            message = 'An unexpected error occurred while processing your payment.';
+            extraNote = 'Please try again later or contact our support team if the issue persists.';
             break;
     }
 
     return {
-        statusClass,
         statusText,
         message,
-        containerStyle,
+        extraNote,
         name: `${user.firstName} ${user.lastName}`,
         orderId: payment.orderId,
         transactionId: transactionId ?? payment.transactionId,
-        amount: `₹${parseFloat(payment.amount).toFixed(2)}`,
+        amount: `${currency}${parseFloat(value).toFixed(2)}`,
         createdAt: new Date(payment.createdAt).toLocaleString('en-IN', {
             dateStyle: 'medium',
             timeStyle: 'short',

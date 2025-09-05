@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
         const resetToken = uuidv4();
 
         user.forgotPasswordToken = resetToken;
-        user.forgotPasswordTokenExpiry = Date.now() + 3600000;
+        user.forgotPasswordTokenExpiry = Date.now() + 1800000; // 30 minutes in milliseconds (1800000 ms = 30 minutes)
 
         await user.save({ validateBeforeSave: false });
 
@@ -36,11 +36,12 @@ export async function POST(request: NextRequest) {
         const passwordResetTemplate = fs.readFileSync(templatePath, 'utf8');
 
         const passwordResetContent = passwordResetTemplate
+            .replace(/{{name}}/g, user.firstName + ' ' + user.lastName)
             .replace(/{{FRONTEND_URL}}/g, process.env.FRONTEND_URL)
             .replace(/{{forgotPasswordToken}}/g, resetToken);
 
         // send verification mail to the user
-        subject = 'Change password for League of Logic';
+        subject = 'Password Reset Request';
         html = passwordResetContent;
         await sendEmail(to, subject, null, html);
 

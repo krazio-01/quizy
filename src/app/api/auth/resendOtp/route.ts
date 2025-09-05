@@ -30,13 +30,13 @@ export async function POST(request: NextRequest) {
         await user.save();
 
         // Send email
-        const templatePath = path.resolve(process.cwd(), 'src/templates/verificationTemplate.html');
+        const templatePath = path.resolve(process.cwd(), 'src/templates/resendOtp.html');
         const verifyTemplate = fs.readFileSync(templatePath, 'utf8');
         const verificationContent = verifyTemplate
             .replace(/{{name}}/g, `${user.firstName} ${user.lastName}`)
             .replace(/{{otp}}/g, otp);
 
-        await sendEmail(user.email, 'Resend OTP - Account Verification', null, verificationContent);
+        await sendEmail(user.email, 'Your Requested OTP for Email Verification', null, verificationContent);
 
         return NextResponse.json({ message: 'OTP resent successfully' }, { status: 200 });
     } catch (error: any) {

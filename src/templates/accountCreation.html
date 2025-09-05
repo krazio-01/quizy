@@ -6,46 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Welcome to League Of Logic</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            color: #fff;
-        }
-
         body {
             font-family: Roboto, sans-serif;
-            padding: 1rem;
-            font-size: 17px;
+            font-size: 16px;
             background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
         }
 
         .container {
             max-width: 700px;
             margin: auto;
-            padding: 1.5rem;
-            background-color: #ffd382;
-            border-radius: 7px;
+            background-color: #ffffff;
+            border-radius: 6px;
+            overflow: hidden;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            text-align: left;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
+        .header img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .content {
+            padding: 30px;
+            color: #333;
+            line-height: 1.6;
         }
 
         .content p {
-            margin: 0.7rem 0;
-            font-size: 16px;
-            line-height: 1.5;
+            margin: 1rem 0;
         }
 
         .list {
-            background-color: #fff;
-            color: #000;
-            padding: 1rem;
-            border-radius: 10px;
             margin: 1.5rem 0;
         }
 
@@ -56,88 +50,96 @@
 
         .list li {
             margin: 0.5rem 0;
+            list-style: none;
         }
 
-        .footer p {
-            margin-top: 0.5rem;
+        .footer {
+            padding: 0 30px 20px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .bottom-bar {
+            height: 5px;
+            background-color: #b00000;
         }
     </style>
 </head>
 
 <body>
-    <table role="presentation" cellspacing="0" cellpadding="0" width="100%">
-        <tr>
-            <td>
-                <table role="presentation" cellspacing="0" cellpadding="0" width="700" class="container">
-                    <tr>
-                        <td class="header">
-                            <h2 style="color: #fff">Welcome to League Of Logic</h2>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="content" style="color: #fff">
-                            <p>Dear {{name}},</p>
+    <div class="container">
+        <div class="header">
+            <img src="https://res.cloudinary.com/drr4efjzn/image/upload/v1757054616/Registration_Mail_vzm4ig.png"
+                alt="League of Logic" />
+        </div>
 
-                            <p>
-                                Congratulations on taking the first step towards an exciting journey of intellectual
-                                growth, camaraderie, and thrilling rewards! We are thrilled to welcome you to the League
-                                of Logic, where pursuing knowledge meets the thrill of competition.
-                            </p>
+        <div class="content">
+            <p>Dear {{name}},</p>
 
-                            <p>
-                                Get ready to engage in thought-provoking competitions, meet fellow enthusiasts, and
-                                embark on an enriching experience that will broaden your child's horizons.
-                            </p>
+            <p>
+                Congratulations on taking the first step towards an exciting journey of intellectual growth,
+                camaraderie, and thrilling rewards! We are thrilled to welcome you to the League of Logic, where
+                pursuing knowledge meets the thrill of competition.
+            </p>
 
-                            <div class="list">
-                                <p><strong>Here's a glimpse of what awaits you at the League of Logic:</strong></p>
-                                <ul>
-                                    <li><strong>Intellectual Growth:</strong> Sharpen your critical thinking,
-                                        problem-solving, and analytical skills through our thoughtfully designed
-                                        competitions.</li>
-                                    <li><strong>Camaraderie:</strong> Forge lifelong friendships with participants from
-                                        diverse backgrounds who share your passion for logical reasoning.</li>
-                                    <li><strong>Exciting Rewards:</strong> Stay motivated as you compete for incredible
-                                        prizes and recognition.</li>
-                                </ul>
-                            </div>
+            <div class="list">
+                <ul>
+                    <li>
+                        <strong>Engaging Competitions:</strong> Sharpen your critical thinking and problem-solving
+                        skills with our expertly crafted challenges.
+                    </li>
+                    <li>
+                        <strong>Fantastic Rewards:</strong> AED 500 Amazon vouchers for all class toppers! Get
+                        access to a 2-week robotic camp worth AED 1300 for top performers for free!.
+                    </li>
+                    <li>
+                        <strong>Personalized Insights:</strong> Receive a fully personalized thinking report that
+                        offers insights into your cognitive processes.
+                    </li>
+                    <li>
+                        <strong>Exclusive Masterclass:</strong> Top your class and enjoy a free mentoring session by
+                        GenWise.
+                    </li>
+                    <li>
+                        <strong>National Recognition:</strong> Celebrate your achievements on our social media and
+                        newsletters.
+                    </li>
+                    <li>
+                        <strong>Special Opportunities:</strong> Score above the 85th percentile for discounted entry
+                        into Ei ATS - a prestigious stage for global young minds. Unlock leadership tracks and
+                        advanced academic challenges.
+                    </li>
+                    <li>
+                        <strong>How to Begin:</strong><br />
+                        Use your email ID and password to access your dashboard. Download invoices and extra
+                        practice papers easily.
+                    </li>
+                    <li>
+                        <strong>Stay Connected:</strong><br />
+                        Keep an eye on your inbox for updates and competition announcements. Add our email
+                        <a href="mailto:competition@ei.study">competition@ei.study</a> to your contacts to ensure
+                        you receive everything.
+                    </li>
+                    <li>
+                        <strong>Need Assistance?</strong><br />
+                        Our support team is ready to help with any questions at the same email address.
+                    </li>
+                </ul>
+            </div>
 
-                            <p>
-                                But that's not all! We have an array of exciting events and challenges lined up for you,
-                                designed to cater to all levels of expertise. Whether you're a seasoned logician or just
-                                starting your journey, there's something here for everyone.
-                            </p>
+            <p>
+                Welcome aboard the League of Logic! We're thrilled to have you and excited to witness your journey
+                in logic and reasoning.
+            </p>
+        </div>
 
-                            <p>
-                                Keep an eye on your inbox; we'll send you regular updates, competition announcements,
-                                and exclusive content to keep you engaged and informed. To ensure you receive all our
-                                communications, please add our email address
-                                <strong>(competition@ei.study)</strong> to your contact list and mark this email as
-                                important.
-                            </p>
+        <div class="footer">
+            <p>Best regards,</p>
+            <p>League Of Logic Team</p>
+        </div>
 
-                            <p>
-                                If you have any questions, doubts, or need assistance with anything related to the
-                                competition, our dedicated support team is here to help. Reach out to us at the same
-                                email ID stated above, and we'll gladly assist you.
-                            </p>
-
-                            <p>
-                                Once again, welcome to the League of Logic! We're excited to have you on board and look
-                                forward to witnessing your growth and achievements in logic and reasoning.
-                            </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="footer" style="color: #fff">
-                            <p>Best regards,</p>
-                            <p>League Of Logic Team</p>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+        <div class="bottom-bar"></div>
+    </div>
 </body>
 
 </html>
