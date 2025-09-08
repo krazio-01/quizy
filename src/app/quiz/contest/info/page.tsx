@@ -64,13 +64,13 @@ const Page = () => {
             <section className="info-section">
                 <h3>Important Information</h3>
                 <p>
-                    <strong>Test Date -</strong>
+                    <strong>Test Date - October 25th and 26th, 2025.</strong>
                 </p>
                 <p>
-                    <strong>Time -</strong>
+                    <strong>Time - 9AM to 8PM GST</strong>
                 </p>
                 <p>
-                    <strong>System Requirements -</strong>
+                    <strong>System Requirements - laptop, desktop with a working webcam and internet connectivity</strong>
                 </p>
             </section>
 

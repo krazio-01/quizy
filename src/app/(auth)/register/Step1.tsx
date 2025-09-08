@@ -214,7 +214,7 @@ const Step1 = ({ onNext, loading, fieldErrors, clearFieldError, initialData, edi
                     <label htmlFor="terms">
                         I acknowledge and accept{' '}
                         <Link className="tAndc" href="terms-and-conditions">
-                            all terms and conditions
+                            all Terms and conditions
                         </Link>
                     </label>
                 </p>

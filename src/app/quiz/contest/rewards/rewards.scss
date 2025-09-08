@@ -25,8 +25,8 @@
         h1 {
             position: relative;
             margin-inline: auto;
-            padding-top: clamp(1rem, 11vw, 10rem);
-            font-size: clamp(var(--fz-lg), 8vw, var(--fz-2xl));
+            padding-top: clamp(1rem, 12vw, 15rem);
+            font-size: clamp(var(--fz-lg), 10vw, 5.5rem);
             color: #ab2024;
             max-width: 40%;
             z-index: 10;
