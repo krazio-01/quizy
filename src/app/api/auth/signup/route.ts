@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
         if (!validateEmail(email)) return NextResponse.json({ message: 'Invalid email format' }, { status: 400 });
 
         const passwordRegex = /^(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{8,}$/;
-        if (!passwordRegex.test(password)) {
+        if (!passwordRegex.test(password) && !userId) {
             return NextResponse.json(
                 {
                     message: 'Password must be 8+ chars, with at least 1 uppercase letter and 1 special character.',
