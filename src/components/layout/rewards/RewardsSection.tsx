@@ -36,7 +36,7 @@ const RewardsSection = ({ title, showLink = false, secondRewardTitle = '', secon
                                 {secondRewardTitle !== '' ? (
                                     <h3>{secondRewardTitle}</h3>
                                 ) : (
-                                    <h3>2 Weeks Robotic Camps worth AED 1300 in for all Class Toppers!</h3>
+                                    <h3>Free 2 Weeks Robotic Camps worth AED 1300 in for all Class Toppers!</h3>
                                 )}
                                 {secondRewardContent !== '' ? (
                                     <p className="subtext">{secondRewardContent}</p>

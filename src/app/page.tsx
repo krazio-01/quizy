@@ -51,6 +51,16 @@ const AboutIeCard = [
     },
 ];
 
+const bottomImagesUniversities = [
+    { src: '/images/hp-bottom-carousel1.png', alt: 'University 1' },
+    { src: '/images/hp-bottom-carousel2.png', alt: 'University 2' },
+    { src: '/images/hp-bottom-carousel3.png', alt: 'University 3' },
+    { src: '/images/hp-bottom-carousel4.png', alt: 'University 4' },
+    { src: '/images/hp-bottom-carousel5.png', alt: 'University 5' },
+    { src: '/images/hp-bottom-carousel6.png', alt: 'University 6' },
+    { src: '/images/hp-bottom-carousel7.png', alt: 'University 7' },
+]
+
 const HomePage = () => {
     return (
         <main className="home">
@@ -79,7 +89,7 @@ const HomePage = () => {
                 <div>120+ <br /> countries</div>
                 <div>Recognition, rewards <br /> and certificates</div>
                 <div>Sharpen logic and <br /> problem-solving</div>
-                <div>Test date: <br /> 24th - 25th Oct 25</div>
+                <div>Test date: <br /> 25th - 26th Oct 25</div>
             </section>
 
             <section className="potential">
@@ -245,7 +255,9 @@ const HomePage = () => {
             <section className="acknowledgement">
                 <h3>Our programs are reviewed / acknowledged by</h3>
                 <div className="sponsors">
-                    <Image width={500} height={100} src="/images/home/sponsor.png" alt="Logo 1" />
+                    {bottomImagesUniversities?.map((img, idx) => (
+                        <Image key={idx} width={130} height={100} src={img.src} alt={img.alt} />
+                    ))}
                 </div>
             </section>
         </main>

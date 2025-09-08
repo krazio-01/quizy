@@ -159,8 +159,9 @@ const Step1 = ({ onNext, loading, fieldErrors, clearFieldError, initialData, edi
 
                 <div className="form-group">
                     <label htmlFor="password">Password*</label>
-                    <p>Minimum 8 characters required</p>
+                    <p>Minimum 8 characters</p>
                     <p>Atleast 1 special character</p>
+                    <p>Atleast 1 uppercase letter</p>
                     <input
                         type="password"
                         id="password"

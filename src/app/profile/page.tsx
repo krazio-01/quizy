@@ -141,27 +141,27 @@ const ProfilePage = () => {
         };
 
         const fields = [
-            { text: generateInvoiceNumber(), x: 180, y: height - 160 },
-            { text: invoiceDate, x: 180, y: height - 175 },
+            { text: generateInvoiceNumber(), x: 180, y: height - 161 },
+            { text: invoiceDate, x: 180, y: height - 172 },
             { text: user?.country, x: 450, y: height - 160 },
-            { text: `${user?.firstName} ${user?.lastName}`, x: 50, y: height - 215 },
-            { text: `${user?.firstName} ${user?.lastName}`, x: 310, y: height - 215 },
-            { text: user?.email, x: 310, y: height - 233 },
-            { text: user?.email, x: 50, y: height - 233 },
-            { text: user?.city, x: 50, y: height - 250 },
-            { text: user?.city, x: 310, y: height - 250 },
+            { text: `${user?.firstName} ${user?.lastName}`, x: 47, y: height - 215 },
+            { text: `${user?.firstName} ${user?.lastName}`, x: 312, y: height - 215 },
+            { text: user?.email, x: 312, y: height - 233 },
+            { text: user?.email, x: 47, y: height - 233 },
+            { text: user?.city, x: 47, y: height - 250 },
+            { text: user?.city, x: 312, y: height - 250 },
             { text: user?.phone, x: 77, y: height - 280 },
             { text: user?.phone, x: 350, y: height - 272 },
             { text: user?.school, x: 107, y: height - 290 },
             { text: user?.school, x: 370, y: height - 282 },
-            { text: paymentInfoDB?.billing?.description, x: 100, y: height - 330 },
-            { text: paymentInfoDB?.billing?.qty, x: 300, y: height - 330 },
+            { text: paymentInfoDB?.billing?.description, x: 75, y: height - 330 },
+            { text: paymentInfoDB?.billing?.qty, x: 290, y: height - 330 },
             { text: paymentInfoPayglocal?.data?.Currency, x: 350, y: height - 316 },
             { text: paymentInfoPayglocal?.data?.Currency, x: 485, y: height - 373 },
-            { text: paidAmount, x: 333, y: height - 330 },
-            { text: paidAmount, x: 530, y: height - 330 },
-            { text: paidAmount, x: 538, y: height - 350 },
-            { text: paidAmount, x: 538, y: height - 373 },
+            { text: paidAmount, x: 324, y: height - 330 },
+            { text: paidAmount, x: 508, y: height - 330 },
+            { text: paidAmount, x: 538, y: height - 346 },
+            { text: paidAmount, x: 538, y: height - 372 },
             { text: paidAmountInWords, x: 48, y: height - 382 },
             { text: paymentInfoDB?.billing?.transactionId, x: 48, y: height - 405 },
         ];
@@ -369,6 +369,15 @@ const ProfilePage = () => {
                                 {user?.grade
                                     ? user?.grade.charAt(0).toUpperCase() + user.grade.slice(1).replace(/(\d+)/, ' $1')
                                     : ''}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="field">
+                        <div>
+                            <span className="label">School</span>
+                            <span className="value">
+                                {user?.school}
                             </span>
                         </div>
                     </div>

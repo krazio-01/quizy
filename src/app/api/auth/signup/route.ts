@@ -40,19 +40,19 @@ export async function POST(request: NextRequest) {
         const ageInMs = now.getTime() - parsedDob.getTime();
         const ageInYears = ageInMs / (1000 * 60 * 60 * 24 * 365.25);
 
-        if (ageInYears <= 8 || ageInYears >= 18)
-            return NextResponse.json({ message: 'Age must be between 8 and 18 years' }, { status: 400 });
+        if (ageInYears <= 8 || ageInYears >= 16)
+            return NextResponse.json({ message: 'Age must be between 8 and 16 years' }, { status: 400 });
 
         if ((password !== confirmPassword) && !userId)
             return NextResponse.json({ message: 'Passwords do not match' }, { status: 400 });
 
         if (!validateEmail(email)) return NextResponse.json({ message: 'Invalid email format' }, { status: 400 });
 
-        const passwordRegex = /^(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        const passwordRegex = /^(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{8,}$/;
         if (!passwordRegex.test(password)) {
             return NextResponse.json(
                 {
-                    message: 'Password must be at least 8 characters long and include at least one special character',
+                    message: 'Password must be 8+ chars, with at least 1 uppercase letter and 1 special character.',
                 },
                 { status: 400 }
             );

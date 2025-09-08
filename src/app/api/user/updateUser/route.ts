@@ -4,15 +4,14 @@ import User from '@/models/UserModel';
 import { calculateAge } from '@/utils/helperFn';
 
 const gradeAgeLimits: Record<string, [number, number]> = {
-    grade3: [8, 10],
-    grade4: [8, 10],
-    grade5: [10, 12],
-    grade6: [10, 12],
-    grade7: [12, 14],
-    grade8: [12, 14],
-    grade9: [14, 16],
-    grade10: [14, 16],
-    grade11: [16, 18],
+    grade3: [8, 9],
+    grade4: [9, 10],
+    grade5: [10, 11],
+    grade6: [11, 12],
+    grade7: [12, 13],
+    grade8: [13, 14],
+    grade9: [14, 15],
+    grade10: [15, 16],
 };
 
 function yearToGrade(year: number): string | null {

@@ -35,7 +35,7 @@ const faqs = [
     },
     {
         question: 'Q - When is the exam date for the League of Logic competition?',
-        answer: 'The exam is scheduled for October 24th and 25th, 2025.',
+        answer: 'The exam is scheduled for October 25th and 26th, 2025.',
     },
     {
         question: 'Q - What is the registration fee, and how does it work for different countries?',
