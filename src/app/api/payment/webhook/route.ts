@@ -159,9 +159,8 @@ function getPaymentTemplateData(status: string, payment: any, user: any, transac
         orderId: payment.orderId,
         transactionId: transactionId ?? payment.transactionId,
         amount: `${currency}${parseFloat(value).toFixed(2)}`,
-        createdAt: new Date(payment.createdAt).toLocaleString('en-IN', {
+        createdAt: new Date(payment.createdAt).toLocaleDateString('en-IN', {
             dateStyle: 'medium',
-            timeStyle: 'short',
         }),
     };
 }
