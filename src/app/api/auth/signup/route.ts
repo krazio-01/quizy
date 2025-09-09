@@ -44,10 +44,22 @@ export async function POST(request: NextRequest) {
         if (parsedDob >= now)
             return NextResponse.json({ message: 'Date of birth must be in the past' }, { status: 400 });
 
-        const ageInMs = now.getTime() - parsedDob.getTime();
-        const ageInYears = ageInMs / (1000 * 60 * 60 * 24 * 365.25);
+        function isAgeBetween(dob: Date, min: number, max: number, today: Date = new Date()): boolean {
+            let age = today.getUTCFullYear() - dob.getUTCFullYear();
+            const m = today.getUTCMonth() - dob.getUTCMonth();
+            const d = today.getUTCDate() - dob.getUTCDate();
 
-        if (ageInYears <= 8 || ageInYears >= 16)
+            if (m < 0 || (m === 0 && d < 0)) age--;
+
+            if (age < min) return false;
+            if (age > max) return false;
+
+            if (age === max && (m > 0 || (m === 0 && d > 0))) return false;
+
+            return true;
+        }
+
+        if (!isAgeBetween(parsedDob, 8, 16, now))
             return NextResponse.json({ message: 'Age must be between 8 and 16 years' }, { status: 400 });
 
         if ((password !== confirmPassword) && !userId)
