@@ -74,13 +74,31 @@ const Page = () => {
                 toast.error('Please fill in all the required fields.');
                 return;
             }
+
+            const badPatterns = [/script/i, /onerror/i, /<\s*iframe/i, /javascript:/i];
+
+            const isMalicious = (str: string) => badPatterns.some(rx => rx.test(str));
+
+            if (isMalicious(firstName) || isMalicious(lastName) || isMalicious(message)) {
+                toast.error("Invalid input detected.");
+                return;
+            }
+
             setLoading(true);
+
+            const escapeHtml = (unsafe: string) =>
+                unsafe
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
 
             const payload = {
                 access_key: process.env.NEXT_PUBLIC_WEB3FORMS_PUBLIC_KEY,
-                name: `${firstName} ${lastName}`,
-                email: email,
-                message: message,
+                name: `${escapeHtml(firstName)} ${escapeHtml(lastName)}`,
+                email: escapeHtml(email),
+                message: escapeHtml(message),
             };
 
             try {
@@ -155,6 +173,14 @@ const Page = () => {
                 </div>
 
                 <form onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        name="company"
+                        style={{ display: "none" }}
+                        tabIndex={-1}
+                        autoComplete="off"
+                        onChange={handleChange}
+                    />
                     <div className="name-fields">
                         {renderInput('firstName', 'text', 'First Name*')}
                         {renderInput('lastName', 'text', 'Last Name*')}
