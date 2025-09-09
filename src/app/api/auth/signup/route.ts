@@ -31,15 +31,23 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        function parseLocalDate(dob: string) {
-            const [year, month, day] = dob.split('-').map(Number);
-            return new Date(Date.UTC(year, month - 1, day));
+        function parseLocalDate(dob: string): Date | null {
+            if (!dob) return null;
+
+            const datePart = dob.slice(0, 10);
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(datePart)) return null;
+
+            const [year, month, day] = datePart.split('-').map(Number);
+            const parsed = new Date(Date.UTC(year, month - 1, day));
+            return isNaN(parsed.getTime()) ? null : parsed;
         }
 
         const parsedDob = parseLocalDate(dob);
         parsedDob.setUTCHours(0, 0, 0, 0);
         const now = new Date();
         now.setUTCHours(0, 0, 0, 0);
+
+        if (!parsedDob) return NextResponse.json({ message: 'Invalid date format. Use YYYY-MM-DD.' }, { status: 400 });
 
         if (parsedDob >= now)
             return NextResponse.json({ message: 'Date of birth must be in the past' }, { status: 400 });
@@ -62,7 +70,7 @@ export async function POST(request: NextRequest) {
         if (!isAgeBetween(parsedDob, 8, 16, now))
             return NextResponse.json({ message: 'Age must be between 8 and 16 years' }, { status: 400 });
 
-        if ((password !== confirmPassword) && !userId)
+        if (password !== confirmPassword && !userId)
             return NextResponse.json({ message: 'Passwords do not match' }, { status: 400 });
 
         if (!validateEmail(email)) return NextResponse.json({ message: 'Invalid email format' }, { status: 400 });

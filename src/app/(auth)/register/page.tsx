@@ -74,6 +74,7 @@ const Page = () => {
                 if (message.includes('Password must be')) newErrors['password'] = message;
                 if (message.includes('already registered')) newErrors['email'] = message;
                 if (message.includes('Date of birth must be in the past')) newErrors['dob'] = message;
+                if (message.includes('Invalid date format')) newErrors['dob'] = message;
                 if (message.includes('Age must be between')) newErrors['dob'] = message;
                 if (message.includes('Invalid phone number')) newErrors['phone'] = message;
             }
