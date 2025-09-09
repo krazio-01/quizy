@@ -31,8 +31,15 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const parsedDob = new Date(dob);
+        function parseLocalDate(dob: string) {
+            const [year, month, day] = dob.split('-').map(Number);
+            return new Date(Date.UTC(year, month - 1, day));
+        }
+
+        const parsedDob = parseLocalDate(dob);
+        parsedDob.setUTCHours(0, 0, 0, 0);
         const now = new Date();
+        now.setUTCHours(0, 0, 0, 0);
 
         if (parsedDob >= now)
             return NextResponse.json({ message: 'Date of birth must be in the past' }, { status: 400 });
@@ -94,7 +101,7 @@ export async function POST(request: NextRequest) {
             newUser = new User({
                 firstName,
                 lastName,
-                dob,
+                dob: parsedDob,
                 email,
                 password: hashedPassword,
                 phone,
