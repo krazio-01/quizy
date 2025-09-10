@@ -289,12 +289,14 @@
             margin-top: 30px;
 
             .next-btn {
+                display: flex;
+                align-items: center;
                 color: white;
                 padding: 12px 48px;
                 font-size: 16px;
                 outline: none;
                 border-radius: 12px;
-                border: 2px solid #630003;
+                border: none;
                 background: var(--Primary, #ab2024);
                 box-shadow: 0 4px 49px 0 rgba(0, 0, 0, 0.16);
                 cursor: pointer;
@@ -308,7 +310,7 @@
                 &:disabled {
                     background-color: #ccc;
                     cursor: not-allowed;
-                    border: none;
+                    transform: none;
                 }
             }
         }
@@ -389,11 +391,15 @@
             font-size: var(--fz-sm);
 
             .resend {
+                display: flex;
+                align-items: center;
+                gap: 5px;
                 outline: none;
                 border: none;
                 background: transparent;
                 width: fit-content;
                 margin-bottom: 1.5rem;
+                color: #ab2024;
                 cursor: pointer;
 
                 &:hover {
@@ -401,6 +407,7 @@
                 }
 
                 &:disabled {
+                    color: black;
                     cursor: not-allowed;
                     text-decoration: none;
                 }
@@ -411,7 +418,7 @@
                 width: fit-content;
                 background-color: #b0181e;
                 border: none;
-                padding: 10px 20px;
+                padding: 8px 17px;
                 color: white;
                 font-weight: 600;
                 border-radius: 8px;
@@ -500,6 +507,8 @@
                 font-size: var(--fz-sm);
 
                 a {
+                    color: #ab2024;
+                    font-weight: 500;
                     text-decoration: none;
 
                     &:hover {
@@ -539,7 +548,7 @@
                 font-size: var(--fz-sm);
 
                 a {
-                    color: #000;
+                    color: #ab2024;
                     font-weight: 500;
                     text-decoration: none;
 
@@ -655,7 +664,7 @@
                 font-size: var(--fz-md);
                 cursor: pointer;
                 border-radius: 12px;
-                border: 2px solid #630003;
+                border: none;
                 background-color: #ab2024;
                 box-shadow: 0 4px 49px 0 rgba(0, 0, 0, 0.16);
                 transition: background-color 0.3s;
@@ -668,7 +677,7 @@
                     background-color: #e5e7eb;
                     color: #999;
                     cursor: not-allowed;
-                    border: 2px solid #e5e7eb;
+                    transform: none;
                 }
             }
         }

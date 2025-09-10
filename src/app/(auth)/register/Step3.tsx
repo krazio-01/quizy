@@ -5,6 +5,7 @@ import { FiRotateCcw } from 'react-icons/fi';
 import ccs from 'countrycitystatejson';
 import { Boards, countryCities } from './boardsAndCountry';
 import schoolList from './schoolList_ISO.json';
+import { BeatLoader } from 'react-spinners';
 
 interface School {
     id: string;
@@ -329,7 +330,8 @@ const Step3 = ({
                     onClick={handleSubmit}
                     disabled={!isValid || loadingSchools || loading}
                 >
-                    {loading ? 'Submitting...' : 'Continue to Payment!'}
+                    <BeatLoader size={12} loading={loading} />
+                    {!loading && 'Continue to Payment!'}
                 </button>
             </div>
         </form>

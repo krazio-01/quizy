@@ -3,6 +3,7 @@ import React, { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import axios from '@/utils/axios';
 import { toast } from 'sonner';
+import { BeatLoader } from 'react-spinners';
 import '../../auth.scss';
 
 const ResetPasswordPage = () => {
@@ -56,7 +57,8 @@ const ResetPasswordPage = () => {
                         required
                     />
                     <button type="submit" disabled={loading}>
-                        {loading ? 'Reseting...' : 'Reset'}
+                        <BeatLoader size={10} loading={loading} />
+                        {!loading && 'Reset'}
                     </button>
                 </form>
             </div>

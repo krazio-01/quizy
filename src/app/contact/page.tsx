@@ -2,6 +2,7 @@
 import React, { useState, useCallback } from 'react';
 import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope } from 'react-icons/fa';
 import { toast } from 'sonner';
+import { BeatLoader } from 'react-spinners';
 import './contact.scss';
 
 const contactData = [
@@ -195,7 +196,8 @@ const Page = () => {
                         aria-label="Message"
                     />
                     <button type="submit" className="primary-btn" disabled={loading}>
-                        {loading ? 'Sending...' : 'Send Message'}
+                        <BeatLoader size={10} loading={loading} />
+                        {!loading && 'Send Message'}
                     </button>
                     <p className="note">* These fields are required.</p>
                 </form>

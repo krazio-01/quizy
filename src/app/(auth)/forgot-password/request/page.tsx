@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from '@/utils/axios';
 import { toast } from 'sonner';
+import { BeatLoader } from 'react-spinners';
 import '../../auth.scss';
 
 const Page = () => {
@@ -51,7 +52,8 @@ const Page = () => {
                     />
 
                     <button type="submit" disabled={loading}>
-                        {loading ? 'Sending...' : 'Send'}
+                        <BeatLoader size={10} loading={loading} />
+                        {!loading && 'Send'}
                     </button>
                 </form>
 

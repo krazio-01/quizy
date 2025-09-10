@@ -41,7 +41,7 @@ const Page = () => {
             </div>
 
             <div className='rewards-setion-score-page'>
-                <RewardsSection title='Rewards' />
+                <RewardsSection title='Rewards' showLink={true} />
             </div>
         </div>
     );

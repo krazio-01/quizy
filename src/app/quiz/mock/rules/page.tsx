@@ -26,7 +26,7 @@ const Page = () => {
             <div className="quiz-card">
                 <h2>Before You Start the Quiz</h2>
                 <div className="spacer">
-                    <p className="no-spacing">
+                    <p>
                         Take your time to carefully read and understand each question. This is a practice quiz, so
                         there&apos;s no time limit—focus on solving the problems logically and accurately.
                     </p>

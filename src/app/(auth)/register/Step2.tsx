@@ -1,6 +1,7 @@
 'use client';
 import React, { useRef, useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import { BeatLoader } from 'react-spinners';
 import '../auth.scss';
 
 export interface Step2Props {
@@ -135,17 +136,25 @@ const Step2 = ({
                 {fieldErrors.otp && <p className="error-message">{fieldErrors.otp}</p>}
             </div>
 
-            <button className="next-btn" onClick={handleVerify} disabled={loading}>
-                {loading ? 'Verifying...' : 'Verify'}
+            <button className="next-btn" onClick={handleVerify} disabled={loading || otpValues.join('').length < 6}>
+                <BeatLoader size={10} loading={loading} />
+                {!loading && 'Verify'}
             </button>
             <div className="bottom-action-wrapper">
                 <button className="resend" onClick={handleResendOtp} disabled={resendOtpLoading}>
-                    {resendOtpLoading ? 'Resending...' : 'Resend OTP'}
+                    {resendOtpLoading ? (
+                        <>
+                            Resending <BeatLoader size={8} loading={resendOtpLoading} />
+                        </>
+                    ) : (
+                        'Resend OTP'
+                    )}
                 </button>
                 <span>
                     Not sure email is correct?
                     <button className="change-email" onClick={handleChangeEmail} disabled={changeEmailLoading}>
-                        {changeEmailLoading ? 'Please wait...' : 'Change email'}
+                        <BeatLoader size={10} loading={changeEmailLoading} />
+                        {!changeEmailLoading && 'Change email'}
                     </button>
                 </span>
             </div>

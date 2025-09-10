@@ -7,6 +7,7 @@ import { FiDownload } from 'react-icons/fi';
 import { FiChevronRight } from 'react-icons/fi';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import { BeatLoader, PacmanLoader } from 'react-spinners';
 import './profile.scss';
 
 interface PaymentDetails {
@@ -259,7 +260,7 @@ const ProfilePage = () => {
         }
     };
 
-    if (loading) return <div className="profile-page loading">Loading...</div>;
+    if (loading) return <div className="profile-page loading"><PacmanLoader color='#ab2024' /></div>;
     if (!paymentInfoDB) return <div className="profile-page error">No user data available</div>;
 
     return (
@@ -328,7 +329,8 @@ const ProfilePage = () => {
                                 onClick={() => fileInputRef.current?.click()}
                                 disabled={uploading}
                             >
-                                {uploading ? 'Uploading...' : 'Change Photo'}
+                                <BeatLoader size={10} loading={uploading} />
+                                {!uploading && 'Change Photo'}
                             </button>
                         </div>
                     </div>
@@ -431,7 +433,8 @@ const ProfilePage = () => {
                                     {paymentInfoDB.billing.status !== 'success' && (
                                         <div className="pay-now-container">
                                             <button disabled={paymentLoading} onClick={handlePayment}>
-                                                Pay Now
+                                                <BeatLoader size={10} loading={paymentLoading} />
+                                                {!paymentLoading && 'Pay Now'}
                                             </button>
                                         </div>
                                     )}

@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import axios from '@/utils/axios';
 import useAppStore from '@/store/store';
 import { useSession } from 'next-auth/react';
+import { BeatLoader } from 'react-spinners';
 import './registerQuiz.scss';
 
 const grades = [
@@ -105,7 +106,8 @@ const Page = () => {
                     </div>
 
                     <button onClick={handleSubmit} className="start-btn" disabled={loading}>
-                        {loading ? 'Starting...' : 'Start Quiz'}
+                        <BeatLoader size={12} loading={loading} />
+                        {!loading && 'Start Quiz'}
                     </button>
                 </div>
             </div>

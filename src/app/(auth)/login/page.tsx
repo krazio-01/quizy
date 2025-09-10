@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { toast } from 'sonner';
 import useAppStore from '@/store/store';
+import { BeatLoader } from 'react-spinners';
 import '../auth.scss';
 
 const LoginPage = () => {
@@ -120,15 +121,16 @@ const LoginPage = () => {
                     </div>
 
                     <p className="forgot-password">
-                        <Link href="/forgot-password/request">Forgot your password? Reset it here</Link>
+                        Forgot your password? <Link href="/forgot-password/request">Reset it here</Link>
                     </p>
 
                     <button type="submit" className="login-button" disabled={loading}>
-                        {loading ? 'Logging in...' : 'Login'}
+                        <BeatLoader size={10} loading={loading} />
+                        {!loading && 'Login'}
                     </button>
 
                     <p className="signup-message">
-                        Don&apos;t have an account? <Link href="/register">{'[Sign up now]'}</Link>
+                        Don&apos;t have an account? <Link href="/register">Sign up now</Link>
                     </p>
                 </form>
             </div>

@@ -4,17 +4,23 @@
     align-items: center;
     min-height: 80svh;
     padding: 1rem;
+    background-color: #ab2024;
 
     .quiz-card {
-        padding: 2rem;
+        padding: 2.5rem;
         max-width: 80%;
         color: #3e3e3e;
         border-radius: 22px;
+        background-color: #fff;
         border: 1px solid #aaa;
         box-shadow: 0 4px 49px 0 rgba(0, 0, 0, 0.11);
 
         .spacer {
             margin-bottom: 1rem;
+
+            span {
+                color: #ab2024;
+            }
         }
 
         h2 {
@@ -32,10 +38,6 @@
             margin-bottom: 1rem;
             font-size: 0.95rem;
             line-height: 1.5;
-
-            &.no-spacing {
-                margin-bottom: 0;
-            }
         }
 
         ul {
@@ -79,7 +81,6 @@
             border-radius: 12px;
             width: fit-content;
             color: #fff;
-            border: 2px solid #630003;
             background: var(--Primary, #ab2024);
             box-shadow: 0 4px 49px 0 rgba(0, 0, 0, 0.16);
             transition: background-color 0.3s ease;

@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ConfirmDialog from '@/components/UI/ConfirmDialog/ConfirmDialog';
+import { BeatLoader } from 'react-spinners';
 import '../auth.scss';
 
 interface Step2Props {
@@ -27,15 +28,17 @@ interface Step2Props {
 const Step1 = ({ onNext, loading, fieldErrors, clearFieldError, initialData, editingEmail = false }: Step2Props) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [confirmOpen, setConfirmOpen] = useState(false);
-    const [formData, setFormData] = useState(initialData || {
-        firstName: '',
-        lastName: '',
-        dob: null,
-        email: '',
-        password: '',
-        confirmPassword: '',
-        phone: '',
-    });
+    const [formData, setFormData] = useState(
+        initialData || {
+            firstName: '',
+            lastName: '',
+            dob: null,
+            email: '',
+            password: '',
+            confirmPassword: '',
+            phone: '',
+        }
+    );
 
     useEffect(() => {
         if (initialData) setFormData(initialData);
@@ -44,8 +47,8 @@ const Step1 = ({ onNext, loading, fieldErrors, clearFieldError, initialData, edi
     useEffect(() => {
         const fetchCountryCode = async () => {
             try {
-                const res = await fetch("https://ipapi.co/json/");
-                if (!res.ok) throw new Error("Failed to fetch country code");
+                const res = await fetch('https://ipapi.co/json/');
+                if (!res.ok) throw new Error('Failed to fetch country code');
 
                 const data = await res.json();
                 if (data?.country_calling_code) {
@@ -55,7 +58,7 @@ const Step1 = ({ onNext, loading, fieldErrors, clearFieldError, initialData, edi
                     }));
                 }
             } catch (error) {
-                console.error("Error fetching country code:", error);
+                console.error('Error fetching country code:', error);
             }
         };
 
@@ -142,8 +145,8 @@ const Step1 = ({ onNext, loading, fieldErrors, clearFieldError, initialData, edi
                 <div className="form-group">
                     <label htmlFor="email">Email ID*</label>
                     <span>
-                        Please enter correct email address as this will be used for all future communications regarding the
-                        test.
+                        Please enter correct email address as this will be used for all future communications regarding
+                        the test.
                     </span>
                     <input
                         type="email"
@@ -221,7 +224,8 @@ const Step1 = ({ onNext, loading, fieldErrors, clearFieldError, initialData, edi
 
                 <div className="form-buttons">
                     <button type="button" className="next-btn" onClick={handleNext} disabled={loading}>
-                        {loading ? 'Registering...' : 'Next'}
+                        <BeatLoader size={12} loading={loading} />
+                        {!loading && 'Next'}
                     </button>
                 </div>
             </form>
