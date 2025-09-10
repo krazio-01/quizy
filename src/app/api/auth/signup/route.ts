@@ -6,6 +6,7 @@ import bcrypt from 'bcrypt';
 import fs from 'fs';
 import path from 'path';
 import { validateEmail } from '@/utils/helperFn';
+import { setCookie } from '@/utils/helperFn';
 
 export async function POST(request: NextRequest) {
     // connect to the database
@@ -37,7 +38,7 @@ export async function POST(request: NextRequest) {
             const datePart = dob.slice(0, 10);
             if (!/^\d{4}-\d{2}-\d{2}$/.test(datePart)) return null;
 
-            const [year, month, day] = datePart.split('-').map(Number);
+            const [year, month, day] = datePart?.split('-')?.map(Number);
             const parsed = new Date(Date.UTC(year, month - 1, day));
             return isNaN(parsed.getTime()) ? null : parsed;
         }
@@ -133,6 +134,8 @@ export async function POST(request: NextRequest) {
 
         const user = await newUser.save();
 
+        await setCookie('regSessionEmail', user.email, { maxAge: 60 * 30 });
+
         // Send verification email
         const to = user.email;
         let subject = null,
@@ -151,13 +154,7 @@ export async function POST(request: NextRequest) {
         html = verificationContent;
         await sendEmail(to, subject, null, html);
 
-        return NextResponse.json(
-            {
-                message: 'Registration successful',
-                user: user,
-            },
-            { status: 201 }
-        );
+        return NextResponse.json({ message: 'Registration successful' }, { status: 201 });
     } catch (error) {
         let errorMessage = 'Internal server error';
         if (error instanceof Error) {

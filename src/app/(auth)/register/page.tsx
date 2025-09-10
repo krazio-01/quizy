@@ -54,8 +54,6 @@ const Page = () => {
             });
             toast.success('Details submitted successfully.');
             setOtpSent(true);
-            localStorage.setItem('userEmail', personalData.email);
-            localStorage.setItem('phone', personalData.phone);
             nextStep();
         } catch (error: any) {
             const { message = '', fields = [] } = error.response?.data || {};
@@ -89,13 +87,8 @@ const Page = () => {
         try {
             setLoading(true);
             setFieldErrors({});
-            const { personalDetails } = formData;
-            const email = personalDetails.email || localStorage.getItem('userEmail');
 
-            await axios.post('/api/auth/verifyOtp', {
-                email,
-                otp,
-            });
+            await axios.post('/api/auth/verifyOtp', { otp });
 
             toast.success('Your account is verified!');
             localStorage.removeItem('app-storage');
@@ -110,9 +103,7 @@ const Page = () => {
     const handleResend = async () => {
         setResendOtpLoading(true);
         try {
-            const { personalDetails } = formData;
-            const email = personalDetails.email || localStorage.getItem('userEmail');
-            await axios.post('/api/auth/resendOtp', { email });
+            await axios.post('/api/auth/resendOtp');
             toast.success('A new OTP has been sent to your email.');
         } catch (err: any) {
             toast.error(err.response?.data?.message || 'Something went wrong');
@@ -125,9 +116,8 @@ const Page = () => {
         try {
             setLoading(true);
             setFieldErrors({});
-            const email = localStorage.getItem('userEmail');
 
-            const response = await axios.post('/api/user/updateUser', { email, ...schoolDetails });
+            const response = await axios.post('/api/user/completeRegistration', { ...schoolDetails });
             toast.success('Profile updated successfully!');
             localStorage.removeItem('app-storage');
 
@@ -149,34 +139,28 @@ const Page = () => {
 
     const handlePayment = async () => {
         try {
-            const email = localStorage.getItem('userEmail');
-            const phone = localStorage.getItem('phone');
+            const { data } = await axios.post('/api/payment/initiate');
 
-            const paymentData = {
-                customerEmail: email,
-                customerPhone: phone,
-                metadata: {
-                    registrationData: formData,
-                    step: 'step3_completed',
-                },
-            };
+            if (data.success) {
+                const allowedOrigins = ['https://api.uat.payglocal.in', 'https://api.prod.payglocal.in'];
 
-            const { data } = await axios.post('/api/payment/initiate', paymentData);
+                const urlObj = new URL(data.paymentUrl);
+                if (!allowedOrigins.includes(urlObj.origin) || !urlObj.pathname.startsWith('/gl/')) {
+                    toast.error('Invalid payment URL');
+                    return;
+                }
 
-            if (data.success) window.location.href = data.paymentUrl;
+                window.location.href = data.paymentUrl;
+            }
             else toast.error(data.message || 'Payment initiation failed');
         } catch (error) {
-            console.error('Payment error: ', error);
+            toast.error('Payment initiation failed');
         }
     };
 
     const getUserInfo = async () => {
         try {
-            const email = localStorage.getItem('userEmail');
-
-            const response = await axios.get('/api/user/details', {
-                params: { email },
-            });
+            const response = await axios.get('/api/user/details');
 
             if (response.status === 200) {
                 setUserId(response?.data._id);
@@ -243,7 +227,7 @@ const Page = () => {
                     email={
                         formData.personalDetails.email
                             ? formData.personalDetails.email
-                            : localStorage.getItem('userEmail')
+                            : sessionStorage.getItem('email')
                     }
                     otpSent={otpSent}
                     setOtpSent={setOtpSent}

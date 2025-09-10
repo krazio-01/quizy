@@ -1,17 +1,19 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import connectToDB from '@/utils/dbConnect';
 import User from '@/models/UserModel';
 import { v4 as uuidv4 } from 'uuid';
+import { cookies } from 'next/headers';
 import sendEmail from '@/utils/sendMail';
 import path from 'path';
 import fs from 'fs';
 import { validateEmail } from '@/utils/helperFn';
 
-export async function POST(request: NextRequest) {
+export async function POST() {
     await connectToDB();
 
     try {
-        const { email } = await request.json();
+        const cookieStore = cookies();
+        const email = (await cookieStore).get('regSessionEmail')?.value;
 
         if (!email) return NextResponse.json({ message: 'Email is required' }, { status: 400 });
 

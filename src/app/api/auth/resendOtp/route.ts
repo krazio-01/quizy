@@ -1,25 +1,23 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import connectToDB from '@/utils/dbConnect';
 import User from '@/models/UserModel';
+import { cookies } from 'next/headers';
 import sendEmail from '@/utils/sendMail';
 import fs from 'fs';
 import path from 'path';
 
-export async function POST(request: NextRequest) {
+export async function POST() {
     await connectToDB();
 
     try {
-        const { email } = await request.json();
+        const cookieStore = cookies();
+        const email = (await cookieStore).get('regSessionEmail')?.value;
 
         const user = await User.findOne({ email });
 
-        if (!user) {
-            return NextResponse.json({ message: 'User not found' }, { status: 404 });
-        }
+        if (!user) return NextResponse.json({ message: 'User not found' }, { status: 404 });
 
-        if (user.isVerified) {
-            return NextResponse.json({ message: 'User already verified' }, { status: 400 });
-        }
+        if (user.isVerified) return NextResponse.json({ message: 'User already verified' }, { status: 400 });
 
         // Generate new OTP
         const otp = Math.floor(100000 + Math.random() * 900000).toString();

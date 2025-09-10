@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import connectToDB from '../../../../utils/dbConnect';
 import UserModel from '../../../../models/UserModel';
+import { removeCookie, setCookie } from '@/utils/helperFn';
 
 async function verifyCaptcha(token: string) {
     const res = await fetch('https://www.google.com/recaptcha/api/siteverify', {
@@ -53,7 +54,6 @@ export const authOptions: AuthOptions = {
                 }
 
                 const captchaRes = await verifyCaptcha(credentials.captcha);
-                console.log('md-captchaRes: ', captchaRes);
                 if (!captchaRes.success || captchaRes.score < 0.5) {
                     throw new Error(
                         JSON.stringify({
@@ -78,12 +78,12 @@ export const authOptions: AuthOptions = {
                 const user = userDoc.toObject();
 
                 if (!user.isVerified) {
+                    await setCookie('regSessionEmail', user.email, { maxAge: 60 * 30 });
                     throw new Error(
                         JSON.stringify({
                             field: null,
                             message: 'Please verify your email',
                             email: user.email,
-                            phone: user.phone,
                         })
                     );
                 }
@@ -100,15 +100,16 @@ export const authOptions: AuthOptions = {
 
                 const incompleteFields = ['school', 'city', 'country', 'grade'].filter((field) => !user[field]);
                 if (incompleteFields.length > 0) {
+                    await setCookie('regSessionEmail', user.email, { maxAge: 60 * 30 });
                     throw new Error(
                         JSON.stringify({
                             field: null,
                             message: 'Please Complete Your Profile To Log In.',
-                            email: user.email,
-                            phone: user.phone,
                         })
                     );
                 }
+
+                await removeCookie('regSessionEmail');
 
                 return {
                     id: user._id.toString(),

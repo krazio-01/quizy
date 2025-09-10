@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { cookies } from 'next/headers';
 
 export const calculateAge = (dob: Date) => {
     const today = new Date();
@@ -19,4 +20,36 @@ export const generateMailTemplate = (file: string, replacements: Record<string, 
         template = template.replace(new RegExp(`{{${key}}}`, 'g'), value);
     });
     return template;
+};
+
+export const setCookie = async (
+    name: string,
+    value: string,
+    options: {
+        httpOnly?: boolean;
+        secure?: boolean;
+        sameSite?: 'strict' | 'lax' | 'none';
+        path?: string;
+        maxAge?: number;
+    } = {}
+) => {
+    const cookieStore = await cookies();
+    cookieStore.set(name, value, {
+        httpOnly: options.httpOnly ?? true,
+        secure: options.secure ?? process.env.NODE_ENV === 'production',
+        sameSite: options.sameSite ?? 'strict',
+        path: options.path ?? '/',
+        maxAge: options.maxAge ?? 60 * 15, // default 15 min
+    });
+};
+
+export const removeCookie = async (name: string) => {
+    const cookieStore = await cookies();
+    cookieStore.set(name, '', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        path: '/',
+        maxAge: 0, // expires immediately
+    });
 };

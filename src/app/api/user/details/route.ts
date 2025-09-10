@@ -2,18 +2,15 @@ import { NextResponse } from 'next/server';
 import UserModel from '@/models/UserModel';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
+import { cookies } from 'next/headers';
 
-export async function GET(req: Request) {
+export async function GET() {
     try {
         const session = await getServerSession(authOptions);
+        const cookieStore = cookies();
+        const cookieEmail = (await cookieStore).get('regSessionEmail')?.value;
 
-        let email: string | null = null;
-
-        if (session?.user?.email) email = session.user.email;
-        else {
-            const { searchParams } = new URL(req.url);
-            email = searchParams.get('email');
-        }
+        const email = session?.user?.email || cookieEmail;
 
         if (!email) return NextResponse.json({ message: 'email required' }, { status: 400 });
 

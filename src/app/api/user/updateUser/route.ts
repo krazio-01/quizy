@@ -1,69 +1,25 @@
 import { NextResponse, NextRequest } from 'next/server';
 import connectToDB from '@/utils/dbConnect';
 import User from '@/models/UserModel';
-import { calculateAge } from '@/utils/helperFn';
-
-const gradeAgeLimits: Record<string, [number, number]> = {
-    grade3: [8, 9],
-    grade4: [9, 10],
-    grade5: [10, 11],
-    grade6: [11, 12],
-    grade7: [12, 13],
-    grade8: [13, 14],
-    grade9: [14, 15],
-    grade10: [15, 16],
-};
-
-function yearToGrade(year: number): string | null {
-    if (year >= 4 && year <= 11) return `grade${year - 1}`;
-    return null;
-}
-
-function normalizeGrade(value: string): string | null {
-    if (!value) return null;
-
-    if (value.startsWith('year')) {
-        const yearNum = parseInt(value.replace('year', ''), 10);
-        return yearToGrade(yearNum);
-    }
-    return value;
-}
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../../auth/[...nextauth]/options';
 
 export async function POST(request: NextRequest) {
     await connectToDB();
 
     try {
-        const { email, country, city, school, board, grade, avatar } = await request.json();
+        const { avatar } = await request.json();
 
-        const user = await User.findOne({ email });
+        if (!avatar) return NextResponse.json({ field: 'avatar', message: 'Missing image' }, { status: 400 });
+
+        const session = await getServerSession(authOptions);
+        const userId = session?.user?._id;
+        if (!userId) return NextResponse.json({ message: 'User not authenticated' }, { status: 401 });
+
+        const user = await User.findById(userId);
         if (!user) return NextResponse.json({ field: 'email', message: 'User not found' }, { status: 404 });
 
-        // Normalize
-        const normalizedGrade = normalizeGrade(grade);
-
-        // Age validation
-        if (user.dob && normalizedGrade && gradeAgeLimits[normalizedGrade]) {
-            const userAge = calculateAge(new Date(user.dob));
-            const [minAge, maxAge] = gradeAgeLimits[normalizedGrade];
-
-            if (userAge < minAge || userAge > maxAge) {
-                return NextResponse.json(
-                    {
-                        field: 'grade',
-                        message: `Age ${userAge} is not eligible for ${grade}.`,
-                    },
-                    { status: 403 }
-                );
-            }
-        }
-
-        // Update fields
-        if (country) user.country = country;
-        if (city) user.city = city;
-        if (school) user.school = school;
-        if (board) user.board = board;
-        if (grade) user.grade = grade;
-        if (avatar) user.avatar = avatar;
+        user.avatar = avatar;
 
         await user.save();
 

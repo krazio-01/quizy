@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { PayGlocalClient } from '@/utils/payGlocalAuth';
 import UserModel from '@/models/UserModel';
 import PaymentModel from '@/models/PayMentModel';
+import { cookies } from 'next/headers';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../../auth/[...nextauth]/options';
 import axios from 'axios';
 
 const BASE_AMOUNT = 5;
@@ -76,17 +79,18 @@ function generateId(prefix: string, length = 40): string {
 
 export async function POST(request: NextRequest) {
     try {
-        const { customerEmail, customerPhone } = await request.json();
+        const cookieStore = cookies();
+        const serverSession = await getServerSession(authOptions);
+        const email = (await cookieStore).get('regSessionEmail')?.value;
 
-        if (!customerEmail || !customerPhone) {
-            return NextResponse.json(
-                { success: false, message: 'Missing required fields: email, phone' },
-                { status: 400 }
-            );
-        }
+        const userEmail = serverSession?.user?.email || email;
+        if (!userEmail) return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
-        const user = await UserModel.findOne({ email: customerEmail });
+        const user = await UserModel.findOne({ email: userEmail });
         if (!user) return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
+
+        const customerEmail = user.email;
+        const customerPhone = user.phone;
 
         const ip = getClientIp(request);
         const { data: geoData } = await axios.get(`http://ip-api.com/json/${ip}`);
@@ -141,6 +145,15 @@ export async function POST(request: NextRequest) {
             },
             { upsert: true, new: true }
         );
+
+        const allowedHosts = process.env.PAYGLOCAL_BASE_URL;
+        try {
+            const urlObj = new URL(result.data?.redirectUrl);
+            if (urlObj.origin !== allowedHosts)
+                return NextResponse.json({ success: false, message: 'Invalid payment URL' }, { status: 400 });
+        } catch (err) {
+            return NextResponse.json({ success: false, message: 'Malformed redirect URL' }, { status: 400 });
+        }
 
         return NextResponse.json({
             success: true,

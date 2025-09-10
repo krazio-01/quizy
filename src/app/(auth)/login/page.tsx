@@ -46,12 +46,10 @@ const LoginPage = () => {
                 const parsedError = JSON.parse(result.error);
 
                 if (!parsedError.field) {
-                    const { message, email, phone } = parsedError;
-
-                    if (email) localStorage.setItem('userEmail', email);
-                    if (phone) localStorage.setItem('phone', phone);
+                    const { message, email } = parsedError;
 
                     if (message.includes('Please verify your email')) {
+                        sessionStorage.setItem('email', email);
                         setStep(2);
                         router.push('/register');
                     } else if (message === 'Please Complete Your Profile To Log In.') {
@@ -77,10 +75,6 @@ const LoginPage = () => {
                 toast.error(result.error);
             }
         } else if (result?.url) {
-            if (localStorage.getItem('userEmail') && localStorage.getItem('phone')) {
-                localStorage.removeItem('userEmail');
-                localStorage.removeItem('phone');
-            }
             toast.success('Login successful');
             router.push('/profile');
         }

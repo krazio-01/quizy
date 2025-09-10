@@ -18,16 +18,16 @@ export interface Step2Props {
 }
 
 const maskEmail = (email: string) => {
-    const [name, domain] = email.split('@');
+    const [name, domain] = email?.split('@');
     if (!name || !domain) return email;
 
-    const [domainName, domainExt] = domain.split('.');
+    const [domainName, domainExt] = domain?.split('.');
     if (!domainName || !domainExt) return email;
 
-    const firstTwo = name.slice(0, 2);
-    const lastTwoDomain = domainName.slice(-2);
+    const firstTwo = name?.slice(0, 2);
+    const lastTwoDomain = domainName?.slice(-2);
 
-    const maskedMiddle = '*'.repeat(name.length - 2 + domainName.length - 2);
+    const maskedMiddle = '*'.repeat(name?.length - 2 + domainName?.length - 2);
 
     return `${firstTwo}${maskedMiddle}${lastTwoDomain}.${domainExt}`;
 };
