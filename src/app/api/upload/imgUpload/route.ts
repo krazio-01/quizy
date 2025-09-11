@@ -1,32 +1,26 @@
 import { NextResponse } from 'next/server';
 import cloudinary from '@/utils/cloudinaryConfig';
+import sharp from 'sharp';
 
 export async function POST(request) {
     try {
         const formData = await request.formData();
         const file = formData.get('file');
+        const buffer = Buffer.from(await file.arrayBuffer());
 
-        const buffer = await file.arrayBuffer();
-        const fileBuffer = Buffer.from(buffer);
+        const cleanBuffer = await sharp(buffer).rotate().jpeg({ quality: 70 }).toBuffer();
 
-        const result: any = await new Promise((resolve) => {
+        const result: any = await new Promise((resolve, reject) => {
             cloudinary.uploader
-                .upload_stream(
-                    {
-                        resource_type: 'auto',
-                        upload_preset: 'EI_study',
-                        quality: 70,
-                    },
-                    async (error, result) => {
-                        if (error) return;
-                        else resolve(result);
-                    }
-                )
-                .end(fileBuffer);
+                .upload_stream({ resource_type: 'image', upload_preset: 'EI_study' }, (error, result) => {
+                    if (error) reject(error);
+                    else resolve(result);
+                })
+                .end(cleanBuffer);
         });
 
         return NextResponse.json({ imgUrl: result.secure_url }, { status: 200 });
-    } catch (error) {
+    } catch (error: any) {
         return NextResponse.json({ message: error.message }, { status: 500 });
     }
 }

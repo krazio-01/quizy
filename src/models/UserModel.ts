@@ -17,13 +17,22 @@ export interface IUser {
 
     otp: string;
     otpExpiry: Date;
+    lastOtpSentAt?: Date;
+    otpRequestCount?: number;
     isVerified: boolean;
+
+    otpAttempts?: number;
+    otpLockUntil?: Date;
 
     hasReceivedWelcomeEmail: boolean;
     preferences: string[];
 
     forgotPasswordToken?: string;
     forgotPasswordTokenExpiry?: number;
+    lastForgotSentAt?: Date;
+    forgotRequestCount?: number;
+
+    isEligibleForCertificate?: boolean;
 
     createdAt: Date;
     updatedAt: Date;
@@ -51,13 +60,22 @@ const UserSchema: Schema<IUserDocument> = new Schema<IUserDocument>(
 
         otp: String,
         otpExpiry: Date,
+        lastOtpSentAt: { type: Date },
+        otpRequestCount: { type: Number, default: 0 },
         isVerified: { type: Boolean, default: false },
+
+        otpAttempts: { type: Number, default: 0 },
+        otpLockUntil: { type: Date, default: null },
 
         hasReceivedWelcomeEmail: { type: Boolean, default: false },
         preferences: { type: [String], default: [] },
 
         forgotPasswordToken: { type: String },
         forgotPasswordTokenExpiry: { type: Number },
+        lastForgotSentAt: { type: Date },
+        forgotRequestCount: { type: Number, default: 0 },
+
+        isEligibleForCertificate: { type: Boolean },
     },
     { timestamps: true }
 );

@@ -1,19 +1,17 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import connectToDB from '@/utils/dbConnect';
 import User from '@/models/UserModel';
 import { v4 as uuidv4 } from 'uuid';
-import { cookies } from 'next/headers';
 import sendEmail from '@/utils/sendMail';
 import path from 'path';
 import fs from 'fs';
 import { validateEmail } from '@/utils/helperFn';
 
-export async function POST() {
+export async function POST(request: NextRequest) {
     await connectToDB();
 
     try {
-        const cookieStore = cookies();
-        const email = (await cookieStore).get('regSessionEmail')?.value;
+        const { email } = await request.json();
 
         if (!email) return NextResponse.json({ message: 'Email is required' }, { status: 400 });
 
@@ -22,8 +20,30 @@ export async function POST() {
         const user = await User.findOne({ email });
         if (!user) return NextResponse.json({ message: 'User not found' }, { status: 404 });
 
-        const resetToken = uuidv4();
+        const now = new Date();
 
+        if (user.lastForgotSentAt && now.getTime() - user.lastForgotSentAt.getTime() < 60_000)
+            return NextResponse.json(
+                { message: 'Please wait at least 1 minute before requesting another reset email.' },
+                { status: 429 }
+            );
+
+        // Daily reset + max requests
+        const lastSent = user.lastForgotSentAt ? new Date(user.lastForgotSentAt) : null;
+        if (lastSent && lastSent.toDateString() === now.toDateString()) {
+            if (user.forgotRequestCount >= 3) {
+                return NextResponse.json(
+                    { message: 'Too many password reset requests today. Try again tomorrow.' },
+                    { status: 429 }
+                );
+            }
+            user.forgotRequestCount += 1;
+        } else user.forgotRequestCount = 1;
+
+        user.lastForgotSentAt = now;
+
+        // token generation
+        const resetToken = uuidv4();
         user.forgotPasswordToken = resetToken;
         user.forgotPasswordTokenExpiry = Date.now() + 1800000; // 30 minutes in milliseconds (1800000 ms = 30 minutes)
 

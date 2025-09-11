@@ -128,7 +128,8 @@ const Page = () => {
     const renderInput = (
         name: string,
         type: 'text' | 'email',
-        placeholder: string
+        placeholder: string,
+        maxLength: number
     ) => (
         <input
             type={type}
@@ -138,6 +139,7 @@ const Page = () => {
             onChange={handleChange}
             required
             aria-label={placeholder}
+            maxLength={maxLength}
         />
     );
 
@@ -183,10 +185,10 @@ const Page = () => {
                         onChange={handleChange}
                     />
                     <div className="name-fields">
-                        {renderInput('firstName', 'text', 'First Name*')}
-                        {renderInput('lastName', 'text', 'Last Name*')}
+                        {renderInput('firstName', 'text', 'First Name*', 50)}
+                        {renderInput('lastName', 'text', 'Last Name*', 50)}
                     </div>
-                    {renderInput('email', 'email', 'Email*')}
+                    {renderInput('email', 'email', 'Email*', 100)}
                     <textarea
                         name="message"
                         placeholder="Message*"
@@ -194,6 +196,7 @@ const Page = () => {
                         onChange={handleChange}
                         required
                         aria-label="Message"
+                        maxLength={1000}
                     />
                     <button type="submit" className="primary-btn" disabled={loading}>
                         <BeatLoader size={10} loading={loading} />

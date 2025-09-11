@@ -89,6 +89,12 @@ export async function POST(request: NextRequest) {
         const user = await UserModel.findOne({ email: userEmail });
         if (!user) return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
 
+        if (!user.isVerified)
+            return NextResponse.json(
+                { message: 'You must verify your email before proceeding.' },
+                { status: 403 }
+            );
+
         const customerEmail = user.email;
         const customerPhone = user.phone;
 

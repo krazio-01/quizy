@@ -19,6 +19,26 @@ export async function POST() {
 
         if (user.isVerified) return NextResponse.json({ message: 'User already verified' }, { status: 400 });
 
+        const now = new Date();
+        if (user.lastOtpSentAt && now.getTime() - user.lastOtpSentAt.getTime() < 60_000)
+            return NextResponse.json(
+                { message: 'Please wait at least 1 minute before requesting another OTP.' },
+                { status: 429 }
+            );
+
+        const lastSent = user.lastOtpSentAt ? new Date(user.lastOtpSentAt) : null;
+        if (lastSent && lastSent.toDateString() === now.toDateString()) {
+            if (user.otpRequestCount >= 5) {
+                return NextResponse.json(
+                    { message: 'Too many OTP requests today. Try again tomorrow.' },
+                    { status: 429 }
+                );
+            }
+            user.otpRequestCount += 1;
+        } else user.otpRequestCount = 1;
+
+        user.lastOtpSentAt = new Date();
+
         // Generate new OTP
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
         const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);

@@ -84,10 +84,7 @@ const ProfilePage = () => {
             const uploadRes = await axios.post('/api/upload/imgUpload', formData);
             const imgUrl = uploadRes.data.imgUrl;
 
-            await axios.post('/api/user/updateUser', {
-                email: user.email,
-                avatar: imgUrl,
-            });
+            await axios.post('/api/user/updateUser', { avatar: imgUrl });
 
             toast.success('Profile photo updated');
             await fetchAccountDetails();

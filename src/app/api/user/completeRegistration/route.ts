@@ -41,6 +41,12 @@ export async function POST(request: NextRequest) {
         const user = await User.findOne({ email });
         if (!user) return NextResponse.json({ message: 'User not found' }, { status: 404 });
 
+        if (!user.isVerified)
+            return NextResponse.json(
+                { message: 'You must verify your email before completing registration.' },
+                { status: 403 }
+            );
+
         // Normalize
         const normalizedGrade = normalizeGrade(grade);
 
