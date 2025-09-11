@@ -142,7 +142,7 @@ const Page = () => {
             const { data } = await axios.post('/api/payment/initiate');
 
             if (data.success) {
-                const allowedOrigins = ['https://api.uat.payglocal.in', 'https://api.prod.payglocal.in'];
+                const allowedOrigins = ['https://api.uat.payglocal.in', 'https://api.payglocal.com'];
 
                 const urlObj = new URL(data.paymentUrl);
                 if (!allowedOrigins.includes(urlObj.origin) || !urlObj.pathname.startsWith('/gl/')) {

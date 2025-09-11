@@ -146,10 +146,10 @@ export async function POST(request: NextRequest) {
             { upsert: true, new: true }
         );
 
-        const allowedHosts = process.env.PAYGLOCAL_BASE_URL;
+        const allowedOrigins = ['https://api.uat.payglocal.in', 'https://api.payglocal.com'];
         try {
-            const urlObj = new URL(result.data?.redirectUrl);
-            if (urlObj.origin !== allowedHosts)
+            const urlObj = new URL(result.data?.redirectUrl ?? result.redirectUrl);
+            if (!allowedOrigins.includes(urlObj.origin))
                 return NextResponse.json({ success: false, message: 'Invalid payment URL' }, { status: 400 });
         } catch (err) {
             return NextResponse.json({ success: false, message: 'Malformed redirect URL' }, { status: 400 });

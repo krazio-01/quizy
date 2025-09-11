@@ -60,12 +60,7 @@ export async function POST(request: NextRequest) {
 
             if (m < 0 || (m === 0 && d < 0)) age--;
 
-            if (age < min) return false;
-            if (age > max) return false;
-
-            if (age === max && (m > 0 || (m === 0 && d > 0))) return false;
-
-            return true;
+            return age >= min && age <= max;
         }
 
         if (!isAgeBetween(parsedDob, 8, 16, now))
