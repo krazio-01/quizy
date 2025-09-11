@@ -10,7 +10,7 @@ const preferences = [
         id: 'robotics',
         title: "I'd Like To Explore Robotics Classes / Camps",
         desc: 'Engaging, Hands-On Robotics Programs By Robofun Lab Designed To Build Real-World STEM Skills.',
-        link: { text: 'know more', url: 'https://robofunlab.com/' },
+        link: { text: 'know more', url: 'https://sageuae.com/rfl' },
     },
     {
         id: 'genwise',
