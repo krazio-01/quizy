@@ -7,7 +7,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]/options';
 import axios from 'axios';
 
-const BASE_AMOUNT = 5;
+const BASE_AMOUNT = 75;
 const BASE_CURRENCY = 'AED';
 
 const COMMON_CURRENCIES = new Set([
