@@ -28,6 +28,9 @@ const Page = async () => {
                 <video autoPlay muted loop playsInline className="rewards-video">
                     <source src="/videos/banner2.mp4" type="video/mp4" />
                 </video>
+                <video autoPlay muted loop playsInline className="rewards-video__mobile">
+                    <source src="/videos/banner2_mob.mp4" type="video/mp4" />
+                </video>
 
                 <h1>
                     Where Brains
@@ -45,7 +48,7 @@ const Page = async () => {
                 <div className="rewards-grid">
                     <div className="reward-item">
                         <h4>Digital Certificates for all participants.</h4>
-                        <img src="/images/certificate.png" alt="Digital Certificate" />
+                        <img src="/images/certificate.jpeg" alt="Digital Certificate" />
                         <p>
                             All participants will receive digital certificates, while class toppers will be awarded
                             special certificates delivered to their school

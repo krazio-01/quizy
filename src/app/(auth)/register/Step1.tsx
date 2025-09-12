@@ -138,6 +138,7 @@ const Step1 = ({ onNext, loading, fieldErrors, clearFieldError, initialData, edi
                         disabled={editingEmail}
                         className={`${fieldErrors.dob ? 'error' : ''} custom-datepicker-input`}
                         calendarClassName="custom-datepicker-calendar"
+                        maxDate={new Date()}
                     />
                     {fieldErrors.dob && <p className="error-message">{fieldErrors.dob}</p>}
                 </div>

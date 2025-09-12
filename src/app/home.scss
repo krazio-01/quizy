@@ -91,6 +91,7 @@
 
         .potential-wrapper {
             display: flex;
+            justify-content: center;
             gap: 2rem;
             margin: 0 auto;
 
@@ -102,11 +103,12 @@
             }
 
             .text {
-                max-width: 620px;
+                max-width: 480px;
+                margin-right: 5rem;
 
                 h2 {
                     color: #ab2024;
-                    font-size: clamp(var(--fz-lg), 7vw, var(--fz-xl));
+                    font-size: clamp(var(--fz-xl), 7vw, var(--fz-2xl));
                     margin-bottom: 1rem;
                 }
 
@@ -376,6 +378,7 @@
 
             .text {
                 max-width: 100% !important;
+                margin-right: 0 !important;
             }
         }
     }

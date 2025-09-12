@@ -232,6 +232,49 @@ const ProfilePage = () => {
         return words.trim();
     }
 
+    const handleDownloadCertificate = async () => {
+        if (!user?.isEligibleForCertificate) return toast.error('Sorry you are not eligible for certificate');
+
+        const url = '/pdf/sampleCertificate.pdf';
+        const existingPdfBytes = await fetch(url).then((res) => res.arrayBuffer());
+
+        const pdfDoc = await PDFDocument.load(existingPdfBytes);
+        const firstPage = pdfDoc.getPages()[0];
+        const { height } = firstPage.getSize();
+        const font = await pdfDoc.embedFont(StandardFonts.TimesRomanBold);
+
+        const drawText = (
+            text: string | number | undefined,
+            x: number,
+            y: number,
+            size: number = 13
+        ) => {
+            if (!text) return;
+            firstPage.drawText(String(text), {
+                x,
+                y,
+                size,
+                font,
+                color: rgb(0, 0, 0),
+            });
+        };
+
+        const fields = [
+            { text: `${user?.firstName} ${user?.lastName}`, x: 312, y: height - 330, size: 40 },
+            { text: user?.grade, x: 290, y: height - 383 },
+            { text: user?.school, x: 420, y: height - 383 },
+        ];
+
+        fields.forEach(({ text, x, y, size }) => drawText(text, x, y, size));
+
+        const pdfBytes = await pdfDoc.save();
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'certificate.pdf';
+        link.click();
+    };
+
     const handlePayment = async () => {
         try {
             setPaymentLoading(true);
@@ -287,7 +330,7 @@ const ProfilePage = () => {
                     <button onClick={handleDownloadInvoice}>
                         <FiDownload /> Invoice
                     </button>
-                    <button>
+                    <button onClick={handleDownloadCertificate}>
                         <FiDownload /> Certificate
                     </button>
                 </nav>

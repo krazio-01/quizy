@@ -8,7 +8,7 @@
     .banner {
         position: relative;
         text-align: center;
-        aspect-ratio: 16 / 9;
+        aspect-ratio: 16 / 6;
         margin-bottom: 3rem;
         overflow: hidden;
 
@@ -20,13 +20,17 @@
             height: 100%;
             object-fit: cover;
             z-index: 1;
+
+            &__mobile {
+                display: none;
+            }
         }
 
         h1 {
             position: relative;
             margin-inline: auto;
             padding-top: clamp(1rem, 12vw, 15rem);
-            font-size: clamp(var(--fz-lg), 10vw, 5.5rem);
+            font-size: clamp(var(--fz-lg), 8vw, var(--fz-2xl));
             color: #ab2024;
             max-width: 40%;
             z-index: 10;
@@ -46,7 +50,7 @@
         .rewards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1.5rem;
+            gap: 3rem;
 
             .reward-item {
                 text-align: left;
@@ -54,7 +58,8 @@
                 img,
                 video {
                     width: 100%;
-                    aspect-ratio: 16 / 9;
+                    // to remove
+                    aspect-ratio: 16 / 10;
                     object-fit: cover;
                     margin-bottom: 1rem;
                     display: block;
@@ -341,6 +346,23 @@
     @media screen and (max-width: 599px) {
         & {
             .banner {
+                aspect-ratio: 16 / 9 !important;
+
+                .rewards-video {
+                    display: none;
+
+                    &__mobile {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        z-index: 1;
+                        display: block !important;
+                    }
+                }
+
                 h1 {
                     max-width: 85% !important;
                 }

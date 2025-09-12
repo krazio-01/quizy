@@ -12,13 +12,14 @@
         }
 
         .rewards-grid {
-            gap: 2.5rem;
             margin-bottom: 2.5rem;
         }
 
         .reward-card {
             display: flex;
+            justify-content: center;
             border-radius: 16px;
+            gap: 2rem;
             overflow: hidden;
             text-align: left;
 
@@ -28,13 +29,17 @@
                 }
             }
 
-            video {
+            video,
+            img {
                 width: 40%;
+                max-width: 650px;
+            }
+
+            video {
                 height: auto;
             }
 
             img {
-                width: 40%;
                 height: 100%;
                 object-fit: cover;
             }
@@ -43,16 +48,15 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
-                padding: 0 1.5rem;
+                padding: 0 1.5rem ;
                 max-width: 60%;
 
                 .marker {
                     margin-bottom: 0.5rem;
                 }
 
-                h3,
                 p {
-                    max-width: 80%;
+                    max-width: 540px;
                 }
 
                 h3 {
@@ -95,8 +99,10 @@
         .container {
             .reward-card {
                 flex-direction: column;
+                gap: 0 !important;
 
-                video, img {
+                video,
+                img {
                     width: 100% !important;
                     margin-bottom: 0.7rem;
                 }
@@ -105,7 +111,8 @@
                     max-width: 100% !important;
                     padding: 1.5rem 0 0 !important;
 
-                    h3, p {
+                    h3,
+                    p {
                         margin-bottom: 1rem;
                         max-width: 100% !important;
                     }
