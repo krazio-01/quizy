@@ -98,20 +98,31 @@
             position: absolute;
             top: 100%;
             right: 0;
-            background-color: #fff;
             width: 100%;
+            background: #fff;
+            display: none;
             flex-direction: column;
             align-items: center;
             padding: 1rem 0;
-            display: none;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 12px 12px;
+            animation: slideDown 0.3s ease;
 
             ul {
-                flex-direction: column;
-                gap: 1.2rem;
+                flex-direction: column-reverse;
+                align-items: start !important;
+                gap: 0.5rem;
+                width: 100%;
+                padding: 0 2rem;
 
-                .link a {
-                    font-size: 1.1rem;
+                .link {
+                    width: 100%;
+                    
+                    a {
+                        display: block;
+                        padding: 12px 7px;
+                        border-radius: 8px;
+                    }
                 }
             }
 
@@ -120,9 +131,15 @@
             }
         }
 
-        .links-container ul {
-            flex-direction: column;
-            align-items: center;
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     }
 }

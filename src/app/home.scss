@@ -96,8 +96,8 @@
             margin: 0 auto;
 
             video {
-                max-width: 40%;
-                width: 100%;
+                width: 40%;
+                max-width: 600px;
                 height: auto;
                 border-radius: 10px;
             }
@@ -373,7 +373,7 @@
             flex-direction: column;
 
             video {
-                max-width: 100% !important;
+                width: 100% !important;
             }
 
             .text {
