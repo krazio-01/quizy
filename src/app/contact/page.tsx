@@ -31,7 +31,7 @@ const contactData = [
         country: "UAE",
         address:
             "Sage Educational Consultants, Office 110, 1st floor, Building 6, Dubai Outsource City",
-        phone: "+97144396233 / +13323318436",
+        phone: "+971542009610",
         email: "competition@ei.study",
     },
     {

@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import Link from 'next/link';
 import { BeatLoader, PacmanLoader } from 'react-spinners';
 import './profile.scss';
+import { useRouter } from 'next/navigation';
 
 interface PaymentDetails {
     billing: {
@@ -39,6 +40,8 @@ const ProfilePage = () => {
         email: '',
     });
 
+    const router = useRouter();
+
     const fetchAccountDetails = useCallback(async () => {
         try {
             setLoading(true);
@@ -62,6 +65,11 @@ const ProfilePage = () => {
                 email: user?.email,
             });
         } catch (err) {
+            if(err?.response?.data?.error === 'Unauthorized') {
+                toast.error('Session expired. Please login again.');
+                router.push('/login');
+                return;
+            }
             toast.error('Failed to fetch user details');
         } finally {
             setLoading(false);

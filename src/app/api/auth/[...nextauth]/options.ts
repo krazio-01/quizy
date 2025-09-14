@@ -69,8 +69,8 @@ export const authOptions: AuthOptions = {
                 if (!userDoc) {
                     throw new Error(
                         JSON.stringify({
-                            field: 'email',
-                            message: 'This account is not registered',
+                            field: ['email', 'password'],
+                            message: 'Invalid credentials',
                         })
                     );
                 }
