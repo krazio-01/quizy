@@ -3,8 +3,8 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { MdCheckCircle, MdOutlineCancel } from 'react-icons/md';
 import axios from '@/utils/axios';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
-import { FiDownload } from 'react-icons/fi';
-import { FiChevronRight } from 'react-icons/fi';
+import { FiDownload, FiChevronRight } from 'react-icons/fi';
+import { FaRegCheckCircle } from "react-icons/fa";
 import { toast } from 'sonner';
 import Link from 'next/link';
 import { BeatLoader, PacmanLoader } from 'react-spinners';
@@ -13,6 +13,7 @@ import './profile.scss';
 
 interface PaymentDetails {
     billing: {
+        couponCode?: string;
         transactionId: string;
         description: string;
         hsnSac: string;
@@ -32,7 +33,7 @@ const ProfilePage = () => {
     const [loading, setLoading] = useState(true);
     const [uploading, setUploading] = useState(false);
     const [paymentLoading, setPaymentLoading] = useState(false);
-    const [isCouponFieldVisible, setIsCouponFieldVisible] = useState(false);
+    const [isCouponFieldEditable, setIsCouponFieldEditable] = useState(false);
     const [couponCode, setCouponCode] = useState('');
 
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -60,6 +61,7 @@ const ProfilePage = () => {
             const { data: user } = await axios.get('/api/user/details');
 
             setPaymentInfoDB(paymentInfoDB);
+            setCouponCode(paymentInfoDB?.billing?.couponCode || '');
             setPaymentInfoPayglocal(paymentInfoPayglocal);
             setUser(user);
             setFormData({
@@ -292,7 +294,7 @@ const ProfilePage = () => {
             if (data.success) window.location.href = data.paymentUrl;
             else toast.error(data.message || 'Payment initiation failed');
         } catch (error) {
-            if (error?.response?.data.field === 'coupon') setIsCouponFieldVisible(true);
+            if (error?.response?.data.field === 'coupon') setIsCouponFieldEditable(true);
             toast.error(error?.response?.data?.message || 'Payment initiation failed');
         } finally {
             setPaymentLoading(false);
@@ -481,30 +483,40 @@ const ProfilePage = () => {
                                                     {!paymentLoading && 'Pay Now'}
                                                 </button>
 
-                                                {isCouponFieldVisible && (
-                                                    <div className="coupon-field desktop">
+                                                {paymentInfoDB.billing?.couponCode && (
+                                                    <div
+                                                        className={`coupon-field desktop ${
+                                                            paymentLoading || !isCouponFieldEditable ? 'disabled' : ''
+                                                        }`}
+                                                    >
                                                         <input
                                                             type="text"
                                                             placeholder="Enter coupon code"
                                                             value={couponCode}
                                                             onChange={(e) => setCouponCode(e.target.value)}
-                                                            disabled={paymentLoading}
+                                                            disabled={paymentLoading || !isCouponFieldEditable}
                                                         />
+                                                        {!isCouponFieldEditable && <FaRegCheckCircle />}
                                                     </div>
                                                 )}
                                             </div>
                                         )}
                                     </div>
 
-                                    {isCouponFieldVisible && (
-                                        <div className="coupon-field mobile">
+                                    {paymentInfoDB.billing?.couponCode && (
+                                        <div
+                                            className={`coupon-field mobile ${
+                                                paymentLoading || !isCouponFieldEditable ? 'disabled' : ''
+                                            }`}
+                                        >
                                             <input
                                                 type="text"
                                                 placeholder="Enter coupon code"
                                                 value={couponCode}
                                                 onChange={(e) => setCouponCode(e.target.value)}
-                                                disabled={paymentLoading}
+                                                disabled={paymentLoading || !isCouponFieldEditable}
                                             />
+                                            {!isCouponFieldEditable && <FaRegCheckCircle />}
                                         </div>
                                     )}
                                 </>

@@ -34,6 +34,7 @@ export async function GET() {
             orderId: payment.orderId,
             status: payment.status,
             transactionId: payment.transactionId,
+            couponCode: payment?.couponCode,
             createdAt: payment.createdAt,
         };
 
