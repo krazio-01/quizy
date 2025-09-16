@@ -4,7 +4,7 @@ import { MdCheckCircle, MdOutlineCancel } from 'react-icons/md';
 import axios from '@/utils/axios';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import { FiDownload, FiChevronRight } from 'react-icons/fi';
-import { FaRegCheckCircle } from "react-icons/fa";
+import { FaRegCheckCircle } from 'react-icons/fa';
 import { toast } from 'sonner';
 import Link from 'next/link';
 import { BeatLoader, PacmanLoader } from 'react-spinners';
@@ -503,22 +503,23 @@ const ProfilePage = () => {
                                         )}
                                     </div>
 
-                                    {paymentInfoDB.billing?.couponCode && (
-                                        <div
-                                            className={`coupon-field mobile ${
-                                                paymentLoading || !isCouponFieldEditable ? 'disabled' : ''
-                                            }`}
-                                        >
-                                            <input
-                                                type="text"
-                                                placeholder="Enter coupon code"
-                                                value={couponCode}
-                                                onChange={(e) => setCouponCode(e.target.value)}
-                                                disabled={paymentLoading || !isCouponFieldEditable}
-                                            />
-                                            {!isCouponFieldEditable && <FaRegCheckCircle />}
-                                        </div>
-                                    )}
+                                    {paymentInfoDB.billing?.couponCode &&
+                                        paymentInfoDB.billing.status !== 'success' && (
+                                            <div
+                                                className={`coupon-field mobile ${
+                                                    paymentLoading || !isCouponFieldEditable ? 'disabled' : ''
+                                                }`}
+                                            >
+                                                <input
+                                                    type="text"
+                                                    placeholder="Enter coupon code"
+                                                    value={couponCode}
+                                                    onChange={(e) => setCouponCode(e.target.value)}
+                                                    disabled={paymentLoading || !isCouponFieldEditable}
+                                                />
+                                                {!isCouponFieldEditable && <FaRegCheckCircle />}
+                                            </div>
+                                        )}
                                 </>
                             )}
                         </div>
