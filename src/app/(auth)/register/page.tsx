@@ -22,6 +22,7 @@ const Page = () => {
             city: '',
             school: '',
             grade: '',
+            couponCode: '',
         },
         personalDetails: {
             firstName: '',
@@ -35,6 +36,7 @@ const Page = () => {
         otp: '',
     });
     const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
+    const [isRegistrationComplete, setIsRegistrationComplete] = useState(false);
 
     const nextStep = () => setStep(step + 1);
     const prevStep = () => setStep(step - 1);
@@ -117,11 +119,18 @@ const Page = () => {
             setLoading(true);
             setFieldErrors({});
 
-            const response = await axios.post('/api/user/completeRegistration', { ...schoolDetails });
-            toast.success('Profile updated successfully!');
-            localStorage.removeItem('app-storage');
+            let response = null
+            if (!isRegistrationComplete) {
+                response = await axios.post('/api/user/completeRegistration', { ...schoolDetails });
+                toast.success('Profile updated successfully!');
+                localStorage.removeItem('app-storage');
+            }
 
-            if (response.status === 200) await handlePayment();
+            if (response?.status === 200 || isRegistrationComplete) {
+                console.log('md-inside if of handleUserUpdate');
+                setIsRegistrationComplete(true);
+                await handlePayment(schoolDetails.couponCode);
+            }
         } catch (error: any) {
             const field = error.response?.data?.field;
             const message = error.response?.data?.message || 'User update failed';
@@ -137,9 +146,10 @@ const Page = () => {
         }
     };
 
-    const handlePayment = async () => {
+    const handlePayment = async (couponCode?: string) => {
+        console.log('md-inside handlePayment');
         try {
-            const { data } = await axios.post('/api/payment/initiate');
+            const { data } = await axios.post('/api/payment/initiate', { couponCode });
 
             if (data.success) {
                 const allowedOrigins = ['https://api.uat.payglocal.in', 'https://api.payglocal.com'];
@@ -154,7 +164,15 @@ const Page = () => {
             }
             else toast.error(data.message || 'Payment initiation failed');
         } catch (error) {
-            toast.error('Payment initiation failed');
+            const field = error.response?.data?.field;
+            const message = error.response?.data?.message || 'Payment initiation failed';
+
+            if (field) {
+                setFieldErrors((prev: any) => ({
+                    ...prev,
+                    [field]: message,
+                }));
+            } else toast.error(message);
         }
     };
 
@@ -244,6 +262,7 @@ const Page = () => {
                     }}
                     loading={loading}
                     fieldErrors={fieldErrors}
+                    isRegistrationComplete={isRegistrationComplete}
                 />
             )}
         </div>

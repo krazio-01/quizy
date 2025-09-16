@@ -207,27 +207,6 @@
                 }
             }
 
-            input {
-                padding: 8px 12px;
-                border: 1px solid #ccc;
-                border-radius: 6px;
-                font-size: 14px;
-                color: #333;
-                width: 80%;
-                outline: none;
-                transition: border-color 0.2s, box-shadow 0.2s;
-
-                &:focus {
-                    box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
-                }
-
-                &:disabled {
-                    background-color: #f5f5f5;
-                    color: #999;
-                    cursor: not-allowed;
-                }
-            }
-
             .field {
                 display: flex;
                 align-items: center;
@@ -314,45 +293,82 @@
                     align-items: center;
                     gap: 2rem;
 
-                    .status {
+                    > div {
                         display: flex;
                         align-items: center;
-                        justify-content: center;
-                        font-size: var(--fz-sm);
-                        font-weight: 590;
-                        color: #3e3e3e;
-                        width: fit-content;
-                        padding: 0.5rem;
-                        border-radius: 10px;
-                        font-weight: 700;
+                        gap: 2rem;
 
-                        &.paid {
-                            outline: 1px solid #44b61e;
-                            color: #44b61e;
-                        }
-
-                        &.failed {
-                            outline: 1px solid #ea292e;
-                            color: #ea292e;
-                        }
-
-                        span {
-                            margin-left: 0.3rem;
-                            font-weight: 700;
+                        .status {
                             display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: var(--fz-sm);
+                            font-weight: 590;
+                            color: #3e3e3e;
+                            width: fit-content;
+                            min-width: fit-content;
+                            padding: 0.5rem;
+                            border-radius: 10px;
+                            font-weight: 700;
+
+                            &.paid {
+                                outline: 1px solid #44b61e;
+                                color: #44b61e;
+                            }
+
+                            &.failed {
+                                outline: 1px solid #ea292e;
+                                color: #ea292e;
+                            }
+
+                            span {
+                                margin-left: 0.3rem;
+                                font-weight: 700;
+                                display: flex;
+                            }
+                        }
+
+                        .pay-now-container {
+                            display: flex;
+                            align-items: center;
+                            gap: 2rem;
+
+                            button {
+                                background: #ab2024;
+                                color: #fff;
+                                border-radius: 10px;
+                                border: none;
+                                outline: none;
+                                padding: 0.5rem 1rem;
+                                font-size: var(--fz-sm);
+                                cursor: pointer;
+
+                                &:disabled {
+                                    background-color: #f5f5f5;
+                                    color: #999;
+                                    cursor: not-allowed;
+                                }
+                            }
                         }
                     }
 
-                    .pay-now-container {
-                        button {
-                            background: #ab2024;
-                            color: #fff;
-                            border-radius: 10px;
-                            border: none;
+                    .coupon-field {
+                        &.mobile {
+                            display: none;
+                        }
+
+                        input {
+                            padding: 8px 12px;
+                            border: 1px solid #ccc;
+                            border-radius: 6px;
+                            font-size: 14px;
+                            color: #333;
                             outline: none;
-                            padding: 0.5rem 1rem;
-                            font-size: var(--fz-sm);
-                            cursor: pointer;
+                            transition: border-color 0.2s, box-shadow 0.2s;
+
+                            &:focus {
+                                box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+                            }
 
                             &:disabled {
                                 background-color: #f5f5f5;
@@ -456,6 +472,30 @@
                         .billing__header,
                         .billing__row {
                             font-size: var(--fz-xs);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 599px) {
+        .content {
+            .profile-section {
+                .billing {
+                    .bottom-wrapper {
+                        align-items: flex-start !important;
+                        flex-direction: column !important;
+                        gap: 1rem !important;
+
+                        .coupon-field {
+                            &.desktop {
+                                display: none;
+                            }
+
+                            &.mobile {
+                                display: block;
+                            }
                         }
                     }
                 }

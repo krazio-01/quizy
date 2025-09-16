@@ -90,6 +90,12 @@
 
                     input {
                         flex: 1;
+
+                        &:disabled {
+                            background-color: #eeeeee;
+                            color: #999;
+                            cursor: not-allowed;
+                        }
                     }
 
                     .rollback-btn {
@@ -108,6 +114,12 @@
 
                         &:hover {
                             background: #ddd;
+                        }
+
+                        &:disabled {
+                            background-color: #eeeeee;
+                            color: #999;
+                            cursor: not-allowed;
                         }
                     }
                 }

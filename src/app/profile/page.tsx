@@ -8,8 +8,8 @@ import { FiChevronRight } from 'react-icons/fi';
 import { toast } from 'sonner';
 import Link from 'next/link';
 import { BeatLoader, PacmanLoader } from 'react-spinners';
-import './profile.scss';
 import { useRouter } from 'next/navigation';
+import './profile.scss';
 
 interface PaymentDetails {
     billing: {
@@ -32,6 +32,8 @@ const ProfilePage = () => {
     const [loading, setLoading] = useState(true);
     const [uploading, setUploading] = useState(false);
     const [paymentLoading, setPaymentLoading] = useState(false);
+    const [isCouponFieldVisible, setIsCouponFieldVisible] = useState(false);
+    const [couponCode, setCouponCode] = useState('');
 
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -65,7 +67,7 @@ const ProfilePage = () => {
                 email: user?.email,
             });
         } catch (err) {
-            if(err?.response?.data?.error === 'Unauthorized') {
+            if (err?.response?.data?.error === 'Unauthorized') {
                 toast.error('Session expired. Please login again.');
                 router.push('/login');
                 return;
@@ -251,12 +253,7 @@ const ProfilePage = () => {
         const { height } = firstPage.getSize();
         const font = await pdfDoc.embedFont(StandardFonts.TimesRomanBold);
 
-        const drawText = (
-            text: string | number | undefined,
-            x: number,
-            y: number,
-            size: number = 13
-        ) => {
+        const drawText = (text: string | number | undefined, x: number, y: number, size: number = 13) => {
             if (!text) return;
             firstPage.drawText(String(text), {
                 x,
@@ -287,28 +284,27 @@ const ProfilePage = () => {
         try {
             setPaymentLoading(true);
 
-            const paymentData = {
-                customerEmail: user?.email,
-                customerPhone: user?.phone,
-                metadata: {
-                    registrationData: formData,
-                },
-            };
-
-            localStorage.setItem('userEmail', user?.email);
-
-            const { data } = await axios.post('/api/payment/initiate', paymentData);
+            const { data } = await axios.post('/api/payment/initiate', {
+                couponCode,
+                isPassed: !couponCode.trim(),
+            });
 
             if (data.success) window.location.href = data.paymentUrl;
             else toast.error(data.message || 'Payment initiation failed');
         } catch (error) {
-            console.error('Payment error: ', error);
+            if (error?.response?.data.field === 'coupon') setIsCouponFieldVisible(true);
+            toast.error(error?.response?.data?.message || 'Payment initiation failed');
         } finally {
             setPaymentLoading(false);
         }
     };
 
-    if (loading) return <div className="profile-page loading"><PacmanLoader color='#ab2024' /></div>;
+    if (loading)
+        return (
+            <div className="profile-page loading">
+                <PacmanLoader color="#ab2024" />
+            </div>
+        );
     if (!paymentInfoDB) return <div className="profile-page error">No user data available</div>;
 
     return (
@@ -403,10 +399,10 @@ const ProfilePage = () => {
                             <span className="value">
                                 {user?.dob
                                     ? new Date(user?.dob).toLocaleDateString('en-GB', {
-                                        day: '2-digit',
-                                        month: '2-digit',
-                                        year: 'numeric',
-                                    })
+                                          day: '2-digit',
+                                          month: '2-digit',
+                                          year: 'numeric',
+                                      })
                                     : ''}
                             </span>
                         </div>
@@ -426,9 +422,7 @@ const ProfilePage = () => {
                     <div className="field">
                         <div>
                             <span className="label">School</span>
-                            <span className="value">
-                                {user?.school}
-                            </span>
+                            <span className="value">{user?.school}</span>
                         </div>
                     </div>
 
@@ -464,26 +458,53 @@ const ProfilePage = () => {
                         <div className="bottom-wrapper">
                             {paymentInfoDB?.billing && (
                                 <>
-                                    <div
-                                        className={`status ${paymentInfoDB.billing.status === 'success' ? 'paid' : 'failed'
+                                    <div>
+                                        <div
+                                            className={`status ${
+                                                paymentInfoDB.billing.status === 'success' ? 'paid' : 'failed'
                                             }`}
-                                    >
-                                        Fees Status{' '}
-                                        <span>
-                                            {paymentInfoDB.billing.status === 'success' ? (
-                                                <MdCheckCircle />
-                                            ) : (
-                                                <MdOutlineCancel />
-                                            )}
-                                        </span>
+                                        >
+                                            Fees Status{' '}
+                                            <span>
+                                                {paymentInfoDB.billing.status === 'success' ? (
+                                                    <MdCheckCircle />
+                                                ) : (
+                                                    <MdOutlineCancel />
+                                                )}
+                                            </span>
+                                        </div>
+
+                                        {paymentInfoDB.billing.status !== 'success' && (
+                                            <div className="pay-now-container">
+                                                <button disabled={paymentLoading} onClick={handlePayment}>
+                                                    <BeatLoader size={10} loading={paymentLoading} />
+                                                    {!paymentLoading && 'Pay Now'}
+                                                </button>
+
+                                                {isCouponFieldVisible && (
+                                                    <div className="coupon-field desktop">
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Enter coupon code"
+                                                            value={couponCode}
+                                                            onChange={(e) => setCouponCode(e.target.value)}
+                                                            disabled={paymentLoading}
+                                                        />
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
 
-                                    {paymentInfoDB.billing.status !== 'success' && (
-                                        <div className="pay-now-container">
-                                            <button disabled={paymentLoading} onClick={handlePayment}>
-                                                <BeatLoader size={10} loading={paymentLoading} />
-                                                {!paymentLoading && 'Pay Now'}
-                                            </button>
+                                    {isCouponFieldVisible && (
+                                        <div className="coupon-field mobile">
+                                            <input
+                                                type="text"
+                                                placeholder="Enter coupon code"
+                                                value={couponCode}
+                                                onChange={(e) => setCouponCode(e.target.value)}
+                                                disabled={paymentLoading}
+                                            />
                                         </div>
                                     )}
                                 </>

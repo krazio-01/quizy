@@ -6,6 +6,7 @@ import { cookies } from 'next/headers';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]/options';
 import axios from 'axios';
+import CouponModel, { ICoupon } from '@/models/CouponModel';
 
 const BASE_AMOUNT = 75;
 const BASE_CURRENCY = 'AED';
@@ -79,6 +80,8 @@ function generateId(prefix: string, length = 40): string {
 
 export async function POST(request: NextRequest) {
     try {
+        const { couponCode, isPassed = false } = await request.json();
+
         const cookieStore = cookies();
         const serverSession = await getServerSession(authOptions);
         const email = (await cookieStore).get('regSessionEmail')?.value;
@@ -90,13 +93,50 @@ export async function POST(request: NextRequest) {
         if (!user) return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
 
         if (!user.isVerified)
-            return NextResponse.json(
-                { message: 'You must verify your email before proceeding.' },
-                { status: 403 }
-            );
+            return NextResponse.json({ message: 'You must verify your email before proceeding.' }, { status: 403 });
 
         const customerEmail = user.email;
         const customerPhone = user.phone;
+
+        let finalAmount = BASE_AMOUNT;
+        let appliedCoupon: ICoupon | null = null;
+
+        const existingPayment = await PaymentModel.findOne({ userId: user._id }).lean();
+        const code = couponCode || existingPayment?.couponCode;
+
+        if (code && !isPassed) {
+            const coupon = await CouponModel.findOne({ code: code.toUpperCase() });
+            if (!coupon)
+                return NextResponse.json(
+                    { success: false, field: 'coupon', message: 'Invalid coupon' },
+                    { status: 400 }
+                );
+
+            if (coupon.expiry < new Date())
+                return NextResponse.json(
+                    { success: false, field: 'coupon', message: 'Coupon expired' },
+                    { status: 400 }
+                );
+
+            if (coupon.maxUsage && coupon.usedBy.length >= coupon.maxUsage)
+                return NextResponse.json(
+                    { success: false, field: 'coupon', message: 'Coupon usage limit reached' },
+                    { status: 400 }
+                );
+
+            if (coupon.usedBy.some((id) => id.toString() === user._id.toString()))
+                return NextResponse.json(
+                    { success: false, field: 'coupon', message: 'Coupon already used' },
+                    { status: 400 }
+                );
+
+            // Apply discount
+            if (coupon.discountType === 'flat') finalAmount = Math.max(0, BASE_AMOUNT - coupon.discountValue);
+            else if (coupon.discountType === 'percent')
+                finalAmount = Math.max(0, BASE_AMOUNT - (BASE_AMOUNT * coupon.discountValue) / 100);
+
+            appliedCoupon = coupon;
+        }
 
         const ip = getClientIp(request);
         const { data: geoData } = await axios.get(`http://ip-api.com/json/${ip}`);
@@ -106,7 +146,7 @@ export async function POST(request: NextRequest) {
         if (!COMMON_CURRENCIES.has(transactionCurrency)) transactionCurrency = 'USD';
 
         const rate = await getConversionRate(BASE_CURRENCY, transactionCurrency);
-        const convertedAmount = +(BASE_AMOUNT * rate).toFixed(2);
+        const convertedAmount = +(finalAmount * rate).toFixed(2);
 
         const orderId = generateId('REG');
         const merchantTxnId = generateId('TXN');
@@ -147,6 +187,7 @@ export async function POST(request: NextRequest) {
                     status: result.status,
                     amount: `${convertedAmount} ${transactionCurrency}`,
                     transactionId: null,
+                    couponCode: appliedCoupon?.code ?? null,
                 },
             },
             { upsert: true, new: true }

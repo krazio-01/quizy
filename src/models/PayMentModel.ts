@@ -6,6 +6,7 @@ export interface IPayment {
     status: string;
     transactionId: string | null;
     amount: string;
+    couponCode?: string | null;
 
     createdAt: Date;
     updatedAt: Date;
@@ -20,6 +21,7 @@ const PaymentSchema: Schema<IPaymentDocument> = new Schema<IPaymentDocument>(
         status: { type: String, required: true },
         amount: { type: String, required: true },
         transactionId: { type: String, default: null },
+        couponCode: { type: String, default: null },
     },
     { timestamps: true }
 );

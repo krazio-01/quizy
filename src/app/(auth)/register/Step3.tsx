@@ -18,10 +18,12 @@ const Step3 = ({
     onNext,
     loading,
     fieldErrors,
+    isRegistrationComplete,
 }: {
     onNext: (data: any) => void;
     loading: boolean;
     fieldErrors: { [key: string]: string };
+    isRegistrationComplete: boolean;
 }) => {
     const countries = ccs.getCountries();
     const [country, setCountry] = useState('');
@@ -36,6 +38,7 @@ const Step3 = ({
     const [grade, setGrade] = useState('');
     const [loadingSchools, setLoadingSchools] = useState(false);
     const [schoolError, setSchoolError] = useState('');
+    const [couponCode, setCouponCode] = useState('');
 
     useEffect(() => {
         setCity('');
@@ -145,6 +148,7 @@ const Step3 = ({
                 school: school === 'Other (Please specify)' ? customSchool : school,
                 board: board === 'Other' ? customBoard : board,
                 grade,
+                couponCode: couponCode.trim() || null,
             });
         }
     };
@@ -154,7 +158,7 @@ const Step3 = ({
             <div className="form-group">
                 <label htmlFor="country">Country</label>
                 <div className="select-wrapper">
-                    <select id="country" value={country} onChange={(e) => setCountry(e.target.value)} required>
+                    <select disabled={isRegistrationComplete} id="country" value={country} onChange={(e) => setCountry(e.target.value)} required>
                         <option value="">Choose your country</option>
                         {countries.map((c) => (
                             <option key={c.shortName} value={c.shortName}>
@@ -178,6 +182,7 @@ const Step3 = ({
                                 value={customCity}
                                 onChange={(e) => setCustomCity(e.target.value)}
                                 required
+                                disabled={isRegistrationComplete}
                             />
                             <button
                                 type="button"
@@ -186,6 +191,7 @@ const Step3 = ({
                                     setCity('');
                                     setCustomCity('');
                                 }}
+                                disabled={isRegistrationComplete}
                             >
                                 <FiRotateCcw /> Back
                             </button>
@@ -197,7 +203,7 @@ const Step3 = ({
                                 value={city}
                                 onChange={(e) => setCity(e.target.value)}
                                 required
-                                disabled={cities.length === 0}
+                                disabled={cities.length === 0 || isRegistrationComplete}
                             >
                                 <option value="">Choose your city</option>
                                 {cities.map((c) => (
@@ -225,6 +231,7 @@ const Step3 = ({
                                 value={customSchool}
                                 onChange={(e) => setCustomSchool(e.target.value)}
                                 required
+                                disabled={isRegistrationComplete}
                             />
                             <button
                                 type="button"
@@ -233,6 +240,7 @@ const Step3 = ({
                                     setSchool('');
                                     setCustomSchool('');
                                 }}
+                                disabled={isRegistrationComplete}
                             >
                                 <FiRotateCcw /> Back
                             </button>
@@ -244,7 +252,7 @@ const Step3 = ({
                                 value={school}
                                 onChange={(e) => setSchool(e.target.value)}
                                 required
-                                disabled={loadingSchools || schools?.length === 0}
+                                disabled={loadingSchools || schools?.length === 0 || isRegistrationComplete}
                             >
                                 <option value="">{loadingSchools ? 'Loading schools...' : 'Choose your School'}</option>
                                 {schools?.map((s) => (
@@ -272,6 +280,7 @@ const Step3 = ({
                                 value={customBoard}
                                 onChange={(e) => setCustomBoard(e.target.value)}
                                 required
+                                disabled={isRegistrationComplete}
                             />
                             <button
                                 type="button"
@@ -280,13 +289,14 @@ const Step3 = ({
                                     setBoard('');
                                     setCustomBoard('');
                                 }}
+                                disabled={isRegistrationComplete}
                             >
                                 <FiRotateCcw /> Back
                             </button>
                         </div>
                     ) : (
                         <>
-                            <select id="board" value={board} onChange={(e) => setBoard(e.target.value)} required>
+                            <select disabled={isRegistrationComplete} id="board" value={board} onChange={(e) => setBoard(e.target.value)} required>
                                 <option value="">Choose your Board</option>
                                 {Boards.map((b, index) => (
                                     <option key={index} value={b}>
@@ -308,7 +318,7 @@ const Step3 = ({
                         id="grade"
                         value={grade}
                         onChange={(e) => setGrade(e.target.value)}
-                        disabled={gradeOptions.length === 0}
+                        disabled={gradeOptions.length === 0 || isRegistrationComplete}
                         required
                     >
                         <option value="">Choose your Grade</option>
@@ -321,6 +331,20 @@ const Step3 = ({
                     <FaChevronDown className="dropdown-icon" size={14} />
                 </div>
                 {fieldErrors.grade && <div className="error-message">{fieldErrors.grade}</div>}
+            </div>
+
+            <div className="form-group">
+                <label htmlFor="couponCode">Coupon Code (optional)</label>
+                <div className={`select-wrapper ${fieldErrors.coupon ? 'error' : ''}`}>
+                    <input
+                        type="text"
+                        id="couponCode"
+                        placeholder="Enter coupon code"
+                        value={couponCode}
+                        onChange={(e) => setCouponCode(e.target.value)}
+                    />
+                </div>
+                {fieldErrors.coupon && <div className="error-message">{fieldErrors.coupon}</div>}
             </div>
 
             <div className="form-buttons">
