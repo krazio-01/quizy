@@ -5,6 +5,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import connectToDB from '../../../../utils/dbConnect';
 import UserModel from '../../../../models/UserModel';
 import { removeCookie, setCookie } from '@/utils/helperFn';
+import { randomUUID } from 'crypto';
 
 async function verifyCaptcha(token: string) {
     const res = await fetch('https://www.google.com/recaptcha/api/siteverify', {
@@ -19,17 +20,20 @@ declare module 'next-auth' {
     interface Session {
         user: {
             _id: string;
+            currentSessionToken: string;
         } & DefaultSession['user'];
     }
 
     interface User extends DefaultUser {
         _id: string;
+        currentSessionToken: string;
     }
 }
 
 declare module 'next-auth/jwt' {
     interface JWT {
         _id?: string;
+        currentSessionToken?: string;
     }
 }
 
@@ -69,8 +73,8 @@ export const authOptions: AuthOptions = {
                 if (!userDoc) {
                     throw new Error(
                         JSON.stringify({
-                            field: ['email', 'password'],
-                            message: 'Invalid credentials',
+                            field: 'email',
+                            message: 'This account is not registered',
                         })
                     );
                 }
@@ -111,11 +115,18 @@ export const authOptions: AuthOptions = {
 
                 await removeCookie('regSessionEmail');
 
+                // Generate unique session token for this login
+                const newSessionToken = randomUUID();
+                await UserModel.findByIdAndUpdate(user._id, {
+                    currentSessionToken: newSessionToken,
+                });
+
                 return {
                     id: user._id.toString(),
                     _id: user._id.toString(),
                     email: user.email,
                     name: `${user.firstName} ${user.lastName}`,
+                    currentSessionToken: newSessionToken,
                 };
             },
         }),
@@ -126,7 +137,10 @@ export const authOptions: AuthOptions = {
             return false;
         },
         async jwt({ token, user }: { token: JWT; user?: any }) {
-            if (user) token._id = user._id?.toString();
+            if (user) {
+                token._id = user._id?.toString();
+                token.currentSessionToken = user.currentSessionToken;
+            }
             return token;
         },
         async session({ session, token }: { session: Session; token: JWT }) {
@@ -134,9 +148,13 @@ export const authOptions: AuthOptions = {
             if (token) {
                 const sessionUser = await UserModel.findById(token._id).lean();
                 if (sessionUser) {
+                    if (sessionUser.currentSessionToken !== token.currentSessionToken)
+                        throw new Error('Session invalidated. Please log in again.');
+
                     (session.user as Session['user'])._id = sessionUser._id.toString();
                     session.user.email = sessionUser.email;
                     session.user.image = sessionUser.avatar;
+                    (session.user as Session['user']).currentSessionToken = sessionUser.currentSessionToken;
                 }
             }
             return session;
@@ -149,5 +167,15 @@ export const authOptions: AuthOptions = {
     },
     jwt: {
         maxAge: 60 * 60 * 6, // 6 hours
+    },
+    events: {
+        async signOut({ token }) {
+            if (token?._id) {
+                await connectToDB();
+                await UserModel.findByIdAndUpdate(token._id, {
+                    currentSessionToken: null,
+                });
+            }
+        },
     },
 };

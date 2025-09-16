@@ -34,6 +34,8 @@ export interface IUser {
 
     isEligibleForCertificate?: boolean;
 
+    currentSessionToken?: string;
+
     createdAt: Date;
     updatedAt: Date;
 }
@@ -76,6 +78,8 @@ const UserSchema: Schema<IUserDocument> = new Schema<IUserDocument>(
         forgotRequestCount: { type: Number, default: 0 },
 
         isEligibleForCertificate: { type: Boolean },
+
+        currentSessionToken: { type: String, default: null },
     },
     { timestamps: true }
 );
