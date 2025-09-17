@@ -62,6 +62,7 @@ const ProfilePage = () => {
 
             setPaymentInfoDB(paymentInfoDB);
             setCouponCode(paymentInfoDB?.billing?.couponCode || '');
+            setIsCouponFieldEditable(paymentInfoDB?.billing?.couponCode ? false : true);
             setPaymentInfoPayglocal(paymentInfoPayglocal);
             setUser(user);
             setFormData({
@@ -301,6 +302,16 @@ const ProfilePage = () => {
         }
     };
 
+    const sanitizeCoupon = (value: string) => {
+        const cleaned = value.replace(/[^a-zA-Z0-9-_]/g, '').toUpperCase();
+        return cleaned.slice(0, 20);
+    };
+
+    const handleCouponChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const input = e.target.value;
+        setCouponCode(sanitizeCoupon(input));
+    };
+
     if (loading)
         return (
             <div className="profile-page loading">
@@ -401,10 +412,10 @@ const ProfilePage = () => {
                             <span className="value">
                                 {user?.dob
                                     ? new Date(user?.dob).toLocaleDateString('en-GB', {
-                                          day: '2-digit',
-                                          month: '2-digit',
-                                          year: 'numeric',
-                                      })
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric',
+                                    })
                                     : ''}
                             </span>
                         </div>
@@ -460,11 +471,31 @@ const ProfilePage = () => {
                         <div className="bottom-wrapper">
                             {paymentInfoDB?.billing && (
                                 <>
+                                    {paymentInfoDB.billing.status !== 'success' && (
+                                        <div className='coupon-wrapper'>
+                                            <div className='coupon-label'>
+                                                <label>Coupon Code</label>
+                                            </div>
+                                            <div
+                                                className={`coupon-field ${paymentLoading || !isCouponFieldEditable ? 'disabled' : ''
+                                                    }`}
+                                            >
+                                                <input
+                                                    type="text"
+                                                    placeholder="Enter coupon code"
+                                                    value={couponCode}
+                                                    onChange={handleCouponChange}
+                                                    disabled={paymentLoading || !isCouponFieldEditable}
+                                                />
+                                                {!isCouponFieldEditable && <FaRegCheckCircle />}
+                                            </div>
+                                        </div>
+                                    )}
+
                                     <div>
                                         <div
-                                            className={`status ${
-                                                paymentInfoDB.billing.status === 'success' ? 'paid' : 'failed'
-                                            }`}
+                                            className={`status ${paymentInfoDB.billing.status === 'success' ? 'paid' : 'failed'
+                                                }`}
                                         >
                                             Fees Status{' '}
                                             <span>
@@ -482,51 +513,16 @@ const ProfilePage = () => {
                                                     <BeatLoader size={10} loading={paymentLoading} />
                                                     {!paymentLoading && 'Pay Now'}
                                                 </button>
-
-                                                {paymentInfoDB.billing?.couponCode && (
-                                                    <div
-                                                        className={`coupon-field desktop ${
-                                                            paymentLoading || !isCouponFieldEditable ? 'disabled' : ''
-                                                        }`}
-                                                    >
-                                                        <input
-                                                            type="text"
-                                                            placeholder="Enter coupon code"
-                                                            value={couponCode}
-                                                            onChange={(e) => setCouponCode(e.target.value)}
-                                                            disabled={paymentLoading || !isCouponFieldEditable}
-                                                        />
-                                                        {!isCouponFieldEditable && <FaRegCheckCircle />}
-                                                    </div>
-                                                )}
                                             </div>
                                         )}
                                     </div>
-
-                                    {paymentInfoDB.billing?.couponCode &&
-                                        paymentInfoDB.billing.status !== 'success' && (
-                                            <div
-                                                className={`coupon-field mobile ${
-                                                    paymentLoading || !isCouponFieldEditable ? 'disabled' : ''
-                                                }`}
-                                            >
-                                                <input
-                                                    type="text"
-                                                    placeholder="Enter coupon code"
-                                                    value={couponCode}
-                                                    onChange={(e) => setCouponCode(e.target.value)}
-                                                    disabled={paymentLoading || !isCouponFieldEditable}
-                                                />
-                                                {!isCouponFieldEditable && <FaRegCheckCircle />}
-                                            </div>
-                                        )}
                                 </>
                             )}
                         </div>
                     </div>
                 </section>
             </main>
-        </div>
+        </div >
     );
 };
 

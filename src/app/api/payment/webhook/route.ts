@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import PaymentModel from '@/models/PayMentModel';
 import UserModel from '@/models/UserModel';
+import CouponModel from '@/models/CouponModel';
 import path from 'path';
 import sendEmail from '@/utils/sendMail';
 import { generateMailTemplate } from '@/utils/helperFn';
+import mongoose from 'mongoose';
 
 interface UpdatePaymentParams {
     orderId: string;
@@ -99,8 +101,19 @@ async function updatePaymentStatus({ orderId, status, transactionId }: UpdatePay
         }
 
         if (status === 'SENT_FOR_CAPTURE') {
+            const coupon = await CouponModel.findOne({ code: payment.couponCode });
+
+            if (coupon) {
+                if (!coupon.usedBy.some((id) => id.toString() === payment.userId.toString())) {
+                    coupon.usedBy.push(new mongoose.Types.ObjectId(payment.userId));
+                    coupon.usedCount += 1;
+                    await coupon.save();
+                }
+            }
+
             payment.status = 'success';
             payment.transactionId = transactionId;
+            payment.couponCode = null;
             await payment.save();
         }
     } catch (error) {

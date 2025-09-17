@@ -153,6 +153,16 @@ const Step3 = ({
         }
     };
 
+    const sanitizeCoupon = (value: string) => {
+        const cleaned = value.replace(/[^a-zA-Z0-9-_]/g, '').toUpperCase();
+        return cleaned.slice(0, 20);
+    };
+
+    const handleCouponChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const input = e.target.value;
+        setCouponCode(sanitizeCoupon(input));
+    };
+
     return (
         <form className="step-form">
             <div className="form-group">
@@ -341,7 +351,7 @@ const Step3 = ({
                         id="couponCode"
                         placeholder="Enter coupon code"
                         value={couponCode}
-                        onChange={(e) => setCouponCode(e.target.value)}
+                        onChange={handleCouponChange}
                     />
                 </div>
                 {fieldErrors.coupon && <div className="error-message">{fieldErrors.coupon}</div>}

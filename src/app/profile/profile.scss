@@ -290,8 +290,19 @@
 
                 .bottom-wrapper {
                     display: flex;
-                    align-items: center;
+                    flex-direction: column;
+                    width: fit-content;
                     gap: 2rem;
+
+                    .coupon-wrapper {
+                        margin-top: 2rem;
+
+                        .coupon-label label {
+                            font-size: var(--fz-sm);
+                            font-weight: 700;
+                            color: #3e3e3e;
+                        }
+                    }
 
                     > div {
                         display: flex;
@@ -361,13 +372,9 @@
                         color: #3e3e3e;
                         overflow: hidden;
                         transition: border-color 0.2s, box-shadow 0.2s;
-                        
+
                         &:focus {
                             box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
-                        }
-
-                        &.mobile {
-                            display: none;
                         }
 
                         &.disabled {
@@ -375,7 +382,7 @@
                             color: #999;
                             cursor: not-allowed;
                         }
-                        
+
                         input {
                             padding: 8px 12px;
                             border: none;
@@ -501,19 +508,7 @@
             .profile-section {
                 .billing {
                     .bottom-wrapper {
-                        align-items: flex-start !important;
-                        flex-direction: column !important;
                         gap: 1rem !important;
-
-                        .coupon-field {
-                            &.desktop {
-                                display: none;
-                            }
-
-                            &.mobile {
-                                display: flex;
-                            }
-                        }
                     }
                 }
             }
