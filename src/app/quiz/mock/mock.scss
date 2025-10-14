@@ -17,11 +17,35 @@
         color: #3e3e3e;
     }
 
-    .question-text {
-        font-size: var(--fz-md);
-        font-weight: 510;
+    .question-container {
         margin: 3rem 0;
-        color: #3e3e3e;
+
+        .question-text {
+            font-size: var(--fz-md);
+            font-weight: 510;
+            color: #3e3e3e;
+        }
+
+        .question-mid-image,
+        .question-end-image {
+            width: 300px;
+            height: 150px;
+            max-height: 200px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+        }
+
+        .question-mid-image {
+            margin: 0.5rem 0;
+        }
+
+        .question-end-image {
+            margin-top: 0.5rem;
+        }
     }
 
     .options {
@@ -29,30 +53,51 @@
         gap: 0.75rem;
         margin-bottom: 5rem;
 
-        .option {
-            padding: 0.75rem 1rem;
-            font-size: var(--fz-md);
-            transition: 0.2s;
-            border-radius: 12px;
-            border: 1px solid rgba(0, 0, 0, 0.2);
-            background: rgba(0, 0, 0, 0.15);
-            cursor: pointer;
+        .option-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
 
-            &:hover {
-                background: #ddd;
+            .option-image {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 120px;
+                height: 120px;
+
+                img {
+                    max-width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
             }
 
-            &.selected {
-                background: #fff176;
-            }
+            .option {
+                padding: 0.75rem 1rem;
+                font-size: var(--fz-md);
+                transition: 0.2s;
+                border-radius: 12px;
+                border: 1px solid rgba(0, 0, 0, 0.2);
+                background: rgba(0, 0, 0, 0.15);
+                cursor: pointer;
 
-            &.correct {
-                background: #43cc3b;
-            }
+                &:hover {
+                    background: #ddd;
+                }
 
-            &.incorrect {
-                background: #ef9a9a;
-                background: rgba(255, 0, 0, 0.15);
+                &.selected {
+                    background: #fff176;
+                }
+
+                &.correct {
+                    background: #43cc3b;
+                }
+
+                &.incorrect {
+                    background: #ef9a9a;
+                    background: rgba(255, 0, 0, 0.15);
+                }
             }
         }
     }
@@ -186,6 +231,10 @@
             .options {
                 flex-direction: column;
                 margin-bottom: 3rem;
+
+                .option {
+                    width: 80%;
+                }
             }
 
             .check-button {

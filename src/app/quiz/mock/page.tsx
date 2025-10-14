@@ -96,7 +96,22 @@ const Quiz = () => {
             <h1>Practice Quiz</h1>
             <h3>{selectedGrade}</h3>
 
-            <div className="question-text">{currentQuestion?.questionText}</div>
+            <div className="question-container">
+                <p>{currentQuestion?.questionText}</p>
+                {currentQuestion?.questionMiddleImage && (
+                    <div className='question-mid-image'>
+                        <img src={currentQuestion?.questionMiddleImage} alt="Question Middle" />
+                    </div>
+                )}
+                {currentQuestion?.questionEndText && (
+                    <p>{currentQuestion?.questionEndText}</p>
+                )}
+                {currentQuestion?.questionEndImage && (
+                    <div className='question-end-image'>
+                        <img src={currentQuestion?.questionEndImage} alt="Question End" />
+                    </div>
+                )}
+            </div>
 
             <div className="options">
                 {currentQuestion?.options.map((option, index) => {
@@ -109,14 +124,21 @@ const Quiz = () => {
                     }
 
                     return (
-                        <button
-                            key={index}
-                            className={className}
-                            onClick={() => handleOptionClick(index)}
-                            disabled={isAnswered}
-                        >
-                            {option}
-                        </button>
+                        <div className='option-wrapper' key={index}>
+                            {option.image && (
+                                <div className="option-image">
+                                    <img src={option.image} alt={`Option ${option.text}`} />
+                                </div>
+                            )}
+
+                            <button
+                                className={className}
+                                onClick={() => handleOptionClick(index)}
+                                disabled={isAnswered}
+                            >
+                                {option.text}
+                            </button>
+                        </div>
                     );
                 })}
             </div>
