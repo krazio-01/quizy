@@ -34,19 +34,13 @@ export async function POST(request: NextRequest) {
 
         function parseLocalDate(dob: string): Date | null {
             if (!dob) return null;
-
-            const datePart = dob.slice(0, 10);
-            if (!/^\d{4}-\d{2}-\d{2}$/.test(datePart)) return null;
-
-            const [year, month, day] = datePart?.split('-')?.map(Number);
-            const parsed = new Date(Date.UTC(year, month - 1, day));
-            return isNaN(parsed.getTime()) ? null : parsed;
+            const [year, month, day] = dob.split('-').map(Number);
+            if (!year || !month || !day) return null;
+            return new Date(Date.UTC(year, month - 1, day));
         }
 
         const parsedDob = parseLocalDate(dob);
-        parsedDob.setUTCHours(0, 0, 0, 0);
         const now = new Date();
-        now.setUTCHours(0, 0, 0, 0);
 
         if (!parsedDob) return NextResponse.json({ message: 'Invalid date format. Use YYYY-MM-DD.' }, { status: 400 });
 
